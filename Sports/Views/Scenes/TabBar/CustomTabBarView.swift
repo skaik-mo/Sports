@@ -8,8 +8,29 @@
 import SwiftUI
 
 struct CustomTabBarView: View {
+    @State var selectedTab: TabbedItems = .home
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                HomeView()
+                    .tag(TabbedItems.home)
+                FavoriteView()
+                    .tag(TabbedItems.favorite)
+            }
+            ZStack {
+                HStack {
+                    ForEach((TabbedItems.allCases), id: \.self) { item in
+                        CustomTabItem(tabbedItem: item, isActive: (selectedTab == item), selectedTab: $selectedTab)
+                    }
+                }
+                    .padding(5)
+            }
+                .frame(height: 70)
+                .background(.main.opacity(0.2))
+                .cornerRadius(radius: 35)
+                .padding(.horizontal, 15)
+        }
     }
 }
 
