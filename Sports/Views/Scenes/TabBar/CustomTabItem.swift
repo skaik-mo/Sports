@@ -30,9 +30,9 @@ struct CustomTabItem: View {
                 }
                 Spacer()
             }
-            .frame(width: .infinity, height: 60)
-            .background(isActive ? .main.opacity(0.9) : .clear)
-            .cornerRadius(radius: 30)
+                .frame(height: 60)
+                .background(isActive ? .main.opacity(0.9) : .clear)
+                .cornerRadius(radius: 30)
         }
     }
 }
