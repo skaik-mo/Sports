@@ -14,7 +14,7 @@ struct NavAppearanceModifier: ViewModifier {
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: foregroundColor]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: foregroundColor]
-        navBarAppearance.backgroundColor = backgroundColor
+        navBarAppearance.backgroundColor = backgroundColor.withAlphaComponent(0.95)
         if hideSeparator {
             navBarAppearance.shadowColor = .clear
         }
