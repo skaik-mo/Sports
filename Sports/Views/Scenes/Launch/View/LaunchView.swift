@@ -16,6 +16,7 @@ struct LaunchView: View {
             CustomTabBarView()
         } else {
             ZStack {
+                Color.background.ignoresSafeArea()
                 CircleShape(.init("0096E6"))
                     .padding(.trailing, viewModel.isAnimating ? (viewModel.radius * 2) + (viewModel.lineWidth * 2) + 20: 0)
                 CircleShape(.init("E64B3C"))
