@@ -55,19 +55,23 @@ extension HomeView {
     private func SportShapeStack(_ sports: [Sports]) -> some View {
         LazyVStack(spacing: viewModel.spacing) {
             ForEach(sports) { sport in
-                LazyVStack {
-                    Image(sport.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: viewModel.heightImage)
-                    Text(sport.title)
-                        .font(viewModel.font)
-                        .foregroundStyle(Color.foreground)
+                NavigationLink {
+                    LeaguesView(viewModel: .init(sport: sport))
+                } label: {
+                    LazyVStack {
+                        Image(sport.image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: viewModel.heightImage)
+                        Text(sport.title)
+                            .font(viewModel.font)
+                            .foregroundStyle(Color.foreground)
+                    }
+                        .padding(viewModel.spacing)
+                        .background(.secondaryBackground)
+                        .cornerRadius(radius: 20)
+                        .shadow(color: .shadow, radius: 5, x: 0, y: 2)
                 }
-                    .padding(viewModel.spacing)
-                    .background(.secondaryBackground)
-                    .cornerRadius(radius: 20)
-                    .shadow(color: .shadow, radius: 5, x: 0, y: 2)
             }
         }
     }
