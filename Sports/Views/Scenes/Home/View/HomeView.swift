@@ -10,24 +10,48 @@ import SwiftUI
 struct HomeView: View {
     @State private var viewModel = HomeViewModel()
 
+    init() {
+        setUpSegmentedControl()
+    }
+
     var body: some View {
-        NavigationStack {
+        CustomNavView {
             WaterfallGrid(columns: $viewModel.columns) {
                 SportShapeStack(viewModel.sports.split().left)
                 SportShapeStack(viewModel.sports.split().right)
             }.animation(.linear(duration: 0.15), value: viewModel.isWaterfall)
                 .navigationTitle("All Sports")
+                .background(Color.background)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Switch") {
-                            viewModel.isWaterfall.toggle()
-                        }
-                    }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Picker("Grid Style", selection: $viewModel.isWaterfall) {
+                        Button(action: {
+                            viewModel.isWaterfall = true
+                        }, label: {
+                                Image(systemName: "square.grid.2x2")
+                                    .symbolVariant(viewModel.isWaterfall ? .fill : .none)
+                                    .background(.red)
+                                    .foregroundStyle(.red)
+                            }).tag(true)
+                        Button(action: {
+                            viewModel.isWaterfall = false
+                        }, label: {
+                                Image(systemName: "rectangle.grid.1x2")
+                                    .symbolVariant(viewModel.isWaterfall ? .none : .fill)
+                                    .background(.red)
+                                    .foregroundStyle(.red)
+                            }).tag(false)
+                    }.pickerStyle(.segmented)
                 }
+            }
         }
 
     }
 
+}
+
+// MARK: - Shapes
+extension HomeView {
     private func SportShapeStack(_ sports: [Sports]) -> some View {
         LazyVStack(spacing: viewModel.spacing) {
             ForEach(sports) { sport in
@@ -38,14 +62,22 @@ struct HomeView: View {
                         .frame(height: viewModel.heightImage)
                     Text(sport.title)
                         .font(viewModel.font)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.foreground)
                 }
                     .padding(viewModel.spacing)
-                    .background(.white)
+                    .background(.secondaryBackground)
                     .cornerRadius(radius: 20)
-                    .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 2)
+                    .shadow(color: .shadow, radius: 5, x: 0, y: 2)
             }
         }
+    }
+}
+
+extension HomeView {
+    private func setUpSegmentedControl() {
+        UISegmentedControl.appearance().selectedSegmentTintColor = .main
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.foreground], for: .normal)
     }
 }
 
