@@ -10,6 +10,12 @@ import SwiftUI
 struct CustomTabBarView: View {
     @State var selectedTab: TabbedItems = .home
 
+    init() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        UITabBar.appearance().standardAppearance = appearance
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
