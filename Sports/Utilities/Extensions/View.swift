@@ -19,3 +19,12 @@ extension View {
                 .stroke(borderColor, lineWidth: lineWidth))
     }
 }
+
+// MARK: - Alert
+extension View {
+    func errorAlert(_ alert: Binding<AlertManager>) -> some View {
+        self.alert(isPresented: alert.showAlert) {
+            Alert(title: Text(alert.title.wrappedValue), message: Text(alert.message.wrappedValue), dismissButton: .destructive(Text("OK")))
+        }
+    }
+}
