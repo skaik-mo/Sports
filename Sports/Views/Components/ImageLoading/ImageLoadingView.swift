@@ -27,8 +27,8 @@ struct ImageLoadingView: View {
                     .scaledToFit()
             }
         }
-            .roundedCornerWithBorder(lineWidth: 1, borderColor: .main, radius: 20, corners: .allCorners)
-            .onAppear {
+//            .roundedCornerWithBorder(lineWidth: 1, borderColor: .main, radius: 20, corners: .allCorners)
+        .task {
             imageLoader.fetch()
         }
     }
