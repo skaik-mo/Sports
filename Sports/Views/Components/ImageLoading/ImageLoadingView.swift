@@ -10,13 +10,9 @@ import SwiftUI
 
 struct ImageLoadingView: View {
     @State var imageLoader: ImageLoader
-    var width: CGFloat
-    var height: CGFloat
 
-    init(url: String?, width: CGFloat, height: CGFloat) {
+    init(url: String?) {
         self._imageLoader = State(wrappedValue: ImageLoader(url: url))
-        self.width = width
-        self.height = height
     }
 
     var body: some View {
@@ -31,7 +27,6 @@ struct ImageLoadingView: View {
                     .scaledToFit()
             }
         }
-            .frame(width: width, height: height)
             .roundedCornerWithBorder(lineWidth: 1, borderColor: .main, radius: 20, corners: .allCorners)
             .onAppear {
             imageLoader.fetch()
