@@ -1,0 +1,122 @@
+//
+//  EventsView.swift
+//  Sports
+//
+//  Created by Mohammed Skaik on 08/10/2024.
+//
+
+import SwiftUI
+
+struct EventsView: View {
+    @State private var viewModel: EventsViewModel
+    @Environment(\.alertKey) private var alertManager
+    @Environment(\.progressKey) private var progressManager
+
+    init(_ viewModel: EventsViewModel) {
+        self.viewModel = viewModel
+    }
+
+    var body: some View {
+        ScrollView {
+            if viewModel.isEmptyData {
+                Spacer(minLength: (UIScreen.screenHeight / 2) - 150)
+                ContentUnavailableView(viewModel.emptyDataTitle, systemImage: viewModel.sport.icon)
+            } else {
+                HorizontalScrollWithHeader(title: viewModel.upcomingTitle, events: viewModel.upcomingEvents) { event in
+                    EventCell(event)
+                }
+                LatestEvents()
+                HorizontalScrollWithHeader(title: viewModel.teamTitle, events: Array(viewModel.teams)) { team in
+                    TeamCell(team)
+                        .padding(viewModel.padding)
+                        .background(.secondaryBackground)
+                        .cornerRadius(radius: 20)
+                        .shadow(color: .shadow, radius: 5, x: 0, y: 2)
+                }
+            }
+        }
+            .background(Color.background)
+            .scrollIndicators(.hidden)
+            .navigationTitle(viewModel.title)
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+            self.viewModel.alertManager = alertManager
+            self.viewModel.progressManager = progressManager
+            self.viewModel.clear()
+        }
+            .task {
+            self.viewModel.fetchEvents()
+        }
+            .refreshable {
+            self.viewModel.fetchEvents(isShowLoader: false)
+        }
+    }
+
+}
+
+extension EventsView {
+
+    private func LatestEvents() -> some View {
+        Group {
+            if !viewModel.latestEvents.isEmpty {
+                Section (header: HeaderCell(title: viewModel.latestTitle)) {
+                    LazyVStack(spacing: 20) {
+                        ForEach(viewModel.latestEvents) { event in
+                            EventCell(event)
+                        }
+                    }
+                        .padding(.bottom, 20)
+                }
+            }
+        }
+    }
+
+    private func TeamCell(_ team: Team?) -> some View {
+        VStack(spacing: 5) {
+            ImageLoadingView(url: team?.logo)
+                .frame(width: 100, height: 100)
+            Text(team?.name ?? "")
+                .font(.custom("Poppins-Medium", size: 16))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.foreground)
+        }
+            .frame(width: 130, height: 150)
+    }
+
+    private func EventCell(_ event: Event) -> some View {
+        VStack(spacing: 0) {
+            Text(event.date ?? "")
+                .font(.custom("Poppins-Regular", size: 16))
+                .foregroundStyle(.gray)
+            HStack {
+                TeamCell(event.homeTeam)
+                Spacer()
+                VStack(spacing: 25) {
+                    Text(viewModel.vsTitle)
+                        .font(.custom("Poppins-Medium", size: 26))
+                        .foregroundStyle(Color.foreground)
+                    if let result = event.ft_result, !(event.ft_result?.isEmpty ?? true) {
+                        Text(result)
+                            .font(.custom("Poppins-Medium", size: 20))
+                            .foregroundStyle(Color.foreground)
+                    }
+                }
+                Spacer()
+                TeamCell(event.awayTeam)
+            }
+            Text(event.time ?? "")
+                .font(.custom("Poppins-Regular", size: 16))
+                .foregroundStyle(.gray)
+        }
+            .padding(viewModel.padding)
+            .background(.secondaryBackground)
+            .cornerRadius(radius: 20)
+            .shadow(color: .shadow, radius: 5, x: 0, y: 2)
+            .frame(width: UIScreen.screenWidth - (viewModel.padding * 2))
+    }
+
+}
+
+#Preview {
+    EventsView(.init(sport: .football, leagueId: 4))
+}

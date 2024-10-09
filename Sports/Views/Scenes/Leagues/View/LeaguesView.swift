@@ -20,6 +20,8 @@ struct LeaguesView: View {
     var body: some View {
         LeaguesList()
             .background(Color.background)
+            .navigationTitle(viewModel.title)
+            .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText)
             .onAppear {
             self.viewModel.alertManager = alertManager
@@ -56,10 +58,13 @@ extension LeaguesView {
             Group {
                 if viewModel.leagues.isEmpty && !progressManager.showProgress {
                     Spacer(minLength: (UIScreen.screenHeight / 2) - 150)
-                    ContentUnavailableView("No \(viewModel.sport.title) Leagues Available", systemImage: viewModel.sport.icon)
+                    ContentUnavailableView(, systemImage: viewModel.sport.icon)
                 } else {
                     ForEach(viewModel.leagues) { league in
                         LeagueCell(league)
+                            .navigationLink {
+                                EventsView(.init(sport: viewModel.sport, leagueId: league.league_key))
+                        }
                     }
                 }
             }
@@ -68,9 +73,6 @@ extension LeaguesView {
                 .listRowSeparator(.hidden)
         }
             .listStyle(.plain)
-            .navigationTitle(viewModel.title)
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Color.background)
             .scrollIndicators(.hidden)
     }
 }
@@ -79,5 +81,7 @@ extension LeaguesView {
     let viewModel = LeaguesViewModel(sport: .football)
     viewModel.leagues.append(.init(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
         country_logo: nil))
-    return LeaguesView(viewModel: viewModel)
+    return CustomNavView {
+        LeaguesView(viewModel: viewModel)
+    }
 }

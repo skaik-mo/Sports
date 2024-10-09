@@ -14,16 +14,12 @@ enum APIConstants: String {
     // MARK: - BaseUrl
     case BaseUrl = "https://apiv2.allsportsapi.com"
     case API = "/"
-    case API_key = "85929e14637e764a5975017acb8885cf850d6a179c83c61df84f70fd3bdf3bd9"
+//    case API_key = "85929e14637e764a5975017acb8885cf850d6a179c83c61df84f70fd3bdf3bd9"
+    case API_key = "25997407d691094b991bcbdd81a3a40c001bd5c377045f11ed26fa1e57d3248a"
 
-    // MARK: - Football
-    case API_football = "football"
     case API_leagues = "Leagues"
+    case API_fixtures = "Fixtures"
 
-
-    var endPint: String {
-        return "\(APIConstants.API.rawValue)\(self.rawValue)"
-    }
 }
 
 var headers: HTTPHeaders {

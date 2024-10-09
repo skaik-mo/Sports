@@ -15,6 +15,9 @@ class LeaguesViewModel {
     var sport: Sports
     var alertManager: AlertManager?
     var progressManager: ProgressManager?
+    var emptyDataTitle: String {
+        "No \(sport.title) Leagues Available"
+    }
     var searchText: String = "" {
         didSet {
             findLeagues()
