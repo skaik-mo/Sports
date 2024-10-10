@@ -58,7 +58,7 @@ extension LeaguesView {
             Group {
                 if viewModel.leagues.isEmpty && !progressManager.showProgress {
                     Spacer(minLength: (UIScreen.screenHeight / 2) - 150)
-                    ContentUnavailableView(, systemImage: viewModel.sport.icon)
+                    ContentUnavailableView(viewModel.emptyDataTitle, systemImage: viewModel.sport.icon)
                 } else {
                     ForEach(viewModel.leagues) { league in
                         LeagueCell(league)
