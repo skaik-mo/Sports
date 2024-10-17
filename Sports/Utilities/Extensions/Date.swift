@@ -10,7 +10,7 @@ import Foundation
 extension Date {
 
     var _stringDate: String {
-        return self._string(dataFormat: "yyyy-MM-dd")
+        return self._string(dataFormat: GlobalConstants.dateFormat)
     }
 
     func _string(dataFormat: String, timeZone: String = TimeZone.current.identifier) -> String {

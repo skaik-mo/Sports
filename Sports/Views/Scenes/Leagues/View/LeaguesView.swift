@@ -63,7 +63,7 @@ extension LeaguesView {
                     ForEach(viewModel.leagues) { league in
                         LeagueCell(league)
                             .navigationLink {
-                                EventsView(.init(sport: viewModel.sport, leagueId: league.league_key))
+                            EventsView(.init(sport: viewModel.sport, league: league))
                         }
                     }
                 }

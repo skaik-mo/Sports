@@ -80,7 +80,7 @@ extension EventsView {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.foreground)
         }
-            .frame(width: 130, height: 150)
+            .frame(width: 115, height: 150)
     }
 
     private func EventCell(_ event: Event) -> some View {
@@ -89,20 +89,20 @@ extension EventsView {
                 .font(.custom("Poppins-Regular", size: 16))
                 .foregroundStyle(.gray)
             HStack {
-                TeamCell(event.homeTeam)
+                TeamCell(event.team?.homeTeam)
                 Spacer()
                 VStack(spacing: 25) {
                     Text(viewModel.vsTitle)
                         .font(.custom("Poppins-Medium", size: 26))
                         .foregroundStyle(Color.foreground)
-                    if let result = event.ft_result, !(event.ft_result?.isEmpty ?? true) {
+                    if let result = event.final_result, event.final_result != "-" {
                         Text(result)
                             .font(.custom("Poppins-Medium", size: 20))
                             .foregroundStyle(Color.foreground)
                     }
                 }
                 Spacer()
-                TeamCell(event.awayTeam)
+                TeamCell(event.team?.awayTeam)
             }
             Text(event.time ?? "")
                 .font(.custom("Poppins-Regular", size: 16))
@@ -118,5 +118,7 @@ extension EventsView {
 }
 
 #Preview {
-    EventsView(.init(sport: .football, leagueId: 4))
+    let league = League.init(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
+        country_logo: nil)
+    return EventsView(.init(sport: .football, league: league))
 }

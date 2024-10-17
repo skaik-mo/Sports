@@ -17,11 +17,11 @@ class BaseResponse {
     var dic: [String: Any]?
     var array: [[String: Any]]?
 
-    convenience init?(dictionary: [String: Any]?) {
+    init?(dictionary: [String: Any]?) {
         guard let dictionary, !dictionary.isEmpty else {
             return nil
         }
-        self.init(array: dictionary["result"] as? [[String: Any]])
+        self.array = dictionary["result"] as? [[String: Any]]
         self.error = dictionary["error"] as? String
         self.message = self.array?.first?["msg"] as? String
         self.success = dictionary["success"] as? Bool

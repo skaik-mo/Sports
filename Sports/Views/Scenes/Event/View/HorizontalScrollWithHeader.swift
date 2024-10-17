@@ -32,8 +32,19 @@ struct HorizontalScrollWithHeader<T: Identifiable, Content: View>: View {
                         }
                     }
                         .padding(padding)
+                        .scrollTargetLayout()
                 }
+                    .scrollTargetBehavior(.viewAligned)
+                    .scrollIndicators(.never)
             }
         }
+    }
+}
+
+#Preview {
+    HorizontalScrollWithHeader(title: "Welcome", events: [Event(sport: .football, dictionary: ["w": "w"])!, Event(sport: .football, dictionary: ["w": "w"])!, Event(sport: .football, dictionary: ["w": "w"])!]) { item in
+        Rectangle()
+            .foregroundStyle(.yellow)
+            .frame(width: UIScreen.screenWidth - 30, height: 100)
     }
 }

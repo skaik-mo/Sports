@@ -15,7 +15,7 @@ class EventsViewModel {
     let latestTitle = "Latest Events"
     let teamTitle = "Teams"
     let vsTitle = "VS"
-    var leagueId: Int?
+    var league: League
     var sport: Sports
     private var events: [Event] = []
     var upcomingEvents: [Event] = []
@@ -23,16 +23,24 @@ class EventsViewModel {
     var teams: Set<Team> = []
     var alertManager: AlertManager?
     var progressManager: ProgressManager?
+    let dateNow = Date.now
+    var formDate: String
+    var toDate: String { (dateNow._add(days: 15) ?? dateNow)._stringDate }
     var emptyDataTitle: String {
-        "No \(sport.title) Events Available"
+        "No \(league.league_name ?? "") Matches Found from \(formDate) to \(toDate)"
     }
     var isEmptyData: Bool {
         self.events.isEmpty && !(progressManager?.showProgress == true)
     }
 
-    init(sport: Sports, leagueId: Int?) {
+    init(sport: Sports, league: League) {
         self.sport = sport
-        self.leagueId = leagueId
+        self.league = league
+        if sport == .football {
+            formDate = (dateNow._add(days: -15) ?? dateNow)._stringDate
+        } else {
+            formDate = (dateNow._add(years: -1) ?? dateNow)._stringDate
+        }
     }
 
     func clear() {
@@ -44,30 +52,32 @@ class EventsViewModel {
 
     func fetchEvents(isShowLoader: Bool = true) {
         guard let alertManager, let progressManager else { return }
-        let dateNow = Date.now
-        let formDate: String = (dateNow._add(days: -15) ?? dateNow)._stringDate
-        let toDate: String = (dateNow._add(days: 15) ?? dateNow)._stringDate
         let baseRequest = BaseRequest()
         baseRequest.end_point = sport.endPoint
         baseRequest.method = .get
         baseRequest.parameters = [
             "met": APIConstants.API_fixtures.rawValue,
             "APIkey": APIConstants.API_key.rawValue,
-            "leagueId": leagueId ?? -1,
+            "leagueId": league.league_key ?? -1,
             "from": formDate,
             "to": toDate,
         ]
         _ = RequestBuilder(alertManager: alertManager, progressManager: progressManager).requestWithSuccessResponse(with: baseRequest) { [weak self] response, code, message in
             let result = response["result"] as? [[String: Any]]
-            self?.events = Event.modelsFromDictionaryArray(array: result)
+            self?.events = Event.modelsFromDictionaryArray(sport: self?.sport, array: result)
             self?.events.forEach { event in
-                event.status?.isEmpty ?? true ? self?.upcomingEvents.append(event) : self?.latestEvents.append(event)
-
-                if let homeTeam = event.homeTeam, let awayTeam = event.awayTeam {
+                if let date = event.date, let time = event.time, let eventDate = "\(date) \(time)".toDate, eventDate >= Date.now {
+                    self?.upcomingEvents.append(event)
+                } else if !(event.status?.isEmpty ?? true) {
+                    self?.latestEvents.append(event)
+                }
+                if let homeTeam = event.team?.homeTeam, let awayTeam = event.team?.awayTeam {
                     self?.teams.insert(homeTeam)
                     self?.teams.insert(awayTeam)
                 }
             }
+            self?.upcomingEvents = self?.upcomingEvents.sorted(by: >) ?? []
+            self?.latestEvents = self?.latestEvents.sorted(by: <) ?? []
         }
     }
 }

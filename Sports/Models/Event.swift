@@ -6,50 +6,67 @@
 //
 
 
+
 class Event: Identifiable {
+    var sport: Sports
     var key: Int?
     var date: String?
     var time: String?
-    var ft_result: String?
+    var final_result: String?
     var status: String?
     var league: League?
-    var homeTeam: Team?
-    var awayTeam: Team?
-    class func modelsFromDictionaryArray(array: [[String: Any]]?) -> [Event] {
+    var team: TeamSport?
+
+    class func modelsFromDictionaryArray(sport: Sports?, array: [[String: Any]]?) -> [Event] {
         var events: [Event] = []
         for item in array ?? [] {
-            if let event = Event(dictionary: item) {
+            if let event = Event(sport: sport ?? .football, dictionary: item) {
                 events.append(event)
             }
         }
         return events
     }
 
-    init?(dictionary: [String: Any]?) {
+    init?(sport: Sports, dictionary: [String: Any]?) {
         guard let dictionary, !dictionary.isEmpty else { return nil }
+        self.sport = sport
         key = dictionary["event_key"] as? Int
         date = dictionary["event_date"] as? String
         time = dictionary["event_time"] as? String
-        ft_result = dictionary["event_ft_result"] as? String
+        final_result = dictionary["event_final_result"] as? String
         status = dictionary["event_status"] as? String
         league = .init(dictionary: dictionary)
-        homeTeam = .init(key: dictionary["home_team_key"] as? Int, name: dictionary["event_home_team"] as? String, logo: dictionary["home_team_logo"] as? String)
-        awayTeam = .init(key: dictionary["away_team_key"] as? Int, name: dictionary["event_away_team"] as? String, logo: dictionary["away_team_logo"] as? String)
-
+        setTeam(dictionary)
     }
 
+    private func setTeam(_ dictionary: [String: Any]) {
+        switch sport {
+        case .football:
+            team = FootballTeam(dictionary: dictionary)
+        case .cricket:
+            team = CricketTeam(dictionary: dictionary)
+        case .basketball:
+            team = BasketballTeam(dictionary: dictionary)
+        case .tennis:
+            team = TennisTeam(dictionary: dictionary)
+        }
+    }
 
-    func getDictionary() -> [String: Any] {
-        let dictionary: [String: Any?] = [
-            "event_key": self.key,
-            "event_date": self.date,
-            "event_time": self.time,
-            "event_ft_result": self.ft_result,
-            "event_status": self.status,
-            "league": self.league?.getDictionary(),
-            "homeTeam": self.homeTeam?.getDictionary(),
-            "awayTeam": self.awayTeam?.getDictionary(),
-        ]
-        return dictionary as [String: Any]
+}
+
+// MARK: - Sort functions
+extension Event {
+    static func > (previous: Event, next: Event) -> Bool {
+        if let previousDate = previous.date, let previousTime = previous.time, let nextDate = next.date, let nextTime = next.time, let previous = "\(previousDate) \(previousTime)".toDate, let next = "\(nextDate) \(nextTime)".toDate {
+            return next > previous
+        }
+        return false
+    }
+
+    static func < (previous: Event, next: Event) -> Bool {
+        if let previousDate = previous.date, let previousTime = previous.time, let nextDate = next.date, let nextTime = next.time, let previous = "\(previousDate) \(previousTime)".toDate, let next = "\(nextDate) \(nextTime)".toDate {
+            return next < previous
+        }
+        return false
     }
 }

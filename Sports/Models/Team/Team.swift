@@ -10,7 +10,7 @@ class Team: Identifiable {
     var name: String?
     var logo: String?
 
-    init(key: Int?, name: String?, logo: String?) {
+    init(key: Int?, name: String?, logo: String? = nil) {
         self.key = key
         self.name = name
         self.logo = logo
