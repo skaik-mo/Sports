@@ -8,7 +8,9 @@
 import SwiftUI
 
 @Observable
+@MainActor
 class HomeViewModel {
+    let coordinator = DefaultCoordinator()
     let sports = Sports.allCases
     let spacing: CGFloat = 20
     var columns: [GridItem]
@@ -38,6 +40,10 @@ class HomeViewModel {
     private func changeColumns() {
         columns = isWaterfall ? [GridItem(.flexible(), spacing: spacing, alignment: .top), GridItem(.flexible(), spacing: spacing, alignment: .top)]
         : [GridItem(.flexible())]
+    }
+
+    func navigateToLeagues(_ sport: Sports) {
+        coordinator.navigateToLeagues(sport)
     }
 
 }

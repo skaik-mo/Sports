@@ -61,9 +61,10 @@ extension LeaguesView {
                     ContentUnavailableView(viewModel.emptyDataTitle, systemImage: viewModel.sport.icon)
                 } else {
                     ForEach(viewModel.leagues) { league in
-                        LeagueCell(league)
-                            .navigationLink {
-                            EventsView(.init(sport: viewModel.sport, league: league))
+                        Button {
+                            viewModel.navigateToEvents(league)
+                        } label: {
+                            LeagueCell(league)
                         }
                     }
                 }
@@ -78,10 +79,11 @@ extension LeaguesView {
 }
 
 #Preview {
-    let viewModel = LeaguesViewModel(sport: .football)
+    let coordinator = DefaultCoordinator()
+    let viewModel = LeaguesViewModel(coordinator: coordinator, sport: .football)
     viewModel.leagues.append(.init(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
         country_logo: nil))
-    return CustomNavView {
+    return CustomNavView(coordinator: coordinator) {
         LeaguesView(viewModel: viewModel)
     }
 }

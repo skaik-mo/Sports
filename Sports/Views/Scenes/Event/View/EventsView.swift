@@ -12,7 +12,7 @@ struct EventsView: View {
     @Environment(\.alertKey) private var alertManager
     @Environment(\.progressKey) private var progressManager
 
-    init(_ viewModel: EventsViewModel) {
+    init(viewModel: EventsViewModel) {
         self.viewModel = viewModel
     }
 
@@ -118,7 +118,8 @@ extension EventsView {
 }
 
 #Preview {
+    let coordinator = DefaultCoordinator()
     let league = League.init(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
         country_logo: nil)
-    return EventsView(.init(sport: .football, league: league))
+    EventsView(viewModel: .init(coordinator: coordinator, sport: .football, league: league))
 }

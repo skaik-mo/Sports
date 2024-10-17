@@ -8,8 +8,10 @@
 import Foundation
 
 @Observable
+@MainActor
 class LeaguesViewModel {
     private var originalLeagues: [League] = []
+    private let coordinator: Coordinator
     var leagues: [League] = []
     let title = "Leagues"
     var sport: Sports
@@ -24,7 +26,8 @@ class LeaguesViewModel {
         }
     }
 
-    init(sport: Sports) {
+    init(coordinator: Coordinator, sport: Sports) {
+        self.coordinator = coordinator
         self.sport = sport
     }
 
@@ -50,6 +53,10 @@ class LeaguesViewModel {
             return
         }
         leagues = originalLeagues.filter { $0.league_name?.lowercased().contains(searchText.lowercased()) ?? false }
+    }
+
+    func navigateToEvents(_ league: League) {
+        coordinator.navigateToEvents(sport, league)
     }
 
 }

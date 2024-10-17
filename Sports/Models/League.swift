@@ -56,3 +56,14 @@ class League: Identifiable {
         return dictionary as [String: Any]
     }
 }
+
+
+extension League: Hashable {
+    static func == (lhs: League, rhs: League) -> Bool {
+        lhs.league_key == rhs.league_key
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(league_key)
+    }
+}

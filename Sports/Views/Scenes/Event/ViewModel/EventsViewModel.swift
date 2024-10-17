@@ -9,6 +9,7 @@ import Foundation
 
 @Observable
 class EventsViewModel {
+    let coordinator: Coordinator
     let padding: CGFloat = 15
     let title = "Events"
     let upcomingTitle = "Upcoming Events"
@@ -33,7 +34,8 @@ class EventsViewModel {
         self.events.isEmpty && !(progressManager?.showProgress == true)
     }
 
-    init(sport: Sports, league: League) {
+    init(coordinator: Coordinator, sport: Sports, league: League) {
+        self.coordinator = coordinator
         self.sport = sport
         self.league = league
         if sport == .football {

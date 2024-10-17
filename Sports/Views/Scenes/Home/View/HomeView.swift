@@ -15,7 +15,7 @@ struct HomeView: View {
     }
 
     var body: some View {
-        CustomNavView {
+        CustomNavView(coordinator: viewModel.coordinator) {
             WaterfallGrid(columns: $viewModel.columns) {
                 SportShapeStack(viewModel.sports.split().left)
                 SportShapeStack(viewModel.sports.split().right)
@@ -55,8 +55,8 @@ extension HomeView {
     private func SportShapeStack(_ sports: [Sports]) -> some View {
         LazyVStack(spacing: viewModel.spacing) {
             ForEach(sports) { sport in
-                NavigationLink {
-                    LeaguesView(viewModel: .init(sport: sport))
+                Button {
+                    viewModel.navigateToLeagues(sport)
                 } label: {
                     LazyVStack {
                         Image(sport.image)
