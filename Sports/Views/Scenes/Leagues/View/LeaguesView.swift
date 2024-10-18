@@ -23,12 +23,9 @@ struct LeaguesView: View {
             .navigationTitle(viewModel.title)
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText)
-            .onAppear {
+            .onFirstAppear {
             self.viewModel.alertManager = alertManager
             self.viewModel.progressManager = progressManager
-            self.viewModel.leagues.removeAll()
-        }
-            .task {
             self.viewModel.fetchLeagues()
         }
             .refreshable {

@@ -39,12 +39,10 @@ struct EventsView: View {
             .scrollIndicators(.hidden)
             .navigationTitle(viewModel.title)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
+            .onFirstAppear {
             self.viewModel.alertManager = alertManager
             self.viewModel.progressManager = progressManager
             self.viewModel.clear()
-        }
-            .task {
             self.viewModel.fetchEvents()
         }
             .refreshable {
