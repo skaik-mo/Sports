@@ -8,11 +8,19 @@
 import SwiftUI
 
 struct FavoriteView: View {
+    @State var viewModel: FavoriteViewModel
+
+    init(viewModel: FavoriteViewModel) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
-        Text("Hello, Favorite")
+        CustomNavView(coordinator: viewModel.coordinator) {
+            Text("Hello, Favorite")
+        }
     }
 }
 
 #Preview {
-    FavoriteView()
+    FavoriteView(viewModel: .init(coordinator: DefaultCoordinator()))
 }

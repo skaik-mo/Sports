@@ -8,34 +8,34 @@
 import SwiftUI
 
 struct CustomTabBarView: View {
-    @State var selectedTab: TabbedItems = .home
-
-    init() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithTransparentBackground()
-        UITabBar.appearance().standardAppearance = appearance
-    }
+    @State private var selectedTab: TabbedItems = .home
+    @StateObject private var homeCoordinator = DefaultCoordinator()
+    @StateObject private var favoriteCoordinator = DefaultCoordinator()
 
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                HomeView()
+                HomeView(viewModel: .init(coordinator: homeCoordinator))
                     .tag(TabbedItems.home)
-                FavoriteView()
+                    .toolbar(.hidden, for: .tabBar)
+                FavoriteView(viewModel: .init(coordinator: favoriteCoordinator))
                     .tag(TabbedItems.favorite)
+                    .toolbar(.hidden, for: .tabBar)
             }
-            ZStack {
-                HStack {
-                    ForEach((TabbedItems.allCases), id: \.self) { item in
-                        CustomTabItem(tabbedItem: item, isActive: (selectedTab == item), selectedTab: $selectedTab)
+            if (homeCoordinator.path.isEmpty && selectedTab == .home) || (favoriteCoordinator.path.isEmpty && selectedTab == .favorite) {
+                ZStack {
+                    HStack {
+                        ForEach((TabbedItems.allCases), id: \.self) { item in
+                            CustomTabItem(tabbedItem: item, isActive: (selectedTab == item), selectedTab: $selectedTab)
+                        }
                     }
+                        .padding(5)
                 }
-                    .padding(5)
+                    .frame(height: 70)
+                    .background(.main.opacity(0.2))
+                    .cornerRadius(radius: 35)
+                    .padding(.horizontal, 15)
             }
-                .frame(height: 70)
-                .background(.main.opacity(0.2))
-                .cornerRadius(radius: 35)
-                .padding(.horizontal, 15)
         }
     }
 }

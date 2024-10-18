@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var viewModel = HomeViewModel()
+    @State private var viewModel: HomeViewModel
 
-    init() {
+    init(viewModel: HomeViewModel) {
+        self._viewModel = State(wrappedValue: viewModel)
         setUpSegmentedControl()
     }
 
@@ -86,5 +87,5 @@ extension HomeView {
 }
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: .init(coordinator: DefaultCoordinator()))
 }

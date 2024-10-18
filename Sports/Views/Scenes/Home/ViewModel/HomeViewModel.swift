@@ -10,7 +10,7 @@ import SwiftUI
 @Observable
 @MainActor
 class HomeViewModel {
-    let coordinator = DefaultCoordinator()
+    let coordinator: DefaultCoordinator
     let sports = Sports.allCases
     let spacing: CGFloat = 20
     var columns: [GridItem]
@@ -25,7 +25,8 @@ class HomeViewModel {
         }
     }
 
-    init() {
+    init(coordinator: DefaultCoordinator) {
+        self.coordinator = coordinator
         self.columns = [GridItem(.flexible(), spacing: spacing, alignment: .top), GridItem(.flexible(), spacing: spacing, alignment: .top)]
     }
 
