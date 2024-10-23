@@ -11,17 +11,20 @@ struct CustomNavView<Coordinator: RoutableCoordinator, Root: View>: View {
     @StateObject private var coordinator: Coordinator
     @ViewBuilder private let root: Root
 
+    var BackButton: some View {
+        Button {
+            self.popView()
+        } label: {
+            Image(systemName: "chevron.backward")
+                .scaledToFit()
+                .foregroundColor(.main)
+        }
+    }
+
     init(coordinator: Coordinator, root: @escaping () -> Root) {
         self._coordinator = StateObject(wrappedValue: coordinator)
         self.root = root()
     }
-
-//    var body: some View {
-//        NavigationStack {
-//            content
-//                .navigationAppearance(backgroundColor: .background, foregroundColor: .main, hideSeparator: true)
-//        }
-//    }
 
     var body: some View {
         NavigationStack(
@@ -31,6 +34,8 @@ struct CustomNavView<Coordinator: RoutableCoordinator, Root: View>: View {
                     .navigationAppearance(backgroundColor: .background, foregroundColor: .main, hideSeparator: true)
                     .navigationDestination(for: Coordinator.Route.self) { route in
                     coordinator.view(for: route)
+                        .navigationBarBackButtonHidden(true)
+                        .navigationBarItems(leading: BackButton)
                 }
                     .fullScreenCover(
                     item: Binding(
@@ -48,6 +53,13 @@ struct CustomNavView<Coordinator: RoutableCoordinator, Root: View>: View {
                 )
             }
         )
+    }
+}
+
+extension CustomNavView {
+    private func popView() {
+        guard coordinator.path.count > 0 else { return }
+        coordinator.path.removeLast()
     }
 }
 
