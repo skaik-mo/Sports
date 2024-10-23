@@ -26,7 +26,7 @@ class EventsViewModel {
     var progressManager: ProgressManager?
     let dateNow = Date.now
     var formDate: String
-    var toDate: String { (dateNow._add(days: 15) ?? dateNow)._stringDate }
+    var toDate: String { (dateNow._add(months: 1) ?? dateNow)._stringDate }
     var emptyDataTitle: String {
         "No \(league.league_name ?? "") Matches Found from \(formDate) to \(toDate)"
     }
@@ -39,7 +39,7 @@ class EventsViewModel {
         self.sport = sport
         self.league = league
         if sport == .football {
-            formDate = (dateNow._add(days: -15) ?? dateNow)._stringDate
+            formDate = (dateNow._add(months: -4) ?? dateNow)._stringDate
         } else {
             formDate = (dateNow._add(years: -1) ?? dateNow)._stringDate
         }
