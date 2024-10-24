@@ -13,7 +13,9 @@ class LeaguesViewModel {
     private var originalLeagues: [League] = []
     private let coordinator: Coordinator
     var leagues: [League] = []
-    let title = "Leagues"
+    var title: String {
+        "\(sport.title) Leagues"
+    }
     var sport: Sports
     var alertManager: AlertManager?
     var progressManager: ProgressManager?

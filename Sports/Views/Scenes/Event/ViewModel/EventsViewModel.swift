@@ -64,7 +64,7 @@ class EventsViewModel {
             "from": formDate,
             "to": toDate,
         ]
-        _ = RequestBuilder(alertManager: alertManager, progressManager: progressManager).requestWithSuccessResponse(with: baseRequest) { [weak self] response, code, message in
+        _ = RequestBuilder(alertManager: alertManager, progressManager: progressManager).requestWithSuccessResponse(with: baseRequest, isShowLoader: isShowLoader) { [weak self] response, code, message in
             let result = response["result"] as? [[String: Any]]
             self?.events = Event.modelsFromDictionaryArray(sport: self?.sport, array: result)
             self?.events.forEach { event in
