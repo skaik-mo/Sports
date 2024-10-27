@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Sports: String, CaseIterable, Identifiable {
+enum Sports: String, CaseIterable, Identifiable, Codable {
     var id: Self { self }
     case football
     case cricket

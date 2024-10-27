@@ -11,6 +11,7 @@ struct EventsView: View {
     @State private var viewModel: EventsViewModel
     @Environment(\.alertKey) private var alertManager
     @Environment(\.progressKey) private var progressManager
+    @Environment(\.modelContext) private var modelContext
 
     init(viewModel: EventsViewModel) {
         self.viewModel = viewModel
@@ -42,11 +43,24 @@ struct EventsView: View {
             .onFirstAppear {
             self.viewModel.alertManager = alertManager
             self.viewModel.progressManager = progressManager
+            self.viewModel.dataService.modelContext = modelContext
+            self.viewModel.setFavoriteImage()
             self.viewModel.clear()
             self.viewModel.fetchEvents()
         }
             .refreshable {
             self.viewModel.fetchEvents(isShowLoader: false)
+        }
+            .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    viewModel.setFavorite()
+                } label: {
+                    Image(systemName: viewModel.favoriteImage)
+                        .foregroundStyle(.yellow)
+                }
+
+            }
         }
     }
 

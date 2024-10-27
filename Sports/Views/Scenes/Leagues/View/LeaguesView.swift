@@ -35,21 +35,7 @@ struct LeaguesView: View {
 }
 
 extension LeaguesView {
-    private func LeagueCell(_ league: League) -> some View {
-        return HStack(spacing: 20) {
-            ImageLoadingView(url: league.league_logo)
-                .frame(width: 70, height: 70)
-            Text(league.league_name ?? "")
-                .font(.custom("Poppins-Medium", size: 14))
-                .foregroundStyle(Color.foreground)
-            Spacer()
-        }
-            .padding(15)
-            .background(.secondaryBackground)
-            .cornerRadius(radius: 20)
-            .shadow(color: .shadow, radius: 5, x: 0, y: 2)
-    }
-
+    
     private func LeaguesList() -> some View {
         return List {
             Group {
@@ -61,7 +47,7 @@ extension LeaguesView {
                         Button {
                             viewModel.navigateToEvents(league)
                         } label: {
-                            LeagueCell(league)
+                            LeagueCell(league: league)
                         }
                     }
                 }

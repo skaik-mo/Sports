@@ -10,6 +10,8 @@ import Foundation
 @Observable
 class EventsViewModel {
     let coordinator: Coordinator
+    let dataService = FavoriteDataService()
+    var favoriteImage: String = "star"
     let padding: CGFloat = 15
     let title = "Events"
     let upcomingTitle = "Upcoming Events"
@@ -82,4 +84,15 @@ class EventsViewModel {
             self?.latestEvents = self?.latestEvents.sorted(by: <) ?? []
         }
     }
+
+    func setFavoriteImage() {
+        let favoriteExists = dataService.checkIfFavoriteExists(.init(league: league, sport: sport))
+        favoriteImage = favoriteExists == nil ? "star" : "star.fill"
+    }
+
+    func setFavorite() {
+        dataService.setFavorite(.init(league: league, sport: sport))
+        setFavoriteImage()
+    }
+
 }

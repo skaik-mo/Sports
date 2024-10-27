@@ -5,7 +5,9 @@
 //  Created by Mohammed Skaik on 05/10/2024.
 //
 
+import SwiftData
 
+@Model
 class League: Identifiable {
     var league_key: Int?
     var league_name: String?
