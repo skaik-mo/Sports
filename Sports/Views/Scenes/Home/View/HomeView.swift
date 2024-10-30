@@ -16,37 +16,34 @@ struct HomeView: View {
     }
 
     var body: some View {
-        CustomNavView(coordinator: viewModel.coordinator) {
-            WaterfallGrid(columns: $viewModel.columns) {
-                SportShapeStack(viewModel.sports.split().left)
-                SportShapeStack(viewModel.sports.split().right)
-            }.animation(.linear(duration: 0.15), value: viewModel.isWaterfall)
-                .navigationTitle("All Sports")
-                .background(Color.background)
-                .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Picker("Grid Style", selection: $viewModel.isWaterfall) {
-                        Button(action: {
-                            viewModel.isWaterfall = true
-                        }, label: {
-                                Image(systemName: "square.grid.2x2")
-                                    .symbolVariant(viewModel.isWaterfall ? .fill : .none)
-                                    .background(.red)
-                                    .foregroundStyle(.red)
-                            }).tag(true)
-                        Button(action: {
-                            viewModel.isWaterfall = false
-                        }, label: {
-                                Image(systemName: "rectangle.grid.1x2")
-                                    .symbolVariant(viewModel.isWaterfall ? .none : .fill)
-                                    .background(.red)
-                                    .foregroundStyle(.red)
-                            }).tag(false)
-                    }.pickerStyle(.segmented)
-                }
+        WaterfallGrid(columns: $viewModel.columns) {
+            SportShapeStack(viewModel.sports.split().left)
+            SportShapeStack(viewModel.sports.split().right)
+        }.animation(.linear(duration: 0.15), value: viewModel.isWaterfall)
+            .navigationTitle("All Sports")
+            .background(Color.background)
+            .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Picker("Grid Style", selection: $viewModel.isWaterfall) {
+                    Button(action: {
+                        viewModel.isWaterfall = true
+                    }, label: {
+                            Image(systemName: "square.grid.2x2")
+                                .symbolVariant(viewModel.isWaterfall ? .fill : .none)
+                                .background(.red)
+                                .foregroundStyle(.red)
+                        }).tag(true)
+                    Button(action: {
+                        viewModel.isWaterfall = false
+                    }, label: {
+                            Image(systemName: "rectangle.grid.1x2")
+                                .symbolVariant(viewModel.isWaterfall ? .none : .fill)
+                                .background(.red)
+                                .foregroundStyle(.red)
+                        }).tag(false)
+                }.pickerStyle(.segmented)
             }
         }
-
     }
 
 }
@@ -87,5 +84,8 @@ extension HomeView {
 }
 
 #Preview {
-    HomeView(viewModel: .init(coordinator: DefaultCoordinator()))
+    let coordinator = DefaultCoordinator()
+    return CustomNavView(coordinator: coordinator) {
+        HomeView(viewModel: .init(coordinator: coordinator))
+    }
 }

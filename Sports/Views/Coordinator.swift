@@ -23,6 +23,8 @@ final class DefaultCoordinator: RoutableCoordinator {
         case EventsView(Sports, League)
     }
 
+    private let requestBuilder = RequestBuilder()
+
     @Published
     var path: [Route] = []
 
@@ -33,9 +35,9 @@ final class DefaultCoordinator: RoutableCoordinator {
     func view(for route: Route) -> some View {
         switch route {
         case .LeaguesView(let sport):
-            LeaguesView(viewModel: .init(coordinator: self, sport: sport))
+            LeaguesView(viewModel: .init(coordinator: self, networkService: requestBuilder, sport: sport))
         case .EventsView(let sport, let league):
-            EventsView(viewModel: .init(coordinator: self, sport: sport, league: league))
+            EventsView(viewModel: .init(coordinator: self, networkService: requestBuilder, sport: sport, league: league))
         }
     }
 }

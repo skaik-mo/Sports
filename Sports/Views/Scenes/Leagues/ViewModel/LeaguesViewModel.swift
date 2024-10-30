@@ -12,13 +12,12 @@ import Foundation
 class LeaguesViewModel {
     private var originalLeagues: [League] = []
     private let coordinator: Coordinator
+    let networkService: NetworkService
     var leagues: [League] = []
     var title: String {
         "\(sport.title) Leagues"
     }
     var sport: Sports
-    var alertManager: AlertManager?
-    var progressManager: ProgressManager?
     var emptyDataTitle: String {
         "No \(sport.title) Leagues Available"
     }
@@ -28,13 +27,19 @@ class LeaguesViewModel {
         }
     }
 
-    init(coordinator: Coordinator, sport: Sports) {
+    init(coordinator: Coordinator, networkService: NetworkService, sport: Sports) {
         self.coordinator = coordinator
+        self.networkService = networkService
         self.sport = sport
     }
 
+    func setAlertManagerAndProgressManager(alert: AlertManager, progress: ProgressManager) {
+        let requestBuilder = networkService as? RequestBuilder
+        requestBuilder?.alertManager = alert
+        requestBuilder?.progressManager = progress
+    }
+
     func fetchLeagues(isShowLoader: Bool = true) {
-        guard let alertManager, let progressManager else { return }
         let baseRequest = BaseRequest()
         baseRequest.end_point = sport.endPoint
         baseRequest.method = .get
@@ -42,7 +47,7 @@ class LeaguesViewModel {
             "met": APIConstants.API_leagues.rawValue,
             "APIkey": APIConstants.API_key.rawValue
         ]
-        _ = RequestBuilder(alertManager: alertManager, progressManager: progressManager).requestWithSuccessResponse(with: baseRequest, isShowLoader: isShowLoader, isShowMessage: true, success: { [weak self] response, code, message in
+        _ = self.networkService.requestWithSuccessResponse(with: baseRequest, isShowLoader: isShowLoader, isShowMessage: true, success: { [weak self] response, code, message in
             let result = response["result"] as? [[String: Any]]
             self?.originalLeagues = League.modelsFromDictionaryArray(array: result)
             self?.leagues = self?.originalLeagues ?? []

@@ -24,8 +24,7 @@ struct LeaguesView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText)
             .onFirstAppear {
-            self.viewModel.alertManager = alertManager
-            self.viewModel.progressManager = progressManager
+            self.viewModel.setAlertManagerAndProgressManager(alert: alertManager, progress: progressManager)
             self.viewModel.fetchLeagues()
         }
             .refreshable {
@@ -35,7 +34,7 @@ struct LeaguesView: View {
 }
 
 extension LeaguesView {
-    
+
     private func LeaguesList() -> some View {
         return List {
             Group {
@@ -63,10 +62,10 @@ extension LeaguesView {
 
 #Preview {
     let coordinator = DefaultCoordinator()
-    let viewModel = LeaguesViewModel(coordinator: coordinator, sport: .football)
+    let viewModel = LeaguesViewModel(coordinator: coordinator, networkService: RequestBuilder(), sport: .football)
     viewModel.leagues.append(.init(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
         country_logo: nil))
-    return CustomNavView(coordinator: coordinator) {
+     return CustomNavView(coordinator: coordinator) {
         LeaguesView(viewModel: viewModel)
     }
 }

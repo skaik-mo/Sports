@@ -10,34 +10,35 @@ import Foundation
 @Observable
 class EventsViewModel {
     let coordinator: Coordinator
+    let networkService: NetworkService
     let dataService = FavoriteDataService()
     var favoriteImage: String = "star"
     let padding: CGFloat = 15
-    let title = "Events"
-    let upcomingTitle = "Upcoming Events"
-    let latestTitle = "Latest Events"
+    let title = "Matches"
+    let upcomingTitle = "Upcoming Matches"
+    let latestTitle = "Latest Matches"
     let teamTitle = "Teams"
     let vsTitle = "VS"
     var league: League
     var sport: Sports
-    private var events: [Event] = []
+    private(set) var events: [Event] = []
     var upcomingEvents: [Event] = []
     var latestEvents: [Event] = []
     var teams: Set<Team> = []
-    var alertManager: AlertManager?
-    var progressManager: ProgressManager?
     let dateNow = Date.now
     var formDate: String
-    var toDate: String { (dateNow._add(months: 1) ?? dateNow)._stringDate }
+    var toDate: String { (dateNow._add(months: 12) ?? dateNow)._stringDate }
     var emptyDataTitle: String {
         "No \(league.league_name ?? "") Matches Found from \(formDate) to \(toDate)"
     }
     var isEmptyData: Bool {
-        self.events.isEmpty && !(progressManager?.showProgress == true)
+        let showProgress = (networkService as? RequestBuilder)?.progressManager?.showProgress ?? false
+        return self.events.isEmpty && !(showProgress)
     }
 
-    init(coordinator: Coordinator, sport: Sports, league: League) {
+    init(coordinator: Coordinator, networkService: NetworkService, sport: Sports, league: League) {
         self.coordinator = coordinator
+        self.networkService = networkService
         self.sport = sport
         self.league = league
         if sport == .football {
@@ -45,6 +46,12 @@ class EventsViewModel {
         } else {
             formDate = (dateNow._add(years: -1) ?? dateNow)._stringDate
         }
+    }
+
+    func setAlertManagerAndProgressManager(alert: AlertManager, progress: ProgressManager) {
+        let requestBuilder = networkService as? RequestBuilder
+        requestBuilder?.alertManager = alert
+        requestBuilder?.progressManager = progress
     }
 
     func clear() {
@@ -55,7 +62,6 @@ class EventsViewModel {
     }
 
     func fetchEvents(isShowLoader: Bool = true) {
-        guard let alertManager, let progressManager else { return }
         let baseRequest = BaseRequest()
         baseRequest.end_point = sport.endPoint
         baseRequest.method = .get
@@ -66,7 +72,7 @@ class EventsViewModel {
             "from": formDate,
             "to": toDate,
         ]
-        _ = RequestBuilder(alertManager: alertManager, progressManager: progressManager).requestWithSuccessResponse(with: baseRequest, isShowLoader: isShowLoader) { [weak self] response, code, message in
+        _ = networkService.requestWithSuccessResponse(with: baseRequest, isShowLoader: isShowLoader, isShowMessage: true) { [weak self] response, code, message in
             let result = response["result"] as? [[String: Any]]
             self?.events = Event.modelsFromDictionaryArray(sport: self?.sport, array: result)
             self?.events.forEach { event in

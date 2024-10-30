@@ -10,9 +10,16 @@ import Foundation
 
 class FavoriteDataService {
     var modelContext: ModelContext?
+    var favorites: [Favorite] = []
 
-    private func addFavorite(_ favorite: Favorite) {
+    func addFavorite(_ favorite: Favorite) {
         modelContext?.insert(favorite)
+        fetchFavorites()
+    }
+
+    func deleteFavorite(_ favorite: Favorite) {
+        modelContext?.delete(favorite)
+        fetchFavorites()
     }
 
     func setFavorite(_ favorite: Favorite) {
@@ -23,7 +30,14 @@ class FavoriteDataService {
         }
     }
 
-    func fetchFavorites(descriptor: FetchDescriptor<Favorite>) -> [Favorite] {
+    func fetchFavorites() {
+        let sortOrder: SortDescriptor<Favorite> = SortDescriptor(\.league.league_name)
+        let descriptor = FetchDescriptor<Favorite>(sortBy: [sortOrder])
+        let favorites = fetchFavorites(descriptor: descriptor)
+        self.favorites = favorites
+    }
+
+    private func fetchFavorites(descriptor: FetchDescriptor<Favorite>) -> [Favorite] {
         do {
             let favorites = try modelContext?.fetch(descriptor) ?? []
             return favorites
@@ -32,15 +46,6 @@ class FavoriteDataService {
         }
     }
 
-    func deleteFavorite(_ favorite: Favorite) {
-        debugPrint(#function)
-        modelContext?.delete(favorite)
-        do {
-            try modelContext?.save()
-        } catch let error {
-            debugPrint("error =>> \(error)")
-        }
-    }
 
     func checkIfFavoriteExists(_ favorite: Favorite) -> Favorite? {
         let league_key = favorite.id

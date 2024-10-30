@@ -41,8 +41,7 @@ struct EventsView: View {
             .navigationTitle(viewModel.title)
             .navigationBarTitleDisplayMode(.inline)
             .onFirstAppear {
-            self.viewModel.alertManager = alertManager
-            self.viewModel.progressManager = progressManager
+            self.viewModel.setAlertManagerAndProgressManager(alert: alertManager, progress: progressManager)
             self.viewModel.dataService.modelContext = modelContext
             self.viewModel.setFavoriteImage()
             self.viewModel.clear()
@@ -133,5 +132,5 @@ extension EventsView {
     let coordinator = DefaultCoordinator()
     let league = League.init(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
         country_logo: nil)
-    EventsView(viewModel: .init(coordinator: coordinator, sport: .football, league: league))
+    return EventsView(viewModel: .init(coordinator: coordinator, networkService: RequestBuilder(), sport: .football, league: league))
 }

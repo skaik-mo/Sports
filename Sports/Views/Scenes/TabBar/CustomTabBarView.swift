@@ -15,12 +15,18 @@ struct CustomTabBarView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                HomeView(viewModel: .init(coordinator: homeCoordinator))
+                CustomNavView(coordinator: homeCoordinator) {
+                    HomeView(viewModel: .init(coordinator: homeCoordinator))
+                }
                     .tag(TabbedItems.home)
                     .toolbar(.hidden, for: .tabBar)
-                FavoriteView(viewModel: .init(coordinator: favoriteCoordinator))
+
+                CustomNavView(coordinator: favoriteCoordinator) {
+                    FavoriteView(viewModel: .init(coordinator: favoriteCoordinator))
+                }
                     .tag(TabbedItems.favorite)
                     .toolbar(.hidden, for: .tabBar)
+
             }
             if (homeCoordinator.path.isEmpty && selectedTab == .home) || (favoriteCoordinator.path.isEmpty && selectedTab == .favorite) {
                 ZStack {

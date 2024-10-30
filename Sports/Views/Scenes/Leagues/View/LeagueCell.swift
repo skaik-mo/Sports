@@ -14,9 +14,14 @@ struct LeagueCell: View {
         HStack(spacing: 20) {
             ImageLoadingView(url: league.league_logo)
                 .frame(width: 70, height: 70)
-            Text(league.league_name ?? "")
-                .font(.custom("Poppins-Medium", size: 14))
-                .foregroundStyle(Color.foreground)
+            VStack(alignment: .leading) {
+                Text(league.league_name ?? "")
+                    .font(.custom("Poppins-Medium", size: 14))
+                    .foregroundStyle(Color.foreground)
+                Text(league.country_name ?? "")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundStyle(Color.foreground.opacity(0.7))
+            }
             Spacer()
         }
             .padding(15)

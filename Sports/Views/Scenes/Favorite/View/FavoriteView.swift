@@ -17,18 +17,16 @@ struct FavoriteView: View {
     }
 
     var body: some View {
-        CustomNavView(coordinator: viewModel.coordinator) {
-            LeaguesList()
-                .background(Color.background)
-                .navigationTitle(viewModel.title)
-                .searchable(text: $viewModel.searchText)
-                .onAppear {
-                viewModel.dataService.modelContext = modelContext
-                viewModel.fetchFavorites()
-            }
-                .refreshable {
-                viewModel.fetchFavorites()
-            }
+        LeaguesList()
+            .background(Color.background)
+            .navigationTitle(viewModel.title)
+            .searchable(text: $viewModel.searchText)
+            .onAppear {
+            viewModel.dataService.modelContext = modelContext
+            viewModel.fetchFavorites()
+        }
+            .refreshable {
+            viewModel.fetchFavorites()
         }
     }
 
@@ -50,6 +48,7 @@ extension FavoriteView {
                             LeagueCell(league: favorite.league)
                         }
                     }
+                    .onDelete(perform: viewModel.deleteFavorite)
                 }
             }
                 .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
@@ -68,5 +67,7 @@ extension FavoriteView {
         country_logo: nil)
     let favorite = Favorite(league: league, sport: .football)
     viewModel.favorites.append(favorite)
-    return FavoriteView(viewModel: viewModel)
+    return CustomNavView(coordinator: coordinator) {
+        FavoriteView(viewModel: viewModel)
+    }
 }

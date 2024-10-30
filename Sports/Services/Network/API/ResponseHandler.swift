@@ -14,14 +14,14 @@ enum BaseResult {
 }
 
 class ResponseHandler {
-    class func responseHandler(result: BaseResult, isShowMessage: Bool = true, alertManager: AlertManager) {
+    class func responseHandler(result: BaseResult, isShowMessage: Bool = true, alertManager: AlertManager?) {
         switch result {
         case .success(response: _):
             break
         case .failure(error: let error, response: _):
-            alertManager.showAlert = isShowMessage
-            alertManager.title = "Oops! Something went wrong..."
-            alertManager.message = error.localizedDescription
+            alertManager?.showAlert = isShowMessage
+            alertManager?.title = "Oops! Something went wrong..."
+            alertManager?.message = error.localizedDescription
             break
         }
     }

@@ -11,12 +11,12 @@ import SwiftData
 
 @Observable
 class FavoriteViewModel {
-    let coordinator: DefaultCoordinator
+    let coordinator: Coordinator
     let dataService = FavoriteDataService()
     private var originalFavorites: [Favorite] = []
     var favorites: [Favorite] = []
     var sport: Sports?
-    var title: String = "Favorite"
+    var title: String = "Favorite Leagues"
     var emptyDataImage: String = "sportscourt"
     var emptyDataTitle: String = "No Favorite Leagues Available"
     var searchText: String = "" {
@@ -25,14 +25,13 @@ class FavoriteViewModel {
         }
     }
 
-    init(coordinator: DefaultCoordinator) {
+    init(coordinator: Coordinator) {
         self.coordinator = coordinator
     }
 
     func fetchFavorites() {
-        let sortOrder: SortDescriptor<Favorite> = SortDescriptor(\.league.league_name)
-        let descriptor = FetchDescriptor<Favorite>(sortBy: [sortOrder])
-        originalFavorites = dataService.fetchFavorites(descriptor: descriptor)
+        dataService.fetchFavorites()
+        originalFavorites = dataService.favorites
         favorites = originalFavorites
     }
 
@@ -47,6 +46,12 @@ class FavoriteViewModel {
             return
         }
         favorites = originalFavorites.filter { $0.league.league_name?.lowercased().contains(searchText.lowercased()) ?? false }
+    }
+
+    func deleteFavorite(_ indexSet: IndexSet) {
+        indexSet.forEach { index in
+            dataService.deleteFavorite(favorites[index])
+        }
     }
 
 }

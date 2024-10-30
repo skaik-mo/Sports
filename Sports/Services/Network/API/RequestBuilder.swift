@@ -13,15 +13,13 @@ typealias successHandler = ((_ response: [String: Any], _ code: Int, _ message: 
 typealias failureHandler = ((_ response: [String: Any], _ code: Int, _ error: Error) -> Void)?
 
 
-class RequestBuilder {
+protocol NetworkService {
+    func requestWithSuccessResponse(with request: BaseRequest, isShowLoader: Bool, isShowMessage: Bool, success: successHandler) -> NetworkService
+}
 
-    private var alertManager: AlertManager
-    private var progressManager: ProgressManager
-
-    init(alertManager: AlertManager, progressManager: ProgressManager) {
-        self.alertManager = alertManager
-        self.progressManager = progressManager
-    }
+class RequestBuilder: NetworkService {
+    var alertManager: AlertManager?
+    var progressManager: ProgressManager?
 
     private var didFinishRequest: (() -> Void)?
 
@@ -38,25 +36,26 @@ class RequestBuilder {
 
     private var offlineLoad: (() -> Void)?
 
-    func handlerofflineLoad(handler: (() -> Void)?) -> RequestBuilder {
+    func handlerOfflineLoad(handler: (() -> Void)?) -> RequestBuilder {
         self.offlineLoad = handler
         return self
     }
 
-    func showLoader(isLoding: Bool, progress: Double? = nil) {
-        if let progress, isLoding {
+    func showLoader(_ isLoading: Bool, progress: Double? = nil) {
+        guard let progressManager else { return }
+        if let progress, isLoading {
             progressManager.value = progress
             progressManager.showProgress = true
             return
         }
-        if isLoding {
+        if isLoading {
             progressManager.showProgress = true
         } else {
             progressManager.showProgress = false
         }
     }
 
-    func requestWithSuccessResponse(with request: BaseRequest, isShowLoader: Bool = true, isShowMessage: Bool = true, success: successHandler) -> RequestBuilder {
+    func requestWithSuccessResponse(with request: BaseRequest, isShowLoader: Bool, isShowMessage: Bool, success: successHandler) -> NetworkService {
         self.request(with: request, isShowLoader: isShowLoader, isShowMessage: isShowMessage) { response, code, message in
             ResponseHandler.responseHandler(result: BaseResult.success(response: response), isShowMessage: isShowMessage, alertManager: self.alertManager)
             success?(response, code, message)
@@ -76,11 +75,10 @@ class RequestBuilder {
     func request(with request: BaseRequest, isShowLoader: Bool = true, isShowMessage: Bool = true, success: successHandler, failure: failureHandler) {
         guard let url = URL.init(string: request.base_url + request.end_point) else { return }
         debugPrint("=========> Request Start <=========")
-        debugPrint("URL => \(url)")
 
         if request.files.count > 0 {
             if isShowLoader {
-                self.showLoader(isLoding: true)
+                self.showLoader(true)
             }
             debugPrint("=========> multipart Request <=========")
             AF.upload(multipartFormData: { multiPart in
@@ -93,11 +91,11 @@ class RequestBuilder {
             }, to: url, usingThreshold: UInt64(), method: request.method, headers: headers)
                 .uploadProgress(queue: .main, closure: { progress in
                 if isShowLoader {
-                    self.showLoader(isLoding: true, progress: progress.fractionCompleted)
+                    self.showLoader(true, progress: progress.fractionCompleted)
                 }
             }).responseString { result in
                 if isShowLoader {
-                    self.showLoader(isLoding: false)
+                    self.showLoader(false)
                 }
                 self.requestBuilderResponseHandler(result: result, success: success, failure: failure)
                 debugPrint("=========> Request End <=========")
@@ -105,11 +103,11 @@ class RequestBuilder {
         } else {
             debugPrint("=========> Normal Request <=========")
             if isShowLoader {
-                self.showLoader(isLoding: true)
+                self.showLoader(true)
             }
             AF.request(url, method: request.method, parameters: request.parameters, encoding: request.method == .get ? URLEncoding.default : JSONEncoding.default, headers: headers).responseString { result in
                 if isShowLoader {
-                    self.showLoader(isLoding: false)
+                    self.showLoader(false)
                 }
                 self.requestBuilderResponseHandler(result: result, success: success, failure: failure)
                 debugPrint("=========> Request End <=========")
@@ -118,8 +116,9 @@ class RequestBuilder {
     }
 
     private func requestBuilderResponseHandler(result: AFDataResponse<String>, success: successHandler, failure: failureHandler) {
+        debugPrint("URL => \(String(describing: result.response?.url))")
         switch result.result {
-        case .success(let dataString):
+        case .success(_):
             guard let data = result.data else { return }
             do {
                 var dic = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
