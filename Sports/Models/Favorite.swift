@@ -21,3 +21,14 @@ final class Favorite {
         self.sport = sport
     }
 }
+
+typealias FavoriteGroup = (sport: String, favorites: [Favorite])
+
+// The groupBySport function is a helper function that groups a list of favorites by their sport.
+extension Array where Element == Favorite {
+    func groupBySport() -> [FavoriteGroup] {
+        return Dictionary(grouping: self) { $0.sport.rawValue }
+            .sorted(by: { $0.key < $1.key })
+            .map { ($0.key, $0.value) }
+    }
+}

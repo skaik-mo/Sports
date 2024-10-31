@@ -14,8 +14,8 @@ class FavoriteViewModel {
     let coordinator: Coordinator
     let dataService = FavoriteDataService()
     private var originalFavorites: [Favorite] = []
-    var favorites: [Favorite] = []
-    var sport: Sports?
+//    var favorites: [Favorite] = []
+    var favoritesGroup: [FavoriteGroup] = []
     var title: String = "Favorite Leagues"
     var emptyDataImage: String = "sportscourt"
     var emptyDataTitle: String = "No Favorite Leagues Available"
@@ -29,10 +29,15 @@ class FavoriteViewModel {
         self.coordinator = coordinator
     }
 
+    func setFavorites() {
+        originalFavorites = dataService.favorites
+        //        favorites = originalFavorites
+        favoritesGroup = originalFavorites.groupBySport()
+    }
+
     func fetchFavorites() {
         dataService.fetchFavorites()
-        originalFavorites = dataService.favorites
-        favorites = originalFavorites
+        setFavorites()
     }
 
     @MainActor
@@ -42,16 +47,29 @@ class FavoriteViewModel {
 
     private func findFavorites() {
         guard !searchText.isEmpty else {
-            favorites = originalFavorites
+            favoritesGroup = originalFavorites.groupBySport()
             return
         }
-        favorites = originalFavorites.filter { $0.league.league_name?.lowercased().contains(searchText.lowercased()) ?? false }
+        let favoritesFiltered = originalFavorites.filter { $0.league.league_name?.lowercased().contains(searchText.lowercased()) ?? false }
+        favoritesGroup = favoritesFiltered.groupBySport()
     }
 
-    func deleteFavorite(_ indexSet: IndexSet) {
+    func deleteFavorite(_ indexSet: IndexSet, _ sport: String) {
+        guard let sectionIndex = favoritesGroup.firstIndex(where: { $0.sport == sport }) else { return }
+
         indexSet.forEach { index in
-            dataService.deleteFavorite(favorites[index])
+            let favorite = favoritesGroup[sectionIndex].favorites[index]
+            dataService.deleteFavorite(favorite)
         }
-    }
 
+        favoritesGroup[sectionIndex].favorites.remove(atOffsets: indexSet)
+
+        withAnimation {
+            // Remove the section if it's empty
+            if favoritesGroup[sectionIndex].favorites.isEmpty {
+                favoritesGroup.remove(at: sectionIndex)
+            }
+        }
+
+    }
 }
