@@ -51,7 +51,7 @@ final class FavoriteViewModelTests: XCTestCase {
         viewModel.fetchFavorites()
 
         // Then
-        XCTAssertEqual(viewModel.favorites.count, 2, "Fetched favorites count should match added favorites")
+        XCTAssertEqual(viewModel.favoritesFilter.count, 2, "Fetched favorites count should match added favorites")
     }
 
     func testNavigateToEvents() {
@@ -79,14 +79,14 @@ final class FavoriteViewModelTests: XCTestCase {
         viewModel.searchText = "Europa"
 
         // Then
-        XCTAssertEqual(viewModel.favorites.count, 1, "Expected 1 favorites after filtering")
-        XCTAssertEqual(viewModel.favorites.first?.league.league_name, "UEFA Europa League", "Expected first league to be UEFA Europa League")
+        XCTAssertEqual(viewModel.favoritesFilter.count, 1, "Expected 1 favorites after filtering")
+        XCTAssertEqual(viewModel.favoritesFilter.first?.league.league_name, "UEFA Europa League", "Expected first league to be UEFA Europa League")
 
         // When
         viewModel.searchText = ""
 
         // Then
-        XCTAssertEqual(viewModel.favorites.count, 2, "Expected all leagues after clearing search")
+        XCTAssertEqual(viewModel.favoritesFilter.count, 2, "Expected all leagues after clearing search")
     }
 
     func testDeleteFavorite() {
@@ -96,12 +96,10 @@ final class FavoriteViewModelTests: XCTestCase {
         viewModel.fetchFavorites()
 
         // When
-        let indexSet = IndexSet([0])
-        viewModel.deleteFavorite(indexSet)
-        viewModel.fetchFavorites()
+        viewModel.deleteFavorite(mockFavorite)
 
         // Then
-        XCTAssertEqual(viewModel.favorites.count, 0, "Expected no favorites after deletion")
+        XCTAssertEqual(viewModel.favoritesFilter.count, 0, "Expected no favorites after deletion")
     }
 
 }

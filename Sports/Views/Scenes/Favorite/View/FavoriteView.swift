@@ -41,30 +41,36 @@ extension FavoriteView {
         }
     }
 
-    private func LeagueSectionView(_ sport: String, _ favorites: [Favorite]) -> some View {
+    func SwipeButton(_ favorite: Favorite) -> some View {
+        return Button(role: .destructive) {
+            viewModel.deleteFavorite(favorite)
+        } label: {
+            Label("Delete", systemImage: "trash")
+        }
+    }
+
+    private func LeagueSectionView(_ favorites: [Favorite]) -> some View {
         ForEach(favorites) { favorite in
             Button {
                 viewModel.navigateToEvents(favorite)
             } label: {
                 LeagueCell(league: favorite.league)
             }
-
-        }
-            .onDelete { indexSet in
-            viewModel.deleteFavorite(indexSet, sport)
+                .swipeActions {
+                SwipeButton(favorite)
+            }
         }
     }
 
     private func LeaguesList() -> some View {
         return List {
             Group {
-                if viewModel.favoritesGroup.isEmpty {
+                if viewModel.favoritesFilter.isEmpty {
                     EmptyItemView()
-
                 } else {
-                    ForEach(viewModel.favoritesGroup, id: \.0) { sport, favorites in
+                    ForEach(viewModel.favoritesFilter.groupBySport(), id: \.0) { sport, favorites in
                         Section {
-                            LeagueSectionView(sport, favorites)
+                            LeagueSectionView(favorites)
                         } header: {
                             Text(sport.uppercased())
                                 .foregroundStyle(Color.foreground)
@@ -83,14 +89,10 @@ extension FavoriteView {
     }
 }
 
-//#Preview {
-//    let coordinator = DefaultCoordinator()
-//    let viewModel = FavoriteViewModel(coordinator: coordinator)
-//    let league = League(league_key: 3, league_name: "UEFA Champions League", country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png",
-//        country_logo: nil)
-//    let favorite = Favorite(league: league, sport: .football)
-//    viewModel.favorites.append(favorite)
-//    return CustomNavView(coordinator: coordinator) {
-//        FavoriteView(viewModel: viewModel)
-//    }
-//}
+#Preview {
+    let coordinator = DefaultCoordinator()
+    let viewModel = FavoriteViewModel(coordinator: coordinator)
+    return CustomNavView(coordinator: coordinator) {
+        FavoriteView(viewModel: viewModel)
+    }
+}
