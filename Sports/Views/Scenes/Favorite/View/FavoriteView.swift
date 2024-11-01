@@ -86,6 +86,7 @@ extension FavoriteView {
             .listStyle(.plain)
             .scrollIndicators(.hidden)
             .listSectionSpacing(0)
+            .safeAreaPadding(.bottom, 100)
     }
 }
 

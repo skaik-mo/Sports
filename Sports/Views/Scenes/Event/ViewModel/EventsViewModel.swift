@@ -17,7 +17,9 @@ class EventsViewModel {
     let title = "Matches"
     let upcomingTitle = "Upcoming Matches"
     let latestTitle = "Latest Matches"
-    let teamTitle = "Teams"
+    var teamTitle: String {
+        sport == Sports.tennis ? "Players" : "Teams"
+    }
     let vsTitle = "VS"
     var league: League
     var sport: Sports
