@@ -38,6 +38,7 @@ class EventsViewModelTests: XCTestCase {
     }
 
     private func setupSuccessfulNetworkResponse() {
+        let today = Date.now._add(days: 1)?._stringDate
         let mockResponse: [String: Any] = [
             "success": 1,
             "result": [
@@ -61,7 +62,7 @@ class EventsViewModelTests: XCTestCase {
                 ],
                 [
                     "event_key": 1491247,
-                    "event_date": "2024-11-05",
+                    "event_date": today,
                     "event_time": "21:00",
                     "event_home_team": "Real Madrid",
                     "home_team_key": 76,
