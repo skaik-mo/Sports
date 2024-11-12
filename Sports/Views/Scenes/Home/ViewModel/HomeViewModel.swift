@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SportTypeKit
 
 @Observable
 @MainActor
 class HomeViewModel {
     let coordinator: Coordinator
-    let sports = Sports.allCases
+    let sports = SportType.allCases
     let spacing: CGFloat = 20
     var columns: [GridItem]
     var heightImage: CGFloat? = nil
@@ -43,7 +44,7 @@ class HomeViewModel {
         : [GridItem(.flexible())]
     }
 
-    func navigateToLeagues(_ sport: Sports) {
+    func navigateToLeagues(_ sport: SportType) {
         coordinator.navigateToLeagues(sport)
     }
 

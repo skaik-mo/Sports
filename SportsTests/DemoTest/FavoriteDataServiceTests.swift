@@ -32,7 +32,7 @@ final class FavoriteDataServiceTests: XCTestCase {
 
     private func createFavorite(id: Int, leagueName: String) -> Favorite {
         let league = League(league_key: id, league_name: leagueName, country_key: 1, country_name: "Eurocups", league_logo: "https://apiv2.allsportsapi.com/logo/logo_leagues/3_uefa_champions_league.png", country_logo: nil)
-        return Favorite(league: league, sport: Sports.football)
+        return Favorite(league: league, sport: .football)
     }
 
     func testSetFavorite_AddFavorite() {

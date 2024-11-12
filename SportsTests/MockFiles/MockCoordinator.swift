@@ -7,12 +7,13 @@
 
 import XCTest
 @testable import Sports
+@testable import SportTypeKit
 
 class MockCoordinator: Coordinator {
     private(set) var popped = false
     private(set) var navigatedToRoot = false
-    private(set) var navigatedToLeaguesSport: Sports?
-    private(set) var navigatedToEventsSport: Sports?
+    private(set) var navigatedToLeaguesSport: SportType?
+    private(set) var navigatedToEventsSport: SportType?
     private(set) var navigatedToEventsLeague: League?
 
     func pop() {
@@ -23,11 +24,11 @@ class MockCoordinator: Coordinator {
         navigatedToRoot = true
     }
 
-    func navigateToLeagues(_ sport: Sports) {
+    func navigateToLeagues(_ sport: SportType) {
         navigatedToLeaguesSport = sport
     }
 
-    func navigateToEvents(_ sport: Sports, _ league: League) {
+    func navigateToEvents(_ sport: SportType, _ league: League) {
         navigatedToEventsSport = sport
         navigatedToEventsLeague = league
     }

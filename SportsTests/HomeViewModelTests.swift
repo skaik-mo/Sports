@@ -7,6 +7,7 @@
 
 import XCTest
 @testable import Sports
+@testable import SportTypeKit
 
 @MainActor
 class HomeViewModelTests: XCTestCase {
@@ -56,7 +57,7 @@ class HomeViewModelTests: XCTestCase {
 
     func testNavigateToLeagues() {
         // Given
-        let sport = Sports.football
+        let sport = SportType.football
 
         // When
         viewModel.navigateToLeagues(sport)

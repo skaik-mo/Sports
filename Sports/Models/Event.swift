@@ -5,10 +5,10 @@
 //  Created by Mohammed Skaik on 09/10/2024.
 //
 
-
+import SportTypeKit
 
 class Event: Identifiable {
-    var sport: Sports
+    var sport: SportType
     var key: Int?
     var date: String?
     var time: String?
@@ -17,7 +17,7 @@ class Event: Identifiable {
     var league: League?
     var team: TeamSport?
 
-    class func modelsFromDictionaryArray(sport: Sports?, array: [[String: Any]]?) -> [Event] {
+    class func modelsFromDictionaryArray(sport: SportType?, array: [[String: Any]]?) -> [Event] {
         var events: [Event] = []
         for item in array ?? [] {
             if let event = Event(sport: sport ?? .football, dictionary: item) {
@@ -27,7 +27,7 @@ class Event: Identifiable {
         return events
     }
 
-    init?(sport: Sports, dictionary: [String: Any]?) {
+    init?(sport: SportType, dictionary: [String: Any]?) {
         guard let dictionary, !dictionary.isEmpty else { return nil }
         self.sport = sport
         key = dictionary["event_key"] as? Int

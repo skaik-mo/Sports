@@ -1,19 +1,17 @@
 //
-//  Sports.swift
-//  Sports
+//  SportType.swift
+//  SportTypeKit
 //
-//  Created by Mohammed Skaik on 29/09/2024.
+//  Created by Mohammed Skaik on 12/11/2024.
 //
 
-import SwiftUI
-
-enum Sports: String, CaseIterable, Identifiable, Codable {
-    var id: Self { self }
+public enum SportType: String, CaseIterable, Identifiable, Codable {
+    public var id: Self { self }
     case football
     case cricket
     case basketball
     case tennis
-    var title: String {
+    public var title: String {
         switch self {
         case .football:
             return "Football"
@@ -25,20 +23,8 @@ enum Sports: String, CaseIterable, Identifiable, Codable {
             return "Tennis"
         }
     }
-    var image: ImageResource {
-        switch self {
-        case .football:
-            return .football
-        case .basketball:
-            return .basketball
-        case .cricket:
-            return .cricket
-        case .tennis:
-            return .tennis
-        }
-    }
 
-    var icon: String {
+    public var icon: String {
         switch self {
         case .football:
             return "soccerball.inverse"
@@ -49,10 +35,6 @@ enum Sports: String, CaseIterable, Identifiable, Codable {
         case .tennis:
             return "tennisball.fill"
         }
-    }
-
-    var endPoint: String {
-        return "\(APIConstants.API.rawValue)\(self.rawValue)"
     }
 
 }
