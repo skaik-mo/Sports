@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SportTypeKit
 
 @Observable
 class EventsViewModel {
@@ -19,11 +18,11 @@ class EventsViewModel {
     let upcomingTitle = "Upcoming Matches"
     let latestTitle = "Latest Matches"
     var teamTitle: String {
-        sport == SportType.tennis ? "Players" : "Teams"
+        sport == Sports.tennis ? "Players" : "Teams"
     }
     let vsTitle = "VS"
     var league: League
-    var sport: SportType
+    var sport: Sports
     private(set) var events: [Event] = []
     var upcomingEvents: [Event] = []
     var latestEvents: [Event] = []
@@ -39,7 +38,7 @@ class EventsViewModel {
         return self.events.isEmpty && !(showProgress)
     }
 
-    init(coordinator: Coordinator, networkService: NetworkService, sport: SportType, league: League) {
+    init(coordinator: Coordinator, networkService: NetworkService, sport: Sports, league: League) {
         self.coordinator = coordinator
         self.networkService = networkService
         self.sport = sport
@@ -66,7 +65,7 @@ class EventsViewModel {
 
     func fetchEvents(isShowLoader: Bool = true) {
         let baseRequest = BaseRequest()
-        baseRequest.end_point = sport.rawValue
+        baseRequest.end_point = sport.endPoint
         baseRequest.method = .get
         baseRequest.parameters = [
             "met": APIConstants.API_fixtures.rawValue,

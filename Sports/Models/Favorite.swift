@@ -6,7 +6,6 @@
 //
 
 import SwiftData
-import SportTypeKit
 
 @Model
 final class Favorite {
@@ -14,9 +13,9 @@ final class Favorite {
     var id: Int
     @Relationship(deleteRule: .cascade)
     var league: League
-    var sport: SportType
+    var sport: Sports
 
-    init(league: League, sport: SportType) {
+    init(league: League, sport: Sports) {
         self.id = league.league_key ?? -1
         self.league = league
         self.sport = sport

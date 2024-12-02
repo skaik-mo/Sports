@@ -6,22 +6,21 @@
 //
 
 import SwiftUI
-import SportTypeKit
 
 // MARK: - Coordinator
 @MainActor
 protocol Coordinator {
     func pop()
     func navigateToRoot()
-    func navigateToLeagues(_ sport: SportType)
-    func navigateToEvents(_ sport: SportType, _ league: League)
+    func navigateToLeagues(_ sport: Sports)
+    func navigateToEvents(_ sport: Sports, _ league: League)
 }
 
 // MARK: - Default Coordinator
 final class DefaultCoordinator: RoutableCoordinator {
     enum Route: Hashable {
-        case LeaguesView(SportType)
-        case EventsView(SportType, League)
+        case LeaguesView(Sports)
+        case EventsView(Sports, League)
     }
 
     private let requestBuilder = RequestBuilder()
@@ -53,11 +52,11 @@ extension DefaultCoordinator: Coordinator {
         path.removeAll()
     }
 
-    func navigateToLeagues(_ sport: SportType) {
+    func navigateToLeagues(_ sport: Sports) {
         path.append(.LeaguesView(sport))
     }
 
-    func navigateToEvents(_ sport: SportType, _ league: League) {
+    func navigateToEvents(_ sport: Sports, _ league: League) {
         path.append(.EventsView(sport, league))
     }
 

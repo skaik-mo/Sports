@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SportTypeKit
 
 struct HomeView: View {
     @State private var viewModel: HomeViewModel
@@ -51,14 +50,14 @@ struct HomeView: View {
 
 // MARK: - Shapes
 extension HomeView {
-    private func SportShapeStack(_ sports: [SportType]) -> some View {
+    private func SportShapeStack(_ sports: [Sports]) -> some View {
         LazyVStack(spacing: viewModel.spacing) {
             ForEach(sports) { sport in
                 Button {
                     viewModel.navigateToLeagues(sport)
                 } label: {
                     LazyVStack {
-                        Image(sport.rawValue, bundle: .main)
+                        Image(sport.image)
                             .resizable()
                             .scaledToFit()
                             .frame(height: viewModel.heightImage)

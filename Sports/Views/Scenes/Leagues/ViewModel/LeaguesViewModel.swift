@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SportTypeKit
 
 @Observable
 @MainActor
@@ -18,7 +17,7 @@ class LeaguesViewModel {
     var title: String {
         "\(sport.title) Leagues"
     }
-    var sport: SportType
+    var sport: Sports
     var emptyDataTitle: String {
         "No \(sport.title) Leagues Available"
     }
@@ -28,7 +27,7 @@ class LeaguesViewModel {
         }
     }
 
-    init(coordinator: Coordinator, networkService: NetworkService, sport: SportType) {
+    init(coordinator: Coordinator, networkService: NetworkService, sport: Sports) {
         self.coordinator = coordinator
         self.networkService = networkService
         self.sport = sport
@@ -42,7 +41,7 @@ class LeaguesViewModel {
 
     func fetchLeagues(isShowLoader: Bool = true) {
         let baseRequest = BaseRequest()
-        baseRequest.end_point = sport.rawValue
+        baseRequest.end_point = sport.endPoint
         baseRequest.method = .get
         baseRequest.parameters = [
             "met": APIConstants.API_leagues.rawValue,
