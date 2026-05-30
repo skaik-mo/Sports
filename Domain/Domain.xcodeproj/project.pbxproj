@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E7E18E8A2FC5D19900DBF3E8 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E18E802FC5D19900DBF3E8 /* Domain.framework */; };
+		E791FC842FCAD68900DAB08C /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E18E802FC5D19900DBF3E8 /* Domain.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E7E18E8B2FC5D19900DBF3E8 /* PBXContainerItemProxy */ = {
+		E791FC852FCAD68900DAB08C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E7E18E772FC5D19900DBF3E8 /* Project object */;
 			proxyType = 1;
@@ -21,12 +21,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E791FC802FCAD68900DAB08C /* DomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7E18E802FC5D19900DBF3E8 /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7E18E892FC5D19900DBF3E8 /* DomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		E7E18E8D2FC5D19900DBF3E8 /* DomainTests */ = {
+		E791FC812FCAD68900DAB08C /* DomainTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DomainTests;
 			sourceTree = "<group>";
@@ -39,18 +39,18 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E791FC7D2FCAD68900DAB08C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E791FC842FCAD68900DAB08C /* Domain.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E7E18E7D2FC5D19900DBF3E8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E7E18E862FC5D19900DBF3E8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E7E18E8A2FC5D19900DBF3E8 /* Domain.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				E7E18F8B2FC5D4D100DBF3E8 /* Domain */,
-				E7E18E8D2FC5D19900DBF3E8 /* DomainTests */,
+				E791FC812FCAD68900DAB08C /* DomainTests */,
 				E7E18E812FC5D19900DBF3E8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,7 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				E7E18E802FC5D19900DBF3E8 /* Domain.framework */,
-				E7E18E892FC5D19900DBF3E8 /* DomainTests.xctest */,
+				E791FC802FCAD68900DAB08C /* DomainTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -88,6 +88,29 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		E791FC7F2FCAD68900DAB08C /* DomainTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E791FC872FCAD68900DAB08C /* Build configuration list for PBXNativeTarget "DomainTests" */;
+			buildPhases = (
+				E791FC7C2FCAD68900DAB08C /* Sources */,
+				E791FC7D2FCAD68900DAB08C /* Frameworks */,
+				E791FC7E2FCAD68900DAB08C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E791FC862FCAD68900DAB08C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E791FC812FCAD68900DAB08C /* DomainTests */,
+			);
+			name = DomainTests;
+			packageProductDependencies = (
+			);
+			productName = DomainTests;
+			productReference = E791FC802FCAD68900DAB08C /* DomainTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E7E18E7F2FC5D19900DBF3E8 /* Domain */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7E18E922FC5D19900DBF3E8 /* Build configuration list for PBXNativeTarget "Domain" */;
@@ -111,29 +134,6 @@
 			productReference = E7E18E802FC5D19900DBF3E8 /* Domain.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E7E18E882FC5D19900DBF3E8 /* DomainTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E7E18E952FC5D19900DBF3E8 /* Build configuration list for PBXNativeTarget "DomainTests" */;
-			buildPhases = (
-				E7E18E852FC5D19900DBF3E8 /* Sources */,
-				E7E18E862FC5D19900DBF3E8 /* Frameworks */,
-				E7E18E872FC5D19900DBF3E8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E7E18E8C2FC5D19900DBF3E8 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				E7E18E8D2FC5D19900DBF3E8 /* DomainTests */,
-			);
-			name = DomainTests;
-			packageProductDependencies = (
-			);
-			productName = DomainTests;
-			productReference = E7E18E892FC5D19900DBF3E8 /* DomainTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -141,15 +141,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2640;
+				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
+					E791FC7F2FCAD68900DAB08C = {
+						CreatedOnToolsVersion = 26.5;
+					};
 					E7E18E7F2FC5D19900DBF3E8 = {
 						CreatedOnToolsVersion = 26.4;
 						LastSwiftMigration = 2640;
-					};
-					E7E18E882FC5D19900DBF3E8 = {
-						CreatedOnToolsVersion = 26.4;
 					};
 				};
 			};
@@ -168,20 +168,20 @@
 			projectRoot = "";
 			targets = (
 				E7E18E7F2FC5D19900DBF3E8 /* Domain */,
-				E7E18E882FC5D19900DBF3E8 /* DomainTests */,
+				E791FC7F2FCAD68900DAB08C /* DomainTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E7E18E7E2FC5D19900DBF3E8 /* Resources */ = {
+		E791FC7E2FCAD68900DAB08C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E7E18E872FC5D19900DBF3E8 /* Resources */ = {
+		E7E18E7E2FC5D19900DBF3E8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -191,14 +191,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		E7E18E7C2FC5D19900DBF3E8 /* Sources */ = {
+		E791FC7C2FCAD68900DAB08C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E7E18E852FC5D19900DBF3E8 /* Sources */ = {
+		E7E18E7C2FC5D19900DBF3E8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -208,14 +208,62 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		E7E18E8C2FC5D19900DBF3E8 /* PBXTargetDependency */ = {
+		E791FC862FCAD68900DAB08C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E7E18E7F2FC5D19900DBF3E8 /* Domain */;
-			targetProxy = E7E18E8B2FC5D19900DBF3E8 /* PBXContainerItemProxy */;
+			targetProxy = E791FC852FCAD68900DAB08C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		E791FC882FCAD68900DAB08C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MW9V7DN89N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "skaik-mo.DomainTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E791FC892FCAD68900DAB08C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MW9V7DN89N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "skaik-mo.DomainTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E7E18E902FC5D19900DBF3E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -359,6 +407,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -371,6 +420,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
@@ -398,6 +451,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -410,6 +464,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
@@ -420,47 +478,18 @@
 			};
 			name = Release;
 		};
-		E7E18E962FC5D19900DBF3E8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MW9V7DN89N;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "skaik-mo.DomainTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		E7E18E972FC5D19900DBF3E8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MW9V7DN89N;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "skaik-mo.DomainTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E791FC872FCAD68900DAB08C /* Build configuration list for PBXNativeTarget "DomainTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E791FC882FCAD68900DAB08C /* Debug */,
+				E791FC892FCAD68900DAB08C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E7E18E7A2FC5D19900DBF3E8 /* Build configuration list for PBXProject "Domain" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -475,15 +504,6 @@
 			buildConfigurations = (
 				E7E18E932FC5D19900DBF3E8 /* Debug */,
 				E7E18E942FC5D19900DBF3E8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E7E18E952FC5D19900DBF3E8 /* Build configuration list for PBXNativeTarget "DomainTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E7E18E962FC5D19900DBF3E8 /* Debug */,
-				E7E18E972FC5D19900DBF3E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

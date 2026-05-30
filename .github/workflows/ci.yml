@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  buildAndTest:
+    name: Build & Test
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Cache SPM Packages
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            Build/SourcePackages
+            Build/Build/Products
+          key: ${{ runner.os }}-spm-v1-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-v1-
+
+      - name: Run Fastlane CI (No Cache)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: bundle exec fastlane ci
+
+      - name: Run Fastlane CI (Cached)
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: bundle exec fastlane ci skip_package_dependencies_resolution:true

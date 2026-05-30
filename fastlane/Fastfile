@@ -1,0 +1,50 @@
+default_platform(:ios)
+
+WORKSPACE   = "Sports.xcworkspace"
+MAIN_SCHEME = "Sports"
+
+TEST_SCHEMES = ["Domain", "Data", "Presentation"]
+
+platform :ios do
+
+  # ── Test all modules ──────────────────────────────────────
+  lane :test_modules do
+    TEST_SCHEMES.each do |scheme|
+      UI.message "🧪 Testing: #{scheme}"
+      scan(
+        workspace:        WORKSPACE,
+        scheme:           scheme,
+        clean:            false,
+        result_bundle:    true,
+        output_directory: "fastlane/test_output/#{scheme}",
+        output_files:     "#{scheme}-report.html",
+        devices:          ["iPhone 17 Pro"]
+      )
+    end
+    UI.success "✅ All modules tested!"
+  end
+
+  # ── Build main app — no signing, no archive ───────────────
+  lane :build_check do
+    UI.message "🔨 Building: #{MAIN_SCHEME}"
+    gym(
+      workspace:        WORKSPACE,
+      scheme:           MAIN_SCHEME,
+      clean:            true,
+      skip_archive:     true,
+      skip_codesigning: true,
+      xcargs:           "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+    )
+    UI.success "✅ Build passed!"
+  end
+
+  # ── CI lane — runs everything ─────────────────────────────
+  # This is what GitHub Actions will call
+  lane :ci do
+    UI.message "🚀 Starting CI pipeline..."
+    test_modules
+    build_check
+    UI.success "🎉 CI pipeline passed!"
+  end
+
+end
