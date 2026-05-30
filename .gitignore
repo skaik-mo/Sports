@@ -1,0 +1,36 @@
+# ─── Xcode ───────────────────────────────────────────────
+*.xcuserstate
+*.xcuserdatad
+xcuserdata/
+
+# User-specific Xcode settings (not shared)
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Build artifacts
+build/
+DerivedData/
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.app
+
+# ─── macOS ───────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# ─── SPM ─────────────────────────────────────────────────
+.build/
+
+# ─── Fastlane ────────────────────────────────────────────
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+fastlane/logs/
+
+# ─── Ruby ────────────────────────────────────────────────
+.bundle/
+vendor/bundle/

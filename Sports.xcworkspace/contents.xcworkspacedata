@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:Sports/Sports.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Data/Data.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:Domain/Domain.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Presentation/Presentation.xcodeproj">
+   </FileRef>
+</Workspace>
