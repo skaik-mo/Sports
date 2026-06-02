@@ -1,49 +1,127 @@
 default_platform(:ios)
 
-WORKSPACE   = "Sports.xcworkspace"
-MAIN_SCHEME = "Sports"
+WORKSPACE    = "Sports.xcworkspace"
+MAIN_SCHEME  = "Sports"
+DERIVED_DATA = "Build/DerivedData"
 
-TEST_SCHEMES = ["Domain", "Data", "Presentation"]
+MODULES = [
+  { name: "Domain",       scheme: "Domain",       has_tests: true },
+  { name: "Data",         scheme: "Data",         has_tests: true },
+  { name: "Presentation", scheme: "Presentation", has_tests: true },
+]
 
 platform :ios do
 
-  # ── Test all modules ──────────────────────────────────────
-  lane :test_modules do
-    TEST_SCHEMES.each do |scheme|
-      UI.message "🧪 Testing: #{scheme}"
-      scan(
-        workspace:        WORKSPACE,
-        scheme:           scheme,
-        clean:            false,
-        result_bundle:    true,
-        output_directory: "fastlane/test_output/#{scheme}",
-        output_files:     "#{scheme}-report.html",
-        devices:          ["iPhone 17 Pro"]
+  lane :build_modules do
+    MODULES.each do |mod|
+      UI.message "🔨 Building: #{mod[:name]}"
+      gym(
+        workspace:          WORKSPACE,
+        scheme:             mod[:scheme],
+        clean:              false,
+        skip_archive:       true,
+        skip_codesigning:   true,
+        derived_data_path:  DERIVED_DATA,
+        xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
       )
+      UI.success "✅ #{mod[:name]} built successfully!"
     end
-    UI.success "✅ All modules tested!"
+    UI.success "✅ All modules built!"
   end
 
-  # ── Build main app — no signing, no archive ───────────────
-  lane :build_check do
-    UI.message "🔨 Building: #{MAIN_SCHEME}"
+  lane :test_modules do
+    modules_with_tests = MODULES.select { |m| m[:has_tests] }
+
+    if modules_with_tests.empty?
+      UI.message "⚠️  No modules have tests yet — skipping"
+      next
+    end
+
+    modules_with_tests.each do |mod|
+      UI.message "🧪 Testing: #{mod[:name]}"
+      scan(
+        workspace:          WORKSPACE,
+        scheme:             mod[:scheme],
+        clean:              false,
+        result_bundle:      true,
+        derived_data_path:  DERIVED_DATA,
+        output_directory:   "fastlane/test_output/#{mod[:name]}",
+        output_files:       "#{mod[:name]}-report.html",
+        output_types:       "html",
+        devices:            ["iPhone 17 Pro"]
+      )
+      UI.success "✅ #{mod[:name]} tests passed!"
+    end
+    UI.success "✅ All module tests passed!"
+  end
+
+  lane :build_main_app do
+    UI.message "🔨 Building full app: #{MAIN_SCHEME}"
     gym(
-      workspace:        WORKSPACE,
-      scheme:           MAIN_SCHEME,
-      clean:            true,
-      skip_archive:     true,
-      skip_codesigning: true,
-      xcargs:           "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+      workspace:          WORKSPACE,
+      scheme:             MAIN_SCHEME,
+      clean:              false,
+      skip_archive:       true,
+      skip_codesigning:   true,
+      derived_data_path:  DERIVED_DATA,
+      xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
     )
-    UI.success "✅ Build passed!"
+    UI.success "✅ App built successfully!"
   end
 
-  # ── CI lane — runs everything ─────────────────────────────
-  # This is what GitHub Actions will call
+  lane :ci_domain do
+    UI.message "🚀 Running Domain pipeline..."
+    scan(
+      workspace:          WORKSPACE,
+      scheme:             "Domain",
+      clean:              true,
+      result_bundle:      true,
+      derived_data_path:  DERIVED_DATA,
+      output_directory:   "fastlane/test_output/Domain",
+      output_files:       "Domain-report.html",
+      output_types:       "html",
+      devices:            ["iPhone 17 Pro"]
+    )
+    UI.success "✅ Domain pipeline passed!"
+  end
+
+  lane :ci_data do
+    UI.message "🚀 Running Data pipeline..."
+    scan(
+      workspace:          WORKSPACE,
+      scheme:             "Data",
+      clean:              true,
+      result_bundle:      true,
+      derived_data_path:  DERIVED_DATA,
+      output_directory:   "fastlane/test_output/Data",
+      output_files:       "Data-report.html",
+      output_types:       "html",
+      devices:            ["iPhone 17 Pro"]
+    )
+    UI.success "✅ Data pipeline passed!"
+  end
+
+  lane :ci_presentation do
+    UI.message "🚀 Running Presentation pipeline..."
+    scan(
+      workspace:          WORKSPACE,
+      scheme:             "Presentation",
+      clean:              true,
+      result_bundle:      true,
+      derived_data_path:  DERIVED_DATA,
+      output_directory:   "fastlane/test_output/Presentation",
+      output_files:       "Presentation-report.html",
+      output_types:       "html",
+      devices:            ["iPhone 17 Pro"]
+    )
+    UI.success "✅ Presentation pipeline passed!"
+  end
+
   lane :ci do
     UI.message "🚀 Starting CI pipeline..."
+    build_modules
     test_modules
-    build_check
+    build_main_app
     UI.success "🎉 CI pipeline passed!"
   end
 

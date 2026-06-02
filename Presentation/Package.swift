@@ -23,7 +23,11 @@ let package = Package(
             name: "Presentation",
             dependencies: ["Domain"], 
         ),
-
+        .testTarget(
+            name: "PresentationTests",
+            dependencies: ["Presentation", "Domain"],
+            path: "Tests/PresentationTests"
+        )
     ],
     swiftLanguageModes: [.v6]
 )

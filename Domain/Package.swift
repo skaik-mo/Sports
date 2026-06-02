@@ -19,7 +19,11 @@ let package = Package(
         .target(
             name: "Domain",
         ),
-
+        .testTarget(
+            name: "DomainTests",
+            dependencies: ["Domain"],
+            path: "Tests/DomainTests"
+        )
     ],
     swiftLanguageModes: [.v6]
 )
