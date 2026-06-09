@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7C2EEC02FCE7E0E00573CE8 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = E7C2EEBF2FCE7E0E00573CE8 /* Data */; };
+		E7C2EEC22FCE7E0E00573CE8 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = E7C2EEC12FCE7E0E00573CE8 /* Domain */; };
+		E7C2EEC42FCE7E0E00573CE8 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = E7C2EEC32FCE7E0E00573CE8 /* Presentation */; };
 		E7F1DACA2CB19D4D005AEB95 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E7F1DAC92CB19D4D005AEB95 /* Alamofire */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +66,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7C2EEC42FCE7E0E00573CE8 /* Presentation in Frameworks */,
+				E7C2EEC22FCE7E0E00573CE8 /* Domain in Frameworks */,
+				E7C2EEC02FCE7E0E00573CE8 /* Data in Frameworks */,
 				E7F1DACA2CB19D4D005AEB95 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,11 +76,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E7C2EEBE2FCE7E0E00573CE8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E7CA78392CA8550400926FD0 = {
 			isa = PBXGroup;
 			children = (
 				E7CA78442CA8550400926FD0 /* Sports */,
 				E759CC392CCF8FE600ED0F5E /* SportsTests */,
+				E7C2EEBE2FCE7E0E00573CE8 /* Frameworks */,
 				E7CA78432CA8550400926FD0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -132,6 +146,9 @@
 			name = Sports;
 			packageProductDependencies = (
 				E7F1DAC92CB19D4D005AEB95 /* Alamofire */,
+				E7C2EEBF2FCE7E0E00573CE8 /* Data */,
+				E7C2EEC12FCE7E0E00573CE8 /* Domain */,
+				E7C2EEC32FCE7E0E00573CE8 /* Presentation */,
 			);
 			productName = Sports;
 			productReference = E7CA78422CA8550400926FD0 /* Sports.app */;
@@ -497,6 +514,18 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E7C2EEBF2FCE7E0E00573CE8 /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
+		};
+		E7C2EEC12FCE7E0E00573CE8 /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+		E7C2EEC32FCE7E0E00573CE8 /* Presentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Presentation;
+		};
 		E7F1DAC92CB19D4D005AEB95 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E7F1DAC82CB19D4D005AEB95 /* XCRemoteSwiftPackageReference "Alamofire" */;

@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios build_modules
+
+```sh
+[bundle exec] fastlane ios build_modules
+```
+
+
+
 ### ios test_modules
 
 ```sh
@@ -23,10 +31,34 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
-### ios build_check
+### ios build_main_app
 
 ```sh
-[bundle exec] fastlane ios build_check
+[bundle exec] fastlane ios build_main_app
+```
+
+
+
+### ios ci_domain
+
+```sh
+[bundle exec] fastlane ios ci_domain
+```
+
+
+
+### ios ci_data
+
+```sh
+[bundle exec] fastlane ios ci_data
+```
+
+
+
+### ios ci_presentation
+
+```sh
+[bundle exec] fastlane ios ci_presentation
 ```
 
 
