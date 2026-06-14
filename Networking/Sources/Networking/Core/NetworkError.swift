@@ -5,6 +5,7 @@
 //  Created by Mohammed Skaik on 14/06/2026.
 //
 
+
 import Alamofire
 import Foundation
 
@@ -18,6 +19,24 @@ public enum NetworkError: LocalizedError {
     case timeout
     case decodingFailed(Error)
     case unknown(Error)
+}
+
+// MARK: - Equatable
+extension NetworkError: Equatable {
+
+    public static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
+        switch (lhs, rhs) {
+        case (.unauthorized, .unauthorized): return true
+        case (.forbidden, .forbidden): return true
+        case (.notFound, .notFound): return true
+        case (.noInternetConnection, .noInternetConnection): return true
+        case (.timeout, .timeout): return true
+        case (.serverError(let l), .serverError(let r)): return l == r
+        case (.decodingFailed, .decodingFailed): return true
+        case (.unknown, .unknown): return true
+        default: return false
+        }
+    }
 }
 
 // MARK: - User Facing Message
