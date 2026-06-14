@@ -2,6 +2,7 @@
 *.xcuserstate
 *.xcuserdatad
 xcuserdata/
+*.xcconfig
 
 # User-specific Xcode settings (not shared)
 *.xcworkspace/xcuserdata/
