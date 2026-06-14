@@ -12,14 +12,17 @@ public final class APIClient {
     // MARK: - Properties
     private let network: NetworkManagerProtocol
     private let decoder: JSONDecoder
+    private let errorParser: APIErrorParserProtocol?
 
     // MARK: - Init
     public init(
         network: NetworkManagerProtocol,
-        decoder: JSONDecoder = .default
+        decoder: JSONDecoder = .default,
+        errorParser: APIErrorParserProtocol? = nil
     ) {
         self.network = network
         self.decoder = decoder
+        self.errorParser = errorParser
     }
 }
 
@@ -29,6 +32,11 @@ extension APIClient {
     public func perform<T: Decodable>(_ request: BaseRequest) async throws -> T {
         do {
             let data = try await network.request(request)
+
+            if let apiError = errorParser?.parse(data) {
+                throw apiError
+            }
+
             return try decoder.decode(T.self, from: data)
         } catch let error as NetworkError {
             throw error
@@ -45,7 +53,11 @@ extension APIClient {
 
     public func perform(_ request: BaseRequest) async throws {
         do {
-            _ = try await network.request(request)
+            let data = try await network.request(request)
+
+            if let apiError = errorParser?.parse(data) {
+                throw apiError
+            }
         } catch let error as NetworkError {
             throw error
         } catch {

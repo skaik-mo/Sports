@@ -117,7 +117,7 @@ private extension NetworkManager {
 private extension NetworkManager {
 
     private func execute(_ dataRequest: DataRequest) async -> AFDataResponse<Data> {
-        await dataRequest
+        return await dataRequest
             .validate(statusCode: 200..<300)
             .serializingData()
             .response
