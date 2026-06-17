@@ -5,7 +5,6 @@
 //  Created by Mohammed Skaik on 13/06/2026.
 //
 
-import Alamofire
 import Foundation
 
 open class BaseRequest {

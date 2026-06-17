@@ -5,14 +5,14 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-class GetAllLeaguesUseCase {
+public class GetAllLeaguesUseCase {
     private let repository: LeagueRepository
 
-    init(repository: LeagueRepository) {
+    public init(repository: LeagueRepository) {
         self.repository = repository
     }
 
-    func execute(sport: SportType) async throws -> [League] {
+    public func execute(sport: SportType) async throws -> [League] {
         try await repository.getAllLeagues(sport: sport)
     }
 }

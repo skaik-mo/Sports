@@ -10,7 +10,6 @@ import Foundation
 public extension JSONDecoder {
     static var `default`: JSONDecoder {
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .iso8601
         return decoder
     }
