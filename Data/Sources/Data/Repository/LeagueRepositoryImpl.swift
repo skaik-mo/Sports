@@ -30,25 +30,21 @@ extension LeagueRepositoryImpl {
     public func getAllLeagues(sport: SportType) async throws -> [League] {
         let sportDto = SportTypeDto.sportMapper(from: sport)
         do {
-            return try await getRemote(sportDto: sportDto)
+            return try await getRemoteLeagues(sportDto: sportDto)
 
         } catch let error as NetworkError where error == .noInternetConnection {
-            let snapshots = try await getLocal(
+            let snapshots = try await getLocalLeagues(
                 sportDto: sportDto,
                 fallback: error
             )
             return snapshots.map { $0.toDomain() }
         }
     }
-
-    public func getLeague(sport: SportType, id: Int) async throws -> League {
-        fatalError("Not implemented")
-    }
 }
 
 private extension LeagueRepositoryImpl {
 
-    func getRemote(sportDto: SportTypeDto) async throws -> [League] {
+    func getRemoteLeagues(sportDto: SportTypeDto) async throws -> [League] {
         let dtos = try await remote.getAllLeagues(sportDto: sportDto)
         let caches = dtos.map { $0.toCache(sportDto: sportDto) }
         try await local.clearAllLeagues(sportDto: sportDto)
@@ -56,7 +52,7 @@ private extension LeagueRepositoryImpl {
         return dtos.map { $0.toDomain() }
     }
 
-    func getLocal(sportDto: SportTypeDto, fallback: NetworkError) async throws -> [LeagueCacheModel] {
+    func getLocalLeagues(sportDto: SportTypeDto, fallback: NetworkError) async throws -> [LeagueCacheModel] {
         let snapshots = try await local.getAllLeagues(sportDto: sportDto)
         guard !snapshots.isEmpty else {
             throw fallback

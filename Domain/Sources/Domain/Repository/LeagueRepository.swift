@@ -7,5 +7,4 @@
 
 public protocol LeagueRepository {
     func getAllLeagues(sport: SportType) async throws -> [League]
-    func getLeague(sport: SportType, id: Int) async throws -> League
 }
