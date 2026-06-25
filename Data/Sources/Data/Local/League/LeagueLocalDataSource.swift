@@ -15,7 +15,7 @@ public final class LeagueLocalDataSource {
     private let context: ModelContext
 
     // MARK: - Init
-    public init(context: ModelContext = SwiftDataStack.shared.mainContext) {
+    public init(context: ModelContext) {
         self.context = context
     }
 }
