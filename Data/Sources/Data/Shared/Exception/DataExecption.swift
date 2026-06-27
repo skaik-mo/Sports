@@ -10,4 +10,5 @@ import Foundation
 enum DataException: LocalizedError {
     case dateCalculationFailed
     case invalidDate
+    case noDataFound
 }
