@@ -29,9 +29,18 @@ extension Container {
         }
     }
 
+    var errorParser: Factory<APIErrorParserProtocol> {
+        self {
+            APIErrorParser()
+        }
+    }
+
     var client: Factory<APIClient> {
         self {
-            APIClient(network: self.networkManager())
+            APIClient(
+                network: self.networkManager(),
+                errorParser: self.errorParser()
+            )
         }
     }
 
@@ -59,6 +68,17 @@ extension Container {
     var eventRepository: Factory<EventRepository> {
         self {
             EventRepositoryImpl(remote: self.eventRemoteDataSource())
+        }
+    }
+
+    var teamRemoteDataSource: Factory<TeamRemoteDataSource> {
+        self {
+            TeamRemoteDataSource(client: self.client())
+        }
+    }
+    var teamRepository: Factory<TeamRepository> {
+        self {
+            TeamRepositoryImpl(remote: self.teamRemoteDataSource())
         }
     }
 }

@@ -26,4 +26,10 @@ extension Container {
             GetUpcomingEventsUseCase(repository: self.eventRepository())
         }
     }
+
+    var getTeamsUseCase: Factory<GetTeamsUseCase> {
+        self {
+            GetTeamsUseCase(repository: self.teamRepository())
+        }
+    }
 }
