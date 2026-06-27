@@ -23,7 +23,7 @@ public final class LeagueRemoteDataSource {
 extension LeagueRemoteDataSource {
 
     func getAllLeagues(sportDto: SportTypeDto) async throws -> [LeagueDto] {
-        let response: LeagueResponseDto = try await client.perform(
+        let response: ResponseDto<LeagueDto> = try await client.perform(
             LeaguesBaseAppRequest(sportDto: sportDto)
         )
         guard response.success == 1 else {
