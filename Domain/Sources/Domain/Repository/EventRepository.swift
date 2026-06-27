@@ -8,5 +8,4 @@
 public protocol EventRepository {
     func getLatestEvents(sport: SportType, leagueId: Int) async throws  -> [Event]
     func getUpcomingEvents(sport: SportType, leagueId: Int) async throws  -> [Event]
-    func GetTeams(sport: SportType, leagueId: Int) async throws  -> [Team]
 }

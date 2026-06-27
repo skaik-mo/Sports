@@ -33,8 +33,4 @@ public extension EventRepositoryImpl {
         let dtos = try await remote.getLatestEvents(sportDto: sportDto, leagueId: leagueId)
         return try dtos.map { try $0.toDomain() }
     }
-
-    func GetTeams(sport: SportType, leagueId: Int) async throws -> [Team] {
-        []
-    }
 }

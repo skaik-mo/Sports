@@ -64,7 +64,9 @@ extension EventRemoteDataSource {
         let response: ResponseDto<EventDto> =  try await client.perform(
             EventBaseAppRequest(sportDto: sportDto, extraParams: params)
         )
-        // throw serverError 500
+        guard response.success == 1 else {
+            throw NetworkError.serverError(statusCode: 500)
+        }
         return response.result
     }
 
