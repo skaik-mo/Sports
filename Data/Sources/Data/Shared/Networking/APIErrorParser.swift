@@ -21,8 +21,13 @@ public final class APIErrorParser: APIErrorParserProtocol {
             let firstResult = errorDto.result.first
         else { return nil }
 
+        var message = firstResult.msg ?? "Something went wrong"
+        if let param = firstResult.param {
+            message += " [\(param)]"
+        }
+
         return .apiError(
-            message: firstResult.msg ?? "Something went wrong",
+            message: message,
             code: firstResult.cod
         )
     }
