@@ -49,4 +49,16 @@ extension Container {
             )
         }
     }
+
+    var eventRemoteDataSource: Factory<EventRemoteDataSource> {
+        self{
+            EventRemoteDataSource(client: self.client())
+        }
+    }
+
+    var eventRepository: Factory<EventRepository> {
+        self {
+            EventRepositoryImpl(remote: self.eventRemoteDataSource())
+        }
+    }
 }

@@ -14,4 +14,16 @@ extension Container {
             GetAllLeaguesUseCase(repository: self.leagueRepository())
         }
     }
+
+    var getLatestEventsUseCase: Factory<GetLatestEventsUseCase> {
+        self {
+            GetLatestEventsUseCase(repository: self.eventRepository())
+        }
+    }
+
+    var getUpcomingEventsUseCase: Factory<GetUpcomingEventsUseCase> {
+        self {
+            GetUpcomingEventsUseCase(repository: self.eventRepository())
+        }
+    }
 }
