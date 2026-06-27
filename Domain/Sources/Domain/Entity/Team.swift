@@ -9,4 +9,10 @@ public struct Team: Equatable {
     public let id:Int
     public let name:String?
     public let logoUrl:String?
+
+    public init(id: Int, name: String?, logoUrl: String?) {
+        self.id = id
+        self.name = name
+        self.logoUrl = logoUrl
+    }
 }

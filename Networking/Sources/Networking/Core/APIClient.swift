@@ -60,6 +60,8 @@ extension APIClient {
             }
         } catch let error as NetworkError {
             throw error
+        } catch let error as DecodingError {
+            throw NetworkError.decodingFailed(error)
         } catch {
             throw NetworkError.unknown(error)
         }

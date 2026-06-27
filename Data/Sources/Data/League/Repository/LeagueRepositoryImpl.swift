@@ -33,10 +33,7 @@ extension LeagueRepositoryImpl {
             return try await getRemoteLeagues(sportDto: sportDto)
 
         } catch let error as NetworkError where error == .noInternetConnection {
-            let snapshots = try await getLocalLeagues(
-                sportDto: sportDto,
-                fallback: error
-            )
+            let snapshots = try await getLocalLeagues(sportDto: sportDto)
             return snapshots.map { $0.toDomain() }
         }
     }
@@ -52,10 +49,10 @@ private extension LeagueRepositoryImpl {
         return dtos.map { $0.toDomain() }
     }
 
-    func getLocalLeagues(sportDto: SportTypeDto, fallback: NetworkError) async throws -> [LeagueCacheModel] {
+    func getLocalLeagues(sportDto: SportTypeDto) async throws -> [LeagueCacheModel] {
         let snapshots = try await local.getAllLeagues(sportDto: sportDto)
         guard !snapshots.isEmpty else {
-            throw fallback
+            throw DataException.noDataFound
         }
         return snapshots
     }
