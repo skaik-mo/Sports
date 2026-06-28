@@ -7,6 +7,7 @@
 
 
 import Networking
+import Domain
 
 public final class LeagueRemoteDataSource {
 
@@ -22,9 +23,9 @@ public final class LeagueRemoteDataSource {
 // MARK: - Leagues
 extension LeagueRemoteDataSource {
 
-    func getAllLeagues(sportDto: SportTypeDto) async throws -> [LeagueDto] {
+    func getAllLeagues(sportType: SportType) async throws -> [LeagueDto] {
         let response: ResponseDto<LeagueDto> = try await client.perform(
-            LeaguesBaseAppRequest(sportDto: sportDto)
+            LeaguesBaseAppRequest(sportType: sportType)
         )
         guard response.success == 1 else {
             throw NetworkError.serverError(statusCode: 500)

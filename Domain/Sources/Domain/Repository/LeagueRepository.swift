@@ -6,5 +6,5 @@
 //
 
 public protocol LeagueRepository {
-    func getAllLeagues(sport: SportType) async throws -> [League]
+    func getAllLeagues(sportType: SportType) async throws -> [League]
 }

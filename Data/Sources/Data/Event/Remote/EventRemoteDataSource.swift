@@ -7,6 +7,7 @@
 
 import Networking
 import Foundation
+import Domain
 
 public class EventRemoteDataSource {
 
@@ -21,35 +22,35 @@ public class EventRemoteDataSource {
 
 extension EventRemoteDataSource {
 
-    func getUpcomingEvents(sportDto: SportTypeDto, leagueId: Int) async throws -> [EventDto] {
+    func getUpcomingEvents(sportType: SportType, leagueId: Int) async throws -> [EventDto] {
         let oneMonthFromNow = Calendar.current.date(
             byAdding: .month,
             value: 1,
             to: .now
         )
         return try await getEvents(
-            sportDto: sportDto,
+            sportType: sportType,
             leagueId: leagueId,
             fromDate: .now,
             toDate: oneMonthFromNow
         )
     }
 
-    func getLatestEvents(sportDto: SportTypeDto, leagueId: Int) async throws -> [EventDto] {
+    func getLatestEvents(sportType: SportType, leagueId: Int) async throws -> [EventDto] {
         let oneYearAgo = Calendar.current.date(
             byAdding: .year,
             value: -1,
             to: .now
         )
         return try await getEvents(
-            sportDto: sportDto,
+            sportType: sportType,
             leagueId: leagueId,
             fromDate: oneYearAgo,
             toDate: .now
         )
     }
 
-    private func getEvents(sportDto: SportTypeDto, leagueId: Int, fromDate: Date?, toDate: Date?) async throws -> [EventDto] {
+    private func getEvents(sportType: SportType, leagueId: Int, fromDate: Date?, toDate: Date?) async throws -> [EventDto] {
         guard let fromDate, let toDate else {
             throw DataException.dateCalculationFailed
         }
@@ -62,7 +63,7 @@ extension EventRemoteDataSource {
             "to" : endDate,
         ]
         let response: ResponseDto<EventDto> =  try await client.perform(
-            EventBaseAppRequest(sportDto: sportDto, extraParams: params)
+            EventBaseAppRequest(sportType: sportType, extraParams: params)
         )
         guard response.success == 1 else {
             throw NetworkError.serverError(statusCode: 500)

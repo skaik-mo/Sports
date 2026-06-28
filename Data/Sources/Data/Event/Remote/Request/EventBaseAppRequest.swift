@@ -7,6 +7,7 @@
 
 import Networking
 import Foundation
+import Domain
 
 class EventBaseAppRequest: BaseAppRequest {
     private var extraParams: Parameters
@@ -21,9 +22,9 @@ class EventBaseAppRequest: BaseAppRequest {
         return params
     }
 
-    init(sportDto: SportTypeDto, extraParams: Parameters) {
+    init(sportType: SportType, extraParams: Parameters) {
         self.extraParams = extraParams
-        super.init(sportDto: sportDto)
+        super.init(sportType: sportType)
     }
 
 }

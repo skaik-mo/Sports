@@ -27,13 +27,12 @@ public final class LeagueRepositoryImpl: LeagueRepository {
 // MARK: - Leagues
 extension LeagueRepositoryImpl {
 
-    public func getAllLeagues(sport: SportType) async throws -> [League] {
-        let sportDto = SportTypeDto.sportMapper(from: sport)
+    public func getAllLeagues(sportType: SportType) async throws -> [League] {
         do {
-            return try await getRemoteLeagues(sportDto: sportDto)
+            return try await getRemoteLeagues(sportType: sportType)
 
         } catch let error as NetworkError where error == .noInternetConnection {
-            let snapshots = try await getLocalLeagues(sportDto: sportDto)
+            let snapshots = try await getLocalLeagues(sportType: sportType)
             return snapshots.map { $0.toDomain() }
         }
     }
@@ -41,16 +40,17 @@ extension LeagueRepositoryImpl {
 
 private extension LeagueRepositoryImpl {
 
-    func getRemoteLeagues(sportDto: SportTypeDto) async throws -> [League] {
-        let dtos = try await remote.getAllLeagues(sportDto: sportDto)
-        let caches = dtos.map { $0.toCache(sportDto: sportDto) }
-        try await local.clearAllLeagues(sportDto: sportDto)
+    func getRemoteLeagues(sportType: SportType) async throws -> [League] {
+        let dtos = try await remote.getAllLeagues(sportType: sportType)
+        let sportPath = sportType.path
+        let caches = dtos.map { $0.toCache(sportPath: sportPath) }
+        try await local.clearAllLeagues(sportPath: sportPath)
         try await local.saveAllLeagues(leagues: caches)
         return dtos.map { $0.toDomain() }
     }
 
-    func getLocalLeagues(sportDto: SportTypeDto) async throws -> [LeagueCacheModel] {
-        let snapshots = try await local.getAllLeagues(sportDto: sportDto)
+    func getLocalLeagues(sportType: SportType) async throws -> [LeagueCacheModel] {
+        let snapshots = try await local.getAllLeagues(sportPath: sportType.path)
         guard !snapshots.isEmpty else {
             throw DataException.noDataFound
         }

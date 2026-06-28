@@ -23,9 +23,8 @@ public class TeamRepositoryImpl: TeamRepository {
 
 extension TeamRepositoryImpl {
 
-    public func getLeagueTeams(sport: SportType, leagueId: Int) async throws -> [Team] {
-        let sportDto = SportTypeDto.sportMapper(from: sport)
-        let dtos = try await remote.getLeagueTeams(sportDto: sportDto, leagueId: leagueId)
+    public func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Team] {
+        let dtos = try await remote.getLeagueTeams(sportType: sportType, leagueId: leagueId)
         return dtos.map { $0.toDomain() }
     }
 }
