@@ -23,10 +23,7 @@ public final class LeagueLocalDataSource {
 // MARK: - Read
 extension LeagueLocalDataSource {
 
-    func getAllLeagues(sportDto: SportTypeDto) throws -> [LeagueCacheModel] {
-
-        let sportPath = sportDto.path
-
+    func getAllLeagues(sportPath: String) throws -> [LeagueCacheModel] {
         let descriptor = FetchDescriptor<LeagueCache>(
             predicate: #Predicate { $0.sport == sportPath },
             sortBy: [SortDescriptor(\.name)]
@@ -57,10 +54,9 @@ extension LeagueLocalDataSource {
         try context.save()
     }
 
-    func clearAllLeagues(sportDto: SportTypeDto) throws {
-        let sportDtoPath: String = sportDto.path
+    func clearAllLeagues(sportPath: String) throws {
         let predicate = #Predicate<LeagueCache> { league in
-            league.sport == sportDtoPath
+            league.sport == sportPath
         }
         try context.delete(model: LeagueCache.self, where: predicate)
         try context.save()

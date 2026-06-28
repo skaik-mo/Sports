@@ -7,12 +7,13 @@
 
 
 import Networking
+import Domain
 
 open class BaseAppRequest: BaseRequest {
-    private let sportDto: SportTypeDto
+    private let sportType: SportType
 
-    init(sportDto: SportTypeDto) {
-        self.sportDto = sportDto
+    init(sportType: SportType) {
+        self.sportType = sportType
     }
 
     override open var baseUrl: String {
@@ -20,7 +21,7 @@ open class BaseAppRequest: BaseRequest {
     }
 
     open override var endpoint: String {
-        self.sportDto.path + "/"
+        self.sportType.path
     }
 
     open override var parameters: Parameters {

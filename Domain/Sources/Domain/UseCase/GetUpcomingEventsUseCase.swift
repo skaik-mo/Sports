@@ -12,7 +12,7 @@ public class GetUpcomingEventsUseCase{
         self.repository = repository
     }
 
-    public func execute(sport: SportType, leagueId: Int) async throws -> [Event] {
-        try await repository.getUpcomingEvents(sport: sport, leagueId: leagueId)
+    public func execute(sportType: SportType, leagueId: Int) async throws -> [Event] {
+        try await repository.getUpcomingEvents(sportType: sportType, leagueId: leagueId)
     }
 }

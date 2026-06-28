@@ -12,7 +12,7 @@ public class GetTeamsUseCase {
         self.repository = repository
     }
 
-    public func execute(sport: SportType, leagueId: Int) async throws -> [Team] {
-        try await repository.getLeagueTeams(sport: sport, leagueId: leagueId)
+    public func execute(sportType: SportType, leagueId: Int) async throws -> [Team] {
+        try await repository.getLeagueTeams(sportType: sportType, leagueId: leagueId)
     }
 }

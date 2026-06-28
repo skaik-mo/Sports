@@ -6,5 +6,5 @@
 //
 
 public protocol TeamRepository {
-    func getLeagueTeams(sport: SportType, leagueId: Int) async throws -> [Team]
+    func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Team]
 }

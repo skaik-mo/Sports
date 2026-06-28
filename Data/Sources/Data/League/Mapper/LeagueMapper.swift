@@ -21,12 +21,12 @@ extension LeagueDto {
         )
     }
 
-    func toCache(sportDto: SportTypeDto) -> LeagueCache {
+    func toCache(sportPath: String) -> LeagueCache {
         LeagueCache(
             id: league_key,
             name: league_name.orEmpty(),
             logo: league_logo,
-            sport: sportDto.path,
+            sport: sportPath,
             countryId: country_key,
             countryName: country_name.orEmpty(),
             countryLogo: country_logo.orEmpty()

@@ -12,7 +12,7 @@ public class GetLatestEventsUseCase {
         self.repository = repository
     }
 
-    public func execute(sport: SportType, leagueId: Int) async throws -> [Event] {
-        try await repository.getLatestEvents(sport: sport, leagueId: leagueId)
+    public func execute(sportType: SportType, leagueId: Int) async throws -> [Event] {
+        try await repository.getLatestEvents(sportType: sportType, leagueId: leagueId)
     }
 }
