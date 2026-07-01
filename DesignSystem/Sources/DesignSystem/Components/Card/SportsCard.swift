@@ -12,7 +12,6 @@ public struct SportsCard: View {
     let title: String
     let height: CGFloat?
     let font: Font
-    let padding: CGFloat
     let onTap: () -> Void
 
     public init(
@@ -20,14 +19,12 @@ public struct SportsCard: View {
         title: String,
         height: CGFloat? = nil,
         font: Font,
-        padding: CGFloat,
         onTap: @escaping () -> Void
     ) {
         self.image = image
         self.title = title
         self.height = height
         self.font = font
-        self.padding = padding
         self.onTap = onTap
     }
 
@@ -42,7 +39,7 @@ public struct SportsCard: View {
                     .font(font)
                     .foregroundStyle(AppColors.primaryText)
             }
-            .padding(padding)
+            .padding(AppSpacing.lg)
             .background(AppColors.secondaryBackground)
             .radius(radius: AppRadius.large)
             .shadow(
@@ -61,7 +58,6 @@ public struct SportsCard: View {
         title: "Basketball",
         height: nil,
         font: .headline,
-        padding: 12
     ) {
         print("SportsCard tapped")
     }

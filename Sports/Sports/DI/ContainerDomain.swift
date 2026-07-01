@@ -32,4 +32,10 @@ extension Container {
             GetTeamsUseCase(repository: self.teamRepository())
         }
     }
+
+    var getAllSportTypeUseCase: Factory<GetAllSportTypeUseCase> {
+        self {
+            GetAllSportTypeUseCase()
+        }
+    }
 }

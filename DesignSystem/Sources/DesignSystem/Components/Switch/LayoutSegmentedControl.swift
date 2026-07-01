@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-public struct LayoutSegmentedControl: View {
-    @Binding public var showsGrid: Bool
+public protocol SegmentedLayoutOption: Hashable, CaseIterable {
+    var systemImage: String { get }
+}
+
+public struct LayoutSegmentedControl<Option: SegmentedLayoutOption>: View {
+    @Binding public var selection: Option
     @Namespace private var namespace
 
     private let animation = Animation.spring(
@@ -16,27 +20,20 @@ public struct LayoutSegmentedControl: View {
         dampingFraction: 0.8
     )
 
-    public init(showsGrid: Binding<Bool>) {
-        self._showsGrid = showsGrid
+    public init(selection: Binding<Option>) {
+        self._selection = selection
     }
 
     public var body: some View {
         HStack(spacing: 0) {
-            segment(
-                isActive: showsGrid,
-                systemImage: AppIcon.grid2x2,
-            ) {
-                withAnimation(animation) {
-                    showsGrid = true
-                }
-            }
-
-            segment(
-                isActive: !showsGrid,
-                systemImage: AppIcon.list1x2,
-            ) {
-                withAnimation(animation) {
-                    showsGrid = false
+            ForEach(Array(Option.allCases), id: \.self) { option in
+                segment(
+                    isActive: selection == option,
+                    systemImage: option.systemImage
+                ) {
+                    withAnimation(animation) {
+                        selection = option
+                    }
                 }
             }
         }
@@ -78,11 +75,3 @@ private extension LayoutSegmentedControl {
     }
 }
 
-
-#Preview {
-    @Previewable @State var isGrid = true
-    ZStack {
-        Color.gray.opacity(0.2).ignoresSafeArea()
-        LayoutSegmentedControl(showsGrid: $isGrid)
-    }
-}

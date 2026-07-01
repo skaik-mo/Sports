@@ -6,7 +6,13 @@
 //
 
 import FactoryKit
+import Presentation
 
 extension Container {
 
+    var homeViewModel: Factory<HomeViewModel> {
+        self {
+            HomeViewModel(getAllSportTypeUseCase: self.getAllSportTypeUseCase())
+        }
+    }
 }

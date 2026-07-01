@@ -5,7 +5,7 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-public enum SportType: CaseIterable {
+public enum SportType: CaseIterable, Hashable {
     case football
     case cricket
     case basketball

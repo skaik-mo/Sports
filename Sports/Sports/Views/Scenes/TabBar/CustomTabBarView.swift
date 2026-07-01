@@ -15,11 +15,11 @@ struct CustomTabBarView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                CustomNavView(coordinator: homeCoordinator) {
-                    HomeView(viewModel: .init(coordinator: homeCoordinator))
-                }
-                    .tag(TabbedItems.home)
-                    .toolbar(.hidden, for: .tabBar)
+//                CustomNavView(coordinator: homeCoordinator) {
+//                    HomeView(viewModel: .init(coordinator: homeCoordinator))
+//                }
+//                    .tag(TabbedItems.home)
+//                    .toolbar(.hidden, for: .tabBar)
 
                 CustomNavView(coordinator: favoriteCoordinator) {
                     FavoriteView(viewModel: .init(coordinator: favoriteCoordinator))
