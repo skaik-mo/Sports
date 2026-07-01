@@ -12,6 +12,7 @@
 		E7C2EEC02FCE7E0E00573CE8 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = E7C2EEBF2FCE7E0E00573CE8 /* Data */; };
 		E7C2EEC22FCE7E0E00573CE8 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = E7C2EEC12FCE7E0E00573CE8 /* Domain */; };
 		E7C2EEC42FCE7E0E00573CE8 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = E7C2EEC32FCE7E0E00573CE8 /* Presentation */; };
+		E7D713072FF1FD9100B26C61 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = E7D713062FF1FD9100B26C61 /* DesignSystem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 				E7C2EEC42FCE7E0E00573CE8 /* Presentation in Frameworks */,
 				E7C2EEC22FCE7E0E00573CE8 /* Domain in Frameworks */,
 				E70324E82FEDB0D000A6C8D0 /* FactoryKit in Frameworks */,
+				E7D713072FF1FD9100B26C61 /* DesignSystem in Frameworks */,
 				E753F0292FDE282500A07D89 /* Networking in Frameworks */,
 				E7C2EEC02FCE7E0E00573CE8 /* Data in Frameworks */,
 			);
@@ -183,6 +185,7 @@
 				E7C2EEC32FCE7E0E00573CE8 /* Presentation */,
 				E753F0282FDE282500A07D89 /* Networking */,
 				E70324E72FEDB0D000A6C8D0 /* FactoryKit */,
+				E7D713062FF1FD9100B26C61 /* DesignSystem */,
 			);
 			productName = Sports;
 			productReference = E7CA78422CA8550400926FD0 /* Sports.app */;
@@ -578,6 +581,10 @@
 		E7C2EEC32FCE7E0E00573CE8 /* Presentation */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Presentation;
+		};
+		E7D713062FF1FD9100B26C61 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

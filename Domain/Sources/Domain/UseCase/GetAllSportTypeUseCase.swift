@@ -5,8 +5,11 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-class GetAllSportTypeUseCase {
-    func execute() -> [SportType] {
+public class GetAllSportTypeUseCase {
+
+    public init() {}
+
+    public func execute() -> [SportType] {
         return SportType.allCases
     }
 }
