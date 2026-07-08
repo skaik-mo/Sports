@@ -40,8 +40,8 @@ enum HomeLayoutStyle: SegmentedLayoutOption {
 
     var systemImage: String {
         switch self {
-        case .waterfall: return AppIcons.grid2x2
-        case .list: return AppIcons.list1x2
+        case .waterfall: return AppIcons.gridSystem
+        case .list: return AppIcons.listSystem
         }
     }
 

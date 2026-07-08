@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
 
     func radius(radius: CGFloat, style: RoundedCornerStyle = .continuous) -> some View {
         self.clipShape(RoundedRectangle(cornerRadius: radius, style: style))

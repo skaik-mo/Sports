@@ -15,4 +15,12 @@ extension Container {
             HomeViewModel(getAllSportTypeUseCase: self.getAllSportTypeUseCase())
         }
     }
+
+    var leaguesViewModel: Factory<LeaguesViewModel> {
+        self {
+            MainActor.assumeIsolated {
+                LeaguesViewModel(sportType: .football, getAllLeaguesUseCase: self.getAllLeaguesUseCase())
+            }
+        }
+    }
 }
