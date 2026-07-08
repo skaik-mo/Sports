@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol APIErrorParserProtocol {
+public protocol APIErrorParserProtocol: Sendable {
     func parse(_ data: Data) -> NetworkError?
 }

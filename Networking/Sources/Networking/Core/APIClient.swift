@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class APIClient {
+public final class APIClient: Sendable {
 
     // MARK: - Properties
     private let network: NetworkManagerProtocol

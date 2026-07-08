@@ -5,6 +5,6 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-public protocol LeagueRepository {
+public protocol LeagueRepository: Sendable {
     func getAllLeagues(sportType: SportType) async throws -> [League]
 }
