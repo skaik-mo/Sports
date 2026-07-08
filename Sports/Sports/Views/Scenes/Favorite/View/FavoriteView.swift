@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 struct FavoriteView: View {
     @Environment(\.modelContext) private var modelContext
@@ -54,7 +55,11 @@ extension FavoriteView {
             Button {
                 viewModel.navigateToEvents(favorite)
             } label: {
-                LeagueCell(league: favorite.league)
+                LeagueCard(
+                    logo: favorite.league.league_logo ?? "",
+                    leagueName: favorite.league.league_name ?? "",
+                    countryName: favorite.league.country_name ?? ""
+                )
             }
                 .swipeActions {
                 SwipeButton(favorite)
