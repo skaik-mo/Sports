@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol NetworkManagerProtocol {
+public protocol NetworkManagerProtocol: Sendable {
     func request(_ request: BaseRequest) async throws -> Data
 }

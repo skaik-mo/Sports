@@ -5,7 +5,8 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-public class GetAllLeaguesUseCase {
+
+public final class GetAllLeaguesUseCase: Sendable {
     private let repository: LeagueRepository
 
     public init(repository: LeagueRepository) {

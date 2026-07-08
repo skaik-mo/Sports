@@ -23,12 +23,16 @@ public class EventRepositoryImpl: EventRepository {
 public extension EventRepositoryImpl {
 
     func getUpcomingEvents(sportType: SportType, leagueId: Int) async throws -> [Event] {
-        let dtos = try await remote.getUpcomingEvents(sportType: sportType, leagueId: leagueId)
-        return try dtos.map { try $0.toDomain() }
+        try await safeCall {
+            let dtos = try await remote.getUpcomingEvents(sportType: sportType, leagueId: leagueId)
+            return try dtos.map { try $0.toDomain() }
+        }
     }
     
     func getLatestEvents(sportType: SportType, leagueId: Int) async throws -> [Event] {
-        let dtos = try await remote.getLatestEvents(sportType: sportType, leagueId: leagueId)
-        return try dtos.map { try $0.toDomain() }
+        try await safeCall {
+            let dtos = try await remote.getLatestEvents(sportType: sportType, leagueId: leagueId)
+            return try dtos.map { try $0.toDomain() }
+        }
     }
 }

@@ -19,7 +19,7 @@ extension EventDto {
                 from: "\(event_date) \(event_time)"
               )
         else {
-            throw DataException.invalidDate
+            throw DomainException.invalidDate
         }
 
         return Event(

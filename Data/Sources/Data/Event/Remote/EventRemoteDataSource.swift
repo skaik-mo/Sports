@@ -52,7 +52,7 @@ extension EventRemoteDataSource {
 
     private func getEvents(sportType: SportType, leagueId: Int, fromDate: Date?, toDate: Date?) async throws -> [EventDto] {
         guard let fromDate, let toDate else {
-            throw DataException.dateCalculationFailed
+            throw DomainException.dateCalculationFailed
         }
         let formatter = DateFormatter.dateFormat(format: "yyyy-MM-dd")
         let startDate = formatter.string(from: fromDate)
