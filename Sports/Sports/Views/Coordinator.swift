@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Presentation
+import FactoryKit
 
 // MARK: - Coordinator
 @MainActor
@@ -35,7 +37,7 @@ final class DefaultCoordinator: RoutableCoordinator {
     func view(for route: Route) -> some View {
         switch route {
         case .LeaguesView(let sport):
-            LeaguesView(viewModel: .init(coordinator: self, networkService: requestBuilder, sport: sport))
+            LeaguesView(viewModel: Container.shared.leaguesViewModel())
         case .EventsView(let sport, let league):
             EventsView(viewModel: .init(coordinator: self, networkService: requestBuilder, sport: sport, league: league))
         }

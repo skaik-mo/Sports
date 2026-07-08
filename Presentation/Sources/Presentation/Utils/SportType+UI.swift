@@ -27,4 +27,17 @@ extension SportType {
         case .tennis: return AppImages.tennis
         }
     }
+
+    var icon: String {
+        switch self {
+        case .football:
+            return AppIcons.footballSystem
+        case .basketball:
+            return AppIcons.basketballSystem
+        case .cricket:
+            return AppIcons.cricketSystem
+        case .tennis:
+            return AppIcons.tennisSystem
+        }
+    }
 }
