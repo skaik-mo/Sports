@@ -8,7 +8,8 @@
 import Domain
 
 extension DomainException {
-    var userMessage: String {
+
+    var localizedDescription: String {
         switch self {
         // MARK: - Network
         case .unauthorized: return L10n.Error.unauthorized
