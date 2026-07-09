@@ -17,7 +17,7 @@ public struct LeaguesView: View {
 
     public var body: some View {
         Group {
-            switch viewModel.state {
+            switch viewModel.state.leaguesState {
             case .loading:
                 LoadingView()
 
@@ -35,7 +35,7 @@ public struct LeaguesView: View {
                 ErrorView(
                     message: message,
                     onRetry: {
-                        Task { await viewModel.getLeagues() }
+                        viewModel.getLeagues()
                     }
                 )
             }
@@ -45,7 +45,10 @@ public struct LeaguesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchText)
         .task {
-            await viewModel.getLeagues()
+            viewModel.getLeagues()
+        }
+        .onDisappear {
+            viewModel.cancelAllTasks()
         }
     }
 }

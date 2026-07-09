@@ -7,7 +7,7 @@
 
 import Domain
 
-public class EventRepositoryImpl: EventRepository {
+public final class EventRepositoryImpl: EventRepository {
 
     // MARK: - Properties
     private let remote: EventRemoteDataSource

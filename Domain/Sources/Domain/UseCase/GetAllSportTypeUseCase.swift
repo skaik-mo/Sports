@@ -5,7 +5,7 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-public class GetAllSportTypeUseCase {
+public final class GetAllSportTypeUseCase {
 
     public init() {}
 

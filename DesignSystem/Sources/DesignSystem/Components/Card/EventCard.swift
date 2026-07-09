@@ -10,7 +10,7 @@ import SwiftUI
 struct EventCard<PlaceholderView: View, FailureView: View>: View {
     private let date: String
     private let vs: String
-    private let score: String?
+    private let score: String
     private let time: String
     private let homeTeamName: String
     private let homeTeamLogo: String
@@ -22,7 +22,7 @@ struct EventCard<PlaceholderView: View, FailureView: View>: View {
     public init(
         date: String,
         vs: String,
-        score: String?,
+        score: String,
         time: String,
         homeTeamName: String,
         homeTeamLogo: String,
@@ -62,7 +62,7 @@ struct EventCard<PlaceholderView: View, FailureView: View>: View {
                     Text(vs)
                         .font(AppFonts.medium26)
                         .foregroundStyle(AppColors.primaryText)
-                    if let score = score, score != "-" {
+                    if !score.isEmpty || score != "-" {
                         Text(score)
                             .font(AppFonts.medium20)
                             .foregroundStyle(AppColors.primaryText)
@@ -93,7 +93,7 @@ struct EventCard<PlaceholderView: View, FailureView: View>: View {
     EventCard(
         date: "2024-11-10",
         vs: "VS",
-        score: nil,
+        score: "",
         time: "20:00",
         homeTeamName: "Athletic Club de Bilbao",
         homeTeamLogo: "https://media.api-sports.io/football/teams/531.png",
