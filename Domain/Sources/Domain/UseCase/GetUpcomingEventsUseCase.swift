@@ -5,7 +5,7 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-public class GetUpcomingEventsUseCase{
+public final class GetUpcomingEventsUseCase: Sendable {
     private let repository: EventRepository
 
     public init(repository: EventRepository) {

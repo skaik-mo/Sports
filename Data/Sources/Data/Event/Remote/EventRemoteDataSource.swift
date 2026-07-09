@@ -9,7 +9,7 @@ import Networking
 import Foundation
 import Domain
 
-public class EventRemoteDataSource {
+public final class EventRemoteDataSource: Sendable {
 
     // MARK: - Properties
     private let client: APIClient

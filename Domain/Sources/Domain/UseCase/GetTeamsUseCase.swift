@@ -5,7 +5,7 @@
 //  Created by Mohammed Skaik on 09/06/2026.
 //
 
-public class GetTeamsUseCase {
+public final class GetTeamsUseCase: Sendable {
     private let repository: TeamRepository
 
     public init(repository: TeamRepository) {

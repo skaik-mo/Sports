@@ -8,7 +8,7 @@
 import Networking
 import Domain
 
-public final class TeamRemoteDataSource {
+public final class TeamRemoteDataSource: Sendable {
 
     // MARK: - Properties
     private let client: APIClient

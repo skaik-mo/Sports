@@ -7,7 +7,7 @@
 
 import Domain
 
-public class TeamRepositoryImpl: TeamRepository {
+public final class TeamRepositoryImpl: TeamRepository {
 
     // MARK: - Properties
     private let remote: TeamRemoteDataSource
