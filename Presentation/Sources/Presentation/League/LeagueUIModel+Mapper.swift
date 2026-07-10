@@ -8,8 +8,8 @@
 import Domain
 
 extension League {
-    func toUIModel() -> LeagueUI {
-        LeagueUI(
+    func toUIModel() -> LeagueUIModel {
+        LeagueUIModel(
             id: id,
             leagueName: name,
             leagueLogo: logo.orEmpty(),
@@ -19,7 +19,7 @@ extension League {
 }
 
 extension Array where Element == League {
-    func toUIModels() -> [LeagueUI] {
+    func toUIModels() -> [LeagueUIModel] {
         map { $0.toUIModel() }
     }
 }

@@ -12,7 +12,7 @@ public final class LeaguesViewModel: BaseViewModel<LeagueState> {
     private var getAllLeaguesUseCase: GetAllLeaguesUseCase
     private(set) var sportType: SportType
     var searchText: String = ""
-    var filteredLeagues: [LeagueUI] {
+    var filteredLeagues: [LeagueUIModel] {
         guard case .success(let leagues) = state.leaguesState else { return [] }
         guard !searchText.isEmpty else { return leagues }
         return leagues.filter {
@@ -51,7 +51,7 @@ extension LeaguesViewModel {
         }
     }
 
-    private func getLeagueSuccess() -> ([LeagueUI]) -> Void {
+    private func getLeagueSuccess() -> ([LeagueUIModel]) -> Void {
         return { [weak self] leagues in
             self?.updateState(
                 key: \.leaguesState,

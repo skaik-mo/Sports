@@ -8,7 +8,7 @@
 import Domain
 
 extension Event {
-    func toUIModel() -> EventUI? {
+    func toUIModel() -> EventUIModel? {
         guard let homeTeam = teams?.homeTeam, let awayTeam = teams?.awayTeam else {
             return nil
         }
@@ -23,7 +23,7 @@ extension Event {
                 .hour(.twoDigits(amPM: .omitted))
                 .minute()
         )
-        return EventUI(
+        return EventUIModel(
             id: id,
             date: dateFormatted.orEmpty(),
             time: timeFormatted.orEmpty(),
@@ -35,7 +35,7 @@ extension Event {
 }
 
 extension Array where Element == Event {
-    func toUIModel() -> [EventUI] {
+    func toUIModel() -> [EventUIModel] {
         compactMap { $0.toUIModel() }
     }
 }

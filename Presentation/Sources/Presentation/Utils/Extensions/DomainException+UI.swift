@@ -7,10 +7,10 @@
 
 import Domain
 
-extension DomainException {
+extension Error {
 
     var localizedDescription: String {
-        switch self {
+        switch self as? DomainException {
         // MARK: - Network
         case .unauthorized: return L10n.Error.unauthorized
         case .forbidden: return L10n.Error.forbidden
@@ -27,7 +27,7 @@ extension DomainException {
         case .invalidDate: return L10n.Error.invalidDate
 
         // MARK: - General
-        case .unknown: return L10n.Error.unknown
+        case .unknown, .none: return L10n.Error.unknown
         }
     }
 }
