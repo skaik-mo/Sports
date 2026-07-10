@@ -122,6 +122,83 @@
         }
       }
     },
+    "events.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Matches Available"
+          }
+        }
+      }
+    },
+    "events.latest_matches" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest Matches"
+          }
+        }
+      }
+    },
+    "events.players" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Players"
+          }
+        }
+      }
+    },
+    "events.teams" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teams"
+          }
+        }
+      }
+    },
+    "events.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Matches"
+          }
+        }
+      }
+    },
+    "events.upcoming_matches" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upcoming Matches"
+          }
+        }
+      }
+    },
+    "events.vs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VS"
+          }
+        }
+      }
+    },
     "general.retry" : {
       "extractionState" : "manual",
       "localizations" : {

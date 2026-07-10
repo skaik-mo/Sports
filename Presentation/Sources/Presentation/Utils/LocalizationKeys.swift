@@ -16,14 +16,23 @@ enum L10n {
     }
 
     enum Leagues {
-        public static func title(_ sportType: String) -> String {
+        static func title(_ sportType: String) -> String {
             String(format: "leagues.title".localized, sportType)
         }
 
-        public static func empty(_ sportType: String) -> String {
+        static func empty(_ sportType: String) -> String {
             String(format: "leagues.empty".localized, sportType)
         }
+    }
 
+    enum Events {
+        static let vs: String = "events.vs".localized
+        static let upcomingMatches: String = "events.upcoming_matches".localized
+        static let latest_matches: String = "events.latest_matches".localized
+        static let title: String = "events.title".localized
+        static let teams: String = "events.teams".localized
+        static let players: String = "events.players".localized
+        static let empty: String = "events.empty".localized
     }
 
     enum General {
@@ -31,17 +40,17 @@ enum L10n {
     }
 
     enum Error {
-        public static let unauthorized = "error.unauthorized".localized
-        public static let forbidden = "error.forbidden".localized
-        public static let notFound = "error.not_found".localized
-        public static let serverError = "error.server".localized
-        public static let noInternet = "error.no_internet".localized
-        public static let timeout = "error.timeout".localized
-        public static let decodingFailed = "error.decoding".localized
-        public static let noDataFound = "error.no_data_found".localized
-        public static let dateCalculation = "error.date_calculation".localized
-        public static let invalidDate = "error.invalid_date".localized
-        public static let unknown = "error.unknown".localized
+        static let unauthorized = "error.unauthorized".localized
+        static let forbidden = "error.forbidden".localized
+        static let notFound = "error.not_found".localized
+        static let serverError = "error.server".localized
+        static let noInternet = "error.no_internet".localized
+        static let timeout = "error.timeout".localized
+        static let decodingFailed = "error.decoding".localized
+        static let noDataFound = "error.no_data_found".localized
+        static let dateCalculation = "error.date_calculation".localized
+        static let invalidDate = "error.invalid_date".localized
+        static let unknown = "error.unknown".localized
     }
 
 }

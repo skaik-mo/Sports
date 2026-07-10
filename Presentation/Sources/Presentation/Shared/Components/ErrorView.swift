@@ -26,8 +26,7 @@ struct ErrorView: View {
                 .background(AppColors.primary)
                 .radius(radius: AppRadius.medium)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(AppColors.background)
+        .padding(AppSpacing.xxl)
     }
 }
 

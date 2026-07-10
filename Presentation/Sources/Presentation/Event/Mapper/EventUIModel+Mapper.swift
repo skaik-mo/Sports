@@ -9,24 +9,17 @@ import Domain
 
 extension Event {
     func toUIModel() -> EventUIModel? {
-        guard let homeTeam = teams?.homeTeam, let awayTeam = teams?.awayTeam else {
+        guard let homeTeam = teams?.homeTeam,
+              let awayTeam = teams?.awayTeam,
+              let date else {
             return nil
         }
-        let dateFormatted = date?.formatted(
-            .dateTime
-                .year()
-                .month(.twoDigits)
-                .day()
-        )
-        let timeFormatted = date?.formatted(
-            .dateTime
-                .hour(.twoDigits(amPM: .omitted))
-                .minute()
-        )
+        let dateFormatted = date.ddMMyyyy
+        let timeFormatted = date.timeFormatted
         return EventUIModel(
             id: id,
-            date: dateFormatted.orEmpty(),
-            time: timeFormatted.orEmpty(),
+            date: dateFormatted,
+            time: timeFormatted,
             finalResult: finalResult.orEmpty(),
             homeTeams: homeTeam.toUIModel(),
             awayTeams: awayTeam.toUIModel()
