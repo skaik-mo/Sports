@@ -9,8 +9,8 @@ import SwiftUI
 import DesignSystem
 
 struct LeagueList: View {
-    var leagues: [LeagueUI]
-    let onTap: (LeagueUI) -> Void
+    var leagues: [LeagueUIModel]
+    let onTap: (LeagueUIModel) -> Void
 
     var body: some View {
         List(leagues) { league in

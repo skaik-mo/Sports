@@ -30,7 +30,7 @@ enum L10n {
         static let retry = "general.retry".localized
     }
 
-    public enum Error {
+    enum Error {
         public static let unauthorized = "error.unauthorized".localized
         public static let forbidden = "error.forbidden".localized
         public static let notFound = "error.not_found".localized

@@ -8,8 +8,8 @@
 import Domain
 
 extension Team {
-    func toUIModel() -> TeamUI {
-        TeamUI(
+    func toUIModel() -> TeamUIModel {
+        TeamUIModel(
             id: id,
             name: name.orEmpty(),
             logo: logoUrl.orEmpty()
@@ -18,7 +18,7 @@ extension Team {
 }
 
 extension Array where Element == Team {
-    func toUIModels() -> [TeamUI] {
+    func toUIModels() -> [TeamUIModel] {
         map { $0.toUIModel() }
     }
 }

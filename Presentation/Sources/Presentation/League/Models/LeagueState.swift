@@ -6,5 +6,5 @@
 //
 
 public struct LeagueState {
-    var leaguesState: ViewState<[LeagueUI]> = .loading
+    var leaguesState: ViewState<[LeagueUIModel]> = .loading
 }
