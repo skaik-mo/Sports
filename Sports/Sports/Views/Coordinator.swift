@@ -39,7 +39,7 @@ final class DefaultCoordinator: RoutableCoordinator {
         case .LeaguesView(let sport):
             LeaguesView(viewModel: Container.shared.leaguesViewModel())
         case .EventsView(let sport, let league):
-            EventsView(viewModel: .init(coordinator: self, networkService: requestBuilder, sport: sport, league: league))
+            EventsView(viewModel: Container.shared.eventsViewModel())
         }
     }
 }

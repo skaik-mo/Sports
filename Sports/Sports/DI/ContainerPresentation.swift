@@ -19,7 +19,24 @@ extension Container {
     var leaguesViewModel: Factory<LeaguesViewModel> {
         self {
             MainActor.assumeIsolated {
-                LeaguesViewModel(sportType: .football, getAllLeaguesUseCase: self.getAllLeaguesUseCase())
+                LeaguesViewModel(
+                    sportType: .football, // Change it so that it is passed from another interface.
+                    getAllLeaguesUseCase: self.getAllLeaguesUseCase()
+                )
+            }
+        }
+    }
+
+    var eventsViewModel: Factory<EventsViewModel> {
+        self {
+            MainActor.assumeIsolated {
+                EventsViewModel(
+                    getUpcomingEventsUseCase: self.getUpcomingEventsUseCase(),
+                    getLatestEventsUseCase: self.getLatestEventsUseCase(),
+                    getTeamsUseCase: self.getTeamsUseCase(),
+                    sportType: .football, // Change it so that it is passed from another interface.
+                    leagueId: 1 // Change it so that it is passed from another interface.
+                )
             }
         }
     }

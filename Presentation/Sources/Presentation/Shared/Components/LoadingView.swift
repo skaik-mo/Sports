@@ -11,8 +11,7 @@ import DesignSystem
 struct LoadingView: View {
     var body: some View {
         ProgressView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(AppColors.background)
+            .padding(AppSpacing.xxl)
     }
 }
 

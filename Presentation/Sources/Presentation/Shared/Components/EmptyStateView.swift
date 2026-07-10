@@ -17,8 +17,7 @@ struct EmptyStateView: View {
             message: message,
             iconSystem: iconSystem
         )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(AppColors.background)
+        .padding(AppSpacing.xxl)
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Domain
 
-public final class EventViewModel: BaseViewModel<EventState> {
+public final class EventsViewModel: BaseViewModel<EventState> {
     private let getUpcomingEventsUseCase: GetUpcomingEventsUseCase
     private let getLatestEventsUseCase: GetLatestEventsUseCase
     private let getTeamsUseCase: GetTeamsUseCase
@@ -36,7 +36,7 @@ public final class EventViewModel: BaseViewModel<EventState> {
 }
 
 
-extension EventViewModel {
+extension EventsViewModel {
 
     func getData() {
         tryToExecute(
@@ -80,5 +80,12 @@ extension EventViewModel {
                 to: .failure(error.localizedDescription)
             )
         }
+    }
+}
+
+extension EventsViewModel {
+
+    func isTennisSport() -> Bool {
+        sportType == SportType.tennis
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EventCard<PlaceholderView: View, FailureView: View>: View {
+public struct EventCard<PlaceholderView: View, FailureView: View>: View {
     private let date: String
     private let vs: String
     private let score: String
@@ -43,7 +43,7 @@ struct EventCard<PlaceholderView: View, FailureView: View>: View {
         self.failureView = failureView()
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: AppSpacing.md) {
             Text(date)
                 .font(AppFonts.regular16)
