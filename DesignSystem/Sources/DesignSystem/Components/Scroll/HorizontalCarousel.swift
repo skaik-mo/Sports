@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct HorizontalCarousel<T: Identifiable, Content: View>: View {
+public struct HorizontalCarousel<T: Identifiable, Content: View>: View {
     private let items: [T]
     @ViewBuilder private let content: (_ item: T) -> Content
 
-    init(
+    public init(
         items: [T],
         content: @escaping (_ item: T) -> Content
     ) {
@@ -19,7 +19,7 @@ struct HorizontalCarousel<T: Identifiable, Content: View>: View {
         self.content = content
     }
 
-    var body: some View {
+    public var body: some View {
         if items.isEmpty {
             EmptyView()
         } else {
