@@ -51,11 +51,13 @@ platform :ios do
     affected
   end
 
-  desc "Print affected module names as a JSON array (consumed by the GitHub Actions matrix)"
+  desc "Write affected module names as a JSON array to a file (consumed by the GitHub Actions matrix)"
   lane :print_changed_modules do |options|
     modules = changed_modules(base: options[:base])
     names = modules.map { |m| m[:name] }
-    puts names.to_json
+  
+    File.write("changed_modules.json", names.to_json)
+    UI.message "📦 Wrote changed_modules.json: #{names.to_json}"
   end
 
   # ============================================================

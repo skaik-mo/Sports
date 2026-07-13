@@ -38,7 +38,12 @@ jobs:
       - name: Detect affected modules
         id: detect
         run: |
-          MODULES=$(bundle exec fastlane ios print_changed_modules base:${{ steps.base.outputs.ref }} 2>&1 | tail -1)
+          bundle exec fastlane ios print_changed_modules base:${{ steps.base.outputs.ref }}
+          if [ ! -f changed_modules.json ]; then
+            echo "❌ changed_modules.json was not created"
+            exit 1
+          fi
+          MODULES=$(cat changed_modules.json)
           echo "modules=$MODULES" >> "$GITHUB_OUTPUT"
           echo "Detected: $MODULES"
 
