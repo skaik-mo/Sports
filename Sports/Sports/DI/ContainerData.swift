@@ -59,6 +59,16 @@ extension Container {
         }
     }
 
+    var eventLocalDataSource: Factory<EventLocalDataSource> {
+        self {
+            MainActor.assumeIsolated {
+                EventLocalDataSource(
+                    context: SwiftDataStack.shared.mainContext
+                )
+            }
+        }
+    }
+
     var eventRemoteDataSource: Factory<EventRemoteDataSource> {
         self{
             EventRemoteDataSource(client: self.client())
@@ -67,7 +77,10 @@ extension Container {
 
     var eventRepository: Factory<EventRepository> {
         self {
-            EventRepositoryImpl(remote: self.eventRemoteDataSource())
+            EventRepositoryImpl(
+                remote: self.eventRemoteDataSource(),
+                local: self.eventLocalDataSource()
+            )
         }
     }
 

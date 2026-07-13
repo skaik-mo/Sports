@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Event {
+public struct Event: Sendable {
     public let id: Int
     public let date: Date?
     public let finalResult: String?
