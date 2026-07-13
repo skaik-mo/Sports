@@ -11,7 +11,7 @@ MODULES = [
   { name: "Presentation", scheme: "Presentation", has_tests: true,  path: "Presentation" },
 ]
 
-# If a module changes, these modules should also be tested,
+# If a module changes, these modules should also be checked,
 # since they have a REAL compile-time dependency on it
 MODULE_DEPENDENTS = {
   "DesignSystem" => ["Presentation"],
@@ -51,8 +51,62 @@ platform :ios do
     affected
   end
 
+  desc "Print affected module names as a JSON array (consumed by the GitHub Actions matrix)"
+  lane :print_changed_modules do |options|
+    modules = changed_modules(base: options[:base])
+    names = modules.map { |m| m[:name] }
+    puts names.to_json
+  end
+
   # ============================================================
-  # MARK: - Individual building blocks (manual/ad-hoc runs)
+  # MARK: - Per-module lanes (used by the CI matrix, one job per module)
+  # ============================================================
+
+  desc "Build a single named module — pass module:Name"
+  lane :build_single_module do |options|
+    mod = MODULES.find { |m| m[:name] == options[:module] }
+    UI.user_error!("Unknown module: #{options[:module]}") unless mod
+
+    UI.message "🔨 Building: #{mod[:name]}"
+    gym(
+      workspace:          WORKSPACE,
+      scheme:             mod[:scheme],
+      clean:              false,
+      skip_archive:       true,
+      skip_codesigning:   true,
+      derived_data_path:  DERIVED_DATA,
+      xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+    )
+    UI.success "✅ #{mod[:name]} built successfully!"
+  end
+
+  desc "Test a single named module — pass module:Name (no-op if module has no tests)"
+  lane :test_single_module do |options|
+    mod = MODULES.find { |m| m[:name] == options[:module] }
+    UI.user_error!("Unknown module: #{options[:module]}") unless mod
+
+    unless mod[:has_tests]
+      UI.message "🧪 #{mod[:name]} has no tests — skipping"
+      next
+    end
+
+    UI.message "🧪 Testing: #{mod[:name]}"
+    scan(
+      workspace:          WORKSPACE,
+      scheme:             mod[:scheme],
+      clean:              false,
+      result_bundle:      true,
+      derived_data_path:  DERIVED_DATA,
+      output_directory:   "fastlane/test_output/#{mod[:name]}",
+      output_files:       "#{mod[:name]}-report.html",
+      output_types:       "html",
+      devices:            ["iPhone 17 Pro"]
+    )
+    UI.success "✅ #{mod[:name]} tests passed!"
+  end
+
+  # ============================================================
+  # MARK: - Whole-set building blocks (manual/ad-hoc runs)
   # ============================================================
 
   desc "Build all modules, regardless of what changed"
@@ -71,21 +125,6 @@ platform :ios do
       UI.success "✅ #{mod[:name]} built successfully!"
     end
     UI.success "✅ All modules built!"
-  end
-
-  desc "Build only DesignSystem"
-  lane :build_design_system do
-    UI.message "🔨 Building: DesignSystem"
-    gym(
-      workspace:          WORKSPACE,
-      scheme:             "DesignSystem",
-      clean:              false,
-      skip_archive:       true,
-      skip_codesigning:   true,
-      derived_data_path:  DERIVED_DATA,
-      xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
-    )
-    UI.success "✅ DesignSystem built successfully!"
   end
 
   desc "Test all modules, regardless of what changed"
@@ -129,61 +168,7 @@ platform :ios do
   end
 
   # ============================================================
-  # MARK: - Changed-only building blocks
-  # ============================================================
-
-  desc "Build only modules affected by the current diff"
-  lane :build_changed_modules do |options|
-    modules = changed_modules(base: options[:base])
-
-    if modules.empty?
-      UI.message "📦 No module changes detected — skipping builds"
-      next
-    end
-
-    modules.each do |mod|
-      UI.message "🔨 Building: #{mod[:name]}"
-      gym(
-        workspace:          WORKSPACE,
-        scheme:             mod[:scheme],
-        clean:              false,
-        skip_archive:       true,
-        skip_codesigning:   true,
-        derived_data_path:  DERIVED_DATA,
-        xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
-      )
-      UI.success "✅ #{mod[:name]} built successfully!"
-    end
-  end
-
-  desc "Test only modules affected by the current diff"
-  lane :test_changed_modules do |options|
-    modules = changed_modules(base: options[:base]).select { |m| m[:has_tests] }
-
-    if modules.empty?
-      UI.message "🧪 No testable module changes detected — skipping tests"
-      next
-    end
-
-    modules.each do |mod|
-      UI.message "🧪 Testing: #{mod[:name]}"
-      scan(
-        workspace:          WORKSPACE,
-        scheme:             mod[:scheme],
-        clean:              false,
-        result_bundle:      true,
-        derived_data_path:  DERIVED_DATA,
-        output_directory:   "fastlane/test_output/#{mod[:name]}",
-        output_files:       "#{mod[:name]}-report.html",
-        output_types:       "html",
-        devices:            ["iPhone 17 Pro"]
-      )
-      UI.success "✅ #{mod[:name]} tests passed!"
-    end
-  end
-
-  # ============================================================
-  # MARK: - Per-module CI pipelines (manual/direct triggers)
+  # MARK: - Per-module CI pipelines (manual/direct triggers, unchanged)
   # ============================================================
 
   lane :ci_design_system do
@@ -249,7 +234,7 @@ platform :ios do
   end
 
   # ============================================================
-  # MARK: - Full CI (builds/tests everything)
+  # MARK: - Full CI (builds/tests everything, sequential)
   # ============================================================
 
   desc "Full pipeline: build all modules, test all modules, build main app"
@@ -262,7 +247,7 @@ platform :ios do
   end
 
   # ============================================================
-  # MARK: - Fast CI (build+test only what changed)
+  # MARK: - Fast CI (build+test only what changed, sequential — kept for local/manual use)
   # ============================================================
 
   desc "Fast pipeline: build+test only modules affected by the diff, then build the main app"
@@ -278,7 +263,6 @@ platform :ios do
       next
     end
 
-    # 1. Build changed/affected modules first — fail fast before spending time on tests
     modules.each do |mod|
       UI.message "🔨 Building: #{mod[:name]}"
       gym(
@@ -293,7 +277,6 @@ platform :ios do
       UI.success "✅ #{mod[:name]} built successfully!"
     end
 
-    # 2. Only now run tests, only for affected modules with tests
     modules.select { |m| m[:has_tests] }.each do |mod|
       UI.message "🧪 Testing: #{mod[:name]}"
       scan(
@@ -310,7 +293,6 @@ platform :ios do
       UI.success "✅ #{mod[:name]} tests passed!"
     end
 
-    # 3. Build the full app last — confirms everything still links together
     build_main_app
 
     UI.success "🎉 Fast CI pipeline passed!"
