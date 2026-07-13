@@ -5,7 +5,7 @@
 //  Created by Mohammed Skaik on 27/06/2026.
 //
 
-struct EventDto: Decodable {
+struct EventDto: Decodable, Sendable {
     let event_key: Int
     let event_date: String?
     let event_time: String?
