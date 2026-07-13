@@ -7,7 +7,7 @@
 
 import Domain
 
-extension Event {
+extension Event { 
     func toUIModel() -> EventUIModel? {
         guard let homeTeam = teams?.homeTeam,
               let awayTeam = teams?.awayTeam,
