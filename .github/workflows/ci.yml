@@ -39,11 +39,13 @@ jobs:
         id: detect
         run: |
           bundle exec fastlane ios print_changed_modules base:${{ steps.base.outputs.ref }}
-          if [ ! -f changed_modules.json ]; then
-            echo "❌ changed_modules.json was not created"
+
+          if [ ! -f "${GITHUB_WORKSPACE}/changed_modules.json" ]; then
+            echo "❌ changed_modules.json was not created at ${GITHUB_WORKSPACE}/changed_modules.json"
             exit 1
           fi
-          MODULES=$(cat changed_modules.json)
+
+          MODULES=$(cat "${GITHUB_WORKSPACE}/changed_modules.json")
           echo "modules=$MODULES" >> "$GITHUB_OUTPUT"
           echo "Detected: $MODULES"
 

@@ -12,7 +12,10 @@ MODULES = [
 ]
 
 # If a module changes, these modules should also be checked,
-# since they have a REAL compile-time dependency on it
+# since they have a REAL compile-time dependency on it:
+#   - Presentation imports Domain and DesignSystem
+#   - Data imports Domain and Networking
+#   - Presentation does NOT import Data directly (wired only via DIContainer + Domain protocols)
 MODULE_DEPENDENTS = {
   "DesignSystem" => ["Presentation"],
   "Domain"       => ["Data", "Presentation"],
@@ -51,13 +54,18 @@ platform :ios do
     affected
   end
 
-  desc "Write affected module names as a JSON array to a file (consumed by the GitHub Actions matrix)"
+  desc "Write affected module names as a JSON array to changed_modules.json at the repo root (consumed by the GitHub Actions matrix)"
   lane :print_changed_modules do |options|
     modules = changed_modules(base: options[:base])
     names = modules.map { |m| m[:name] }
-  
-    File.write("changed_modules.json", names.to_json)
-    UI.message "📦 Wrote changed_modules.json: #{names.to_json}"
+
+    # GITHUB_WORKSPACE is always the repo root on GitHub Actions runners.
+    # Falls back to the current directory for local runs.
+    root = ENV['GITHUB_WORKSPACE'] || Dir.pwd
+    output_path = File.join(root, "changed_modules.json")
+
+    File.write(output_path, names.to_json)
+    UI.message "📦 Wrote #{output_path}: #{names.to_json}"
   end
 
   # ============================================================
