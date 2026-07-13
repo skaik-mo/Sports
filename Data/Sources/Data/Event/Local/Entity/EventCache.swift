@@ -8,7 +8,7 @@
 import SwiftData
 import Foundation
 
-@Model 
+@Model   
 final class EventCache {
     @Attribute(.unique)
     var id: Int
