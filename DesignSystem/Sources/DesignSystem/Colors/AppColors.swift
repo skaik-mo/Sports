@@ -8,7 +8,7 @@
 import SwiftUI
 
 public enum AppColors { 
-
+ 
     // MARK: - Primary
     public static let primary = Color("primary", bundle: .module)
 
