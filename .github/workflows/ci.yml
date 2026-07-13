@@ -9,9 +9,55 @@ on:
 
 jobs:
 
-  domain:
-    name: Domain Module
+  detect:
+    name: Detect Changed Modules
     runs-on: macos-15
+    outputs:
+      modules: ${{ steps.detect.outputs.modules }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Determine base ref
+        id: base
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "ref=origin/${{ github.base_ref }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect affected modules
+        id: detect
+        run: |
+          bundle exec fastlane ios print_changed_modules base:${{ steps.base.outputs.ref }}
+
+          if [ ! -f "${GITHUB_WORKSPACE}/changed_modules.json" ]; then
+            echo "❌ changed_modules.json was not created at ${GITHUB_WORKSPACE}/changed_modules.json"
+            exit 1
+          fi
+
+          MODULES=$(cat "${GITHUB_WORKSPACE}/changed_modules.json")
+          echo "modules=$MODULES" >> "$GITHUB_OUTPUT"
+          echo "Detected: $MODULES"
+
+  build-and-test:
+    name: ${{ matrix.module }}
+    needs: detect
+    if: needs.detect.outputs.modules != '[]'
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.detect.outputs.modules) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,91 +87,20 @@ jobs:
           key: ${{ runner.os }}-spm-v1-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-v1-
 
-      - name: Run Domain Pipeline
-        run: bundle exec fastlane ios ci_domain
+      - name: Build module
+        run: bundle exec fastlane ios build_single_module module:${{ matrix.module }}
 
-  data:
-    name: Data Module
-    runs-on: macos-15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Test module
+        run: bundle exec fastlane ios test_single_module module:${{ matrix.module }}
 
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
-
-      - name: Select Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-
-      - name: Cache SPM Packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            Build/SourcePackages
-            Build/DerivedData
-          key: ${{ runner.os }}-spm-v1-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: ${{ runner.os }}-spm-v1-
-
-      - name: Run Data Pipeline
-        run: bundle exec fastlane ios ci_data
-
-  presentation:
-    name: Presentation Module
-    runs-on: macos-15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
-
-      - name: Select Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-
-      - name: Cache SPM Packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            Build/SourcePackages
-            Build/DerivedData
-          key: ${{ runner.os }}-spm-v1-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: ${{ runner.os }}-spm-v1-
-
-      - name: Run Presentation Pipeline
-        run: bundle exec fastlane ios ci_presentation
-
-  build:
+  build-app:
     name: Full App Build
+    needs: [detect, build-and-test]
+    if: always() && needs.detect.result == 'success' && needs.build-and-test.result != 'failure'
     runs-on: macos-15
-    needs: [domain, data, presentation]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
 
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
