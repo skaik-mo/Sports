@@ -6,7 +6,7 @@
 //
 
 
-public final class GetAllLeaguesUseCase: Sendable {
+public final class GetAllLeaguesUseCase: Sendable {  
     private let repository: LeagueRepository
 
     public init(repository: LeagueRepository) {
