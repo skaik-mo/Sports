@@ -5,13 +5,57 @@ MAIN_SCHEME  = "Sports"
 DERIVED_DATA = "Build/DerivedData"
 
 MODULES = [
-  { name: "Domain",       scheme: "Domain",       has_tests: true },
-  { name: "Data",         scheme: "Data",         has_tests: true },
-  { name: "Presentation", scheme: "Presentation", has_tests: true },
+  { name: "DesignSystem", scheme: "DesignSystem", has_tests: false, path: "DesignSystem" },
+  { name: "Domain",       scheme: "Domain",       has_tests: true,  path: "Domain" },
+  { name: "Data",         scheme: "Data",         has_tests: true,  path: "Data" },
+  { name: "Presentation", scheme: "Presentation", has_tests: true,  path: "Presentation" },
 ]
+
+# If a module changes, these modules should also be tested,
+# since they have a REAL compile-time dependency on it
+MODULE_DEPENDENTS = {
+  "DesignSystem" => ["Presentation"],
+  "Domain"       => ["Data", "Presentation"],
+}
 
 platform :ios do
 
+  # ============================================================
+  # MARK: - Change detection
+  # ============================================================
+
+  desc "Returns the list of MODULES entries affected by the current diff (direct + dependents)"
+  private_lane :changed_modules do |options|
+    base = options[:base] || "origin/main"
+
+    changed_files = sh("git diff --name-only #{base}...HEAD", log: false).split("\n")
+
+    if changed_files.empty?
+      UI.message "📦 No changed files detected against #{base}"
+      next []
+    end
+
+    directly_changed = MODULES.select do |mod|
+      changed_files.any? { |file| file.start_with?("#{mod[:path]}/") }
+    end
+
+    dependent_names = directly_changed.flat_map { |mod| MODULE_DEPENDENTS[mod[:name]] || [] }.uniq
+    all_names = (directly_changed.map { |m| m[:name] } + dependent_names).uniq
+
+    affected = MODULES.select { |m| all_names.include?(m[:name]) }
+
+    if affected.any?
+      UI.message "📦 Affected modules: #{affected.map { |m| m[:name] }.join(', ')}"
+    end
+
+    affected
+  end
+
+  # ============================================================
+  # MARK: - Individual building blocks (manual/ad-hoc runs)
+  # ============================================================
+
+  desc "Build all modules, regardless of what changed"
   lane :build_modules do
     MODULES.each do |mod|
       UI.message "🔨 Building: #{mod[:name]}"
@@ -29,14 +73,28 @@ platform :ios do
     UI.success "✅ All modules built!"
   end
 
+  desc "Build only DesignSystem"
+  lane :build_design_system do
+    UI.message "🔨 Building: DesignSystem"
+    gym(
+      workspace:          WORKSPACE,
+      scheme:             "DesignSystem",
+      clean:              false,
+      skip_archive:       true,
+      skip_codesigning:   true,
+      derived_data_path:  DERIVED_DATA,
+      xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+    )
+    UI.success "✅ DesignSystem built successfully!"
+  end
+
+  desc "Test all modules, regardless of what changed"
   lane :test_modules do
     modules_with_tests = MODULES.select { |m| m[:has_tests] }
-
     if modules_with_tests.empty?
       UI.message "⚠️  No modules have tests yet — skipping"
       next
     end
-
     modules_with_tests.each do |mod|
       UI.message "🧪 Testing: #{mod[:name]}"
       scan(
@@ -55,6 +113,7 @@ platform :ios do
     UI.success "✅ All module tests passed!"
   end
 
+  desc "Build the full app target"
   lane :build_main_app do
     UI.message "🔨 Building full app: #{MAIN_SCHEME}"
     gym(
@@ -67,6 +126,78 @@ platform :ios do
       xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
     )
     UI.success "✅ App built successfully!"
+  end
+
+  # ============================================================
+  # MARK: - Changed-only building blocks
+  # ============================================================
+
+  desc "Build only modules affected by the current diff"
+  lane :build_changed_modules do |options|
+    modules = changed_modules(base: options[:base])
+
+    if modules.empty?
+      UI.message "📦 No module changes detected — skipping builds"
+      next
+    end
+
+    modules.each do |mod|
+      UI.message "🔨 Building: #{mod[:name]}"
+      gym(
+        workspace:          WORKSPACE,
+        scheme:             mod[:scheme],
+        clean:              false,
+        skip_archive:       true,
+        skip_codesigning:   true,
+        derived_data_path:  DERIVED_DATA,
+        xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+      )
+      UI.success "✅ #{mod[:name]} built successfully!"
+    end
+  end
+
+  desc "Test only modules affected by the current diff"
+  lane :test_changed_modules do |options|
+    modules = changed_modules(base: options[:base]).select { |m| m[:has_tests] }
+
+    if modules.empty?
+      UI.message "🧪 No testable module changes detected — skipping tests"
+      next
+    end
+
+    modules.each do |mod|
+      UI.message "🧪 Testing: #{mod[:name]}"
+      scan(
+        workspace:          WORKSPACE,
+        scheme:             mod[:scheme],
+        clean:              false,
+        result_bundle:      true,
+        derived_data_path:  DERIVED_DATA,
+        output_directory:   "fastlane/test_output/#{mod[:name]}",
+        output_files:       "#{mod[:name]}-report.html",
+        output_types:       "html",
+        devices:            ["iPhone 17 Pro"]
+      )
+      UI.success "✅ #{mod[:name]} tests passed!"
+    end
+  end
+
+  # ============================================================
+  # MARK: - Per-module CI pipelines (manual/direct triggers)
+  # ============================================================
+
+  lane :ci_design_system do
+    UI.message "🚀 Running DesignSystem pipeline..."
+    gym(
+      workspace:          WORKSPACE,
+      scheme:             "DesignSystem",
+      clean:              true,
+      skip_archive:       true,
+      skip_codesigning:   true,
+      derived_data_path:  DERIVED_DATA,
+      xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+    )
+    UI.success "✅ DesignSystem pipeline passed!"
   end
 
   lane :ci_domain do
@@ -117,12 +248,72 @@ platform :ios do
     UI.success "✅ Presentation pipeline passed!"
   end
 
+  # ============================================================
+  # MARK: - Full CI (builds/tests everything)
+  # ============================================================
+
+  desc "Full pipeline: build all modules, test all modules, build main app"
   lane :ci do
     UI.message "🚀 Starting CI pipeline..."
     build_modules
     test_modules
     build_main_app
     UI.success "🎉 CI pipeline passed!"
+  end
+
+  # ============================================================
+  # MARK: - Fast CI (build+test only what changed)
+  # ============================================================
+
+  desc "Fast pipeline: build+test only modules affected by the diff, then build the main app"
+  lane :ci_fast do |options|
+    UI.message "🚀 Starting fast CI pipeline..."
+
+    modules = changed_modules(base: options[:base])
+
+    if modules.empty?
+      UI.message "📦 No module changes — building main app only"
+      build_main_app
+      UI.success "🎉 Fast CI pipeline passed (no module changes)!"
+      next
+    end
+
+    # 1. Build changed/affected modules first — fail fast before spending time on tests
+    modules.each do |mod|
+      UI.message "🔨 Building: #{mod[:name]}"
+      gym(
+        workspace:          WORKSPACE,
+        scheme:             mod[:scheme],
+        clean:              false,
+        skip_archive:       true,
+        skip_codesigning:   true,
+        derived_data_path:  DERIVED_DATA,
+        xcargs:             "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+      )
+      UI.success "✅ #{mod[:name]} built successfully!"
+    end
+
+    # 2. Only now run tests, only for affected modules with tests
+    modules.select { |m| m[:has_tests] }.each do |mod|
+      UI.message "🧪 Testing: #{mod[:name]}"
+      scan(
+        workspace:          WORKSPACE,
+        scheme:             mod[:scheme],
+        clean:              false,
+        result_bundle:      true,
+        derived_data_path:  DERIVED_DATA,
+        output_directory:   "fastlane/test_output/#{mod[:name]}",
+        output_files:       "#{mod[:name]}-report.html",
+        output_types:       "html",
+        devices:            ["iPhone 17 Pro"]
+      )
+      UI.success "✅ #{mod[:name]} tests passed!"
+    end
+
+    # 3. Build the full app last — confirms everything still links together
+    build_main_app
+
+    UI.success "🎉 Fast CI pipeline passed!"
   end
 
 end
