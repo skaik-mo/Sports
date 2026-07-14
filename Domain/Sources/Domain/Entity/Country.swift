@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Country {
+public struct Country: Sendable {
     public let id: Int
     public let name: String
     public let logo: String?

@@ -84,14 +84,29 @@ extension Container {
         }
     }
 
+    var teamLocalDataSource: Factory<TeamLocalDataSource> {
+        self {
+            MainActor.assumeIsolated {
+                TeamLocalDataSource(
+                    context: SwiftDataStack.shared.mainContext
+                )
+            }
+        }
+    }
+
     var teamRemoteDataSource: Factory<TeamRemoteDataSource> {
         self {
             TeamRemoteDataSource(client: self.client())
         }
     }
+
     var teamRepository: Factory<TeamRepository> {
         self {
-            TeamRepositoryImpl(remote: self.teamRemoteDataSource())
+            TeamRepositoryImpl(
+                remote: self.teamRemoteDataSource(),
+                local: self.teamLocalDataSource()
+
+            )
         }
     }
 }

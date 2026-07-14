@@ -25,11 +25,11 @@ public final class EventLocalDataSource {
 // MARK: - Get
 extension EventLocalDataSource {
 
-    func getUpcomingEvents(leagueId: Int) async throws -> [Event] {
+    func getUpcomingEvents(leagueId: Int) throws -> [Event] {
         try getEvents(leagueId: leagueId, section: .upcoming).map { $0.toDomain() }
     }
 
-    func getLatestEvents(leagueId: Int) async throws -> [Event] {
+    func getLatestEvents(leagueId: Int) throws -> [Event] {
         try getEvents(leagueId: leagueId, section: .latest).map { $0.toDomain() }
     }
 
@@ -51,7 +51,7 @@ extension EventLocalDataSource {
 // MARK: - Save
 extension EventLocalDataSource {
 
-    func saveUpcomingEvents(events: [EventDto], leagueId: Int) async throws {
+    func saveUpcomingEvents(events: [EventDto], leagueId: Int) throws {
         try replaceEvents(
             events: events,
             leagueId: leagueId,
@@ -59,7 +59,7 @@ extension EventLocalDataSource {
         )
     }
 
-    func saveLatestEvents(events: [EventDto], leagueId: Int) async throws {
+    func saveLatestEvents(events: [EventDto], leagueId: Int) throws {
         try replaceEvents(
             events: events,
             leagueId: leagueId,
@@ -79,23 +79,11 @@ extension EventLocalDataSource {
 // MARK: - Clear
 extension EventLocalDataSource {
 
-    func clearUpcomingEvents(leagueId: Int) async throws {
-        try clearEvents(leagueId: leagueId, section: .upcoming)
-    }
-
-    func clearLatestEvents(leagueId: Int) async throws {
-        try clearEvents(leagueId: leagueId, section: .latest)
-    }
-
     private func clearEvents(leagueId: Int, section: EventSection) throws {
         let sectionRaw = section.rawValue
         let predicate = #Predicate<EventCache> {
             $0.leagueId == leagueId && $0.section == sectionRaw
         }
-        let existing = try context.fetch(
-            FetchDescriptor<EventCache>(predicate: predicate)
-        )
-        existing.forEach { context.delete($0) }
+        try context.delete(model: EventCache.self, where: predicate)
     }
-
 }
