@@ -12,7 +12,7 @@ public final class IsFavoriteUseCase: Sendable {
         self.repository = repository
     }
 
-    public func execute(leagueId: Int) throws -> Bool {
-        repository.isFavorite(leagueId: leagueId)
+    public func execute(leagueId: Int) async throws -> Bool {
+        try await repository.isFavorite(leagueId: leagueId)
     }
 }

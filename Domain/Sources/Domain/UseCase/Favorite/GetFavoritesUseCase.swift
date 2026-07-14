@@ -12,7 +12,7 @@ public final class GetFavoritesUseCase: Sendable {
         self.repository = repository
     }
 
-    public func execute() throws -> [League] {
-        repository.getFavorites()
+    public func execute() async throws -> [League] {
+        []
     }
 }

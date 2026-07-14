@@ -13,7 +13,7 @@ public final class RemoveFavoriteUseCase: Sendable {
         self.repository = repository
     }
 
-    public func execute(leagueId: Int) throws {
-        repository.removeFavorite(leagueId: leagueId)
+    public func execute(leagueId: Int) async throws {
+        try await repository.removeFavorite(leagueId: leagueId)
     }
 }

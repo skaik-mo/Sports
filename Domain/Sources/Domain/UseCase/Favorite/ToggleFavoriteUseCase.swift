@@ -12,7 +12,7 @@ public final class ToggleFavoriteUseCase: Sendable {
         self.repository = repository
     }
 
-    public func execute(leagueId: Int) throws {
-        repository.toggleFavorite(leagueId: leagueId)
+    public func execute(leagueId: Int) async throws {
+        try await repository.toggleFavorite(leagueId: leagueId)
     }
 }
