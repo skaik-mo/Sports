@@ -109,4 +109,23 @@ extension Container {
             )
         }
     }
+
+    var favoriteLocalDataSource: Factory<FavoriteLocalDataSource> {
+        self {
+            MainActor.assumeIsolated {
+                FavoriteLocalDataSource(
+                    context: SwiftDataStack.shared.mainContext
+                )
+            }
+        }
+    }
+
+
+    var favoriteRepository: Factory<FavoriteRepository> {
+        self {
+            FavoriteRepositoryImpl(
+                local: self.favoriteLocalDataSource()
+            )
+        }
+    }
 }

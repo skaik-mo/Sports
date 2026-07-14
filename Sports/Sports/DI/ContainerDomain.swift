@@ -38,4 +38,33 @@ extension Container {
             GetAllSportTypeUseCase()
         }
     }
+
+    var getFavoritesUseCase: Factory<GetFavoritesUseCase> {
+        self {
+            GetFavoritesUseCase(
+                favoriteRepository: self.favoriteRepository(),
+                leagueRepository: self.leagueRepository()
+            )
+        }
+    }
+
+    var isFavoriteUseCase: Factory<IsFavoriteUseCase> {
+        self {
+            IsFavoriteUseCase(repository: self.favoriteRepository())
+        }
+    }
+
+    var removeFavoriteUseCase: Factory<RemoveFavoriteUseCase> {
+        self {
+            RemoveFavoriteUseCase(repository: self.favoriteRepository())
+        }
+    }
+
+    var toggleFavoriteUseCase: Factory<ToggleFavoriteUseCase> {
+        self {
+            ToggleFavoriteUseCase(repository: self.favoriteRepository())
+        }
+    }
+
 }
+
