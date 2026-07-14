@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import Domain
 
 @MainActor
 public final class LeagueLocalDataSource {
@@ -23,25 +24,20 @@ public final class LeagueLocalDataSource {
 // MARK: - Read
 extension LeagueLocalDataSource {
 
-    func getAllLeagues(sportPath: String) throws -> [LeagueCacheModel] {
+    func getAllLeagues(sportPath: String) throws -> [League] {
+        try self.getAllLeaguesCaches(sportPath: sportPath).map { $0.toDomain() }
+    }
+
+    private func getAllLeaguesCaches(sportPath: String) throws -> [LeagueCache] {
+        let predicate = #Predicate<LeagueCache> {
+            $0.sport == sportPath
+        }
+
         let descriptor = FetchDescriptor<LeagueCache>(
-            predicate: #Predicate { $0.sport == sportPath },
+            predicate: predicate,
             sortBy: [SortDescriptor(\.name)]
         )
-
-        let caches = try context.fetch(descriptor)
-
-        return caches.map {
-            LeagueCacheModel(
-                id: $0.id,
-                name: $0.name,
-                logo: $0.logo,
-                sport: $0.sport,
-                countryId: $0.countryId,
-                countryName: $0.countryName,
-                countryLogo: $0.countryLogo
-            )
-        }
+        return try context.fetch(descriptor)
     }
 
 }
@@ -49,12 +45,13 @@ extension LeagueLocalDataSource {
 // MARK: - Write
 extension LeagueLocalDataSource {
 
-    func saveAllLeagues(leagues: [LeagueCache]) throws {
+    func saveAllLeagues(leagues: [LeagueCache], sportPath: String) throws {
+        try clearAllLeagues(sportPath: sportPath)
         leagues.forEach { context.insert($0) }
         try context.save()
     }
 
-    func clearAllLeagues(sportPath: String) throws {
+    private func clearAllLeagues(sportPath: String) throws {
         let predicate = #Predicate<LeagueCache> { league in
             league.sport == sportPath
         }

@@ -41,23 +41,30 @@ private extension LeagueRepositoryImpl {
     func getRemoteLeagues(sportType: SportType) async throws -> [League] {
         try await safeCall {
             let dtos = try await self.remote.getAllLeagues(sportType: sportType)
-            let sportPath = sportType.path
-            let caches = dtos.map { $0.toCache(sportPath: sportPath) }
-            try await self.local.clearAllLeagues(sportPath: sportPath)
-            try await self.local.saveAllLeagues(leagues: caches)
+            await cacheSilently(leagues: dtos, sportType: sportType)
             return dtos.map { $0.toDomain() }
+        }
+    }
+
+    func cacheSilently(leagues: [LeagueDto], sportType: SportType) async {
+        do {
+            let caches = leagues.map { $0.toCache(sportPath: sportType.path) }
+            try await local
+                .saveAllLeagues(leagues: caches, sportPath: sportType.path)
+        } catch {
+            debugPrint("Data: Failed to cache leagues: \(error)")
         }
     }
 
     func getLocalLeagues(sportType: SportType) async throws -> [League] {
         try await safeCall {
-            let snapshots = try await self.local.getAllLeagues(
+            let caches = try await self.local.getAllLeagues(
                 sportPath: sportType.path
             )
-            guard !snapshots.isEmpty else {
+            guard !caches.isEmpty else {
                 throw DomainException.noDataFound
             }
-            return snapshots.map { $0.toDomain() }
+            return caches
         }
     }
 }

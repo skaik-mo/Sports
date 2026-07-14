@@ -36,22 +36,6 @@ extension LeagueDto {
 
 extension LeagueCache {
 
-    func toSnapshot() -> LeagueCacheModel {
-        LeagueCacheModel(
-            id: id,
-            name: name,
-            logo: logo,
-            sport: sport,
-            countryId: countryId,
-            countryName: countryName,
-            countryLogo: countryLogo
-        )
-    }
-}
-
-
-extension LeagueCacheModel {
-
     func toDomain() -> League {
         League(
             id: id,
