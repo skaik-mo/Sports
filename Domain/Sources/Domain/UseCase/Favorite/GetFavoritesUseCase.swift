@@ -6,13 +6,19 @@
 //
 
 public final class GetFavoritesUseCase: Sendable {
-    private let repository: FavoriteRepository
+    private let favoriteRepository: FavoriteRepository
+    private let leagueRepository: LeagueRepository
 
-    public init(repository: FavoriteRepository) {
-        self.repository = repository
+    public init(favoriteRepository: FavoriteRepository, leagueRepository: LeagueRepository) {
+        self.favoriteRepository = favoriteRepository
+        self.leagueRepository = leagueRepository
     }
 
     public func execute() async throws -> [League] {
-        []
+        let favoriteIds = try await favoriteRepository.getFavoriteLeagueIds()
+        guard !favoriteIds.isEmpty else { return [] }
+
+        let allLeagues = try await leagueRepository.getAllLeagues()
+        return allLeagues.filter { favoriteIds.contains($0.id) }
     }
 }

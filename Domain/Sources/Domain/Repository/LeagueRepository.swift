@@ -7,4 +7,5 @@
 
 public protocol LeagueRepository: Sendable {
     func getAllLeagues(sportType: SportType) async throws -> [League]
+    func getAllLeagues() async throws -> [League]
 }

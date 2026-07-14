@@ -28,9 +28,25 @@ extension LeagueLocalDataSource {
         try self.getAllLeaguesCaches(sportPath: sportPath).map { $0.toDomain() }
     }
 
-    private func getAllLeaguesCaches(sportPath: String) throws -> [LeagueCache] {
-        let predicate = #Predicate<LeagueCache> {
-            $0.sport == sportPath
+    func getAllLeagues() throws -> [League] {
+        try getAllLeaguesCaches().map { $0.toDomain() }
+    }
+
+    func saveAllLeagues(leagues: [LeagueCache], sportPath: String) throws {
+        try clearAllLeagues(sportPath: sportPath)
+        leagues.forEach { context.insert($0) }
+        try context.save()
+    }
+
+}
+
+private extension LeagueLocalDataSource {
+
+    func getAllLeaguesCaches(sportPath: String? = nil) throws -> [LeagueCache] {
+        let predicate: Predicate<LeagueCache>? = sportPath.map { sport in
+            #Predicate<LeagueCache> {
+                $0.sport == sport
+            }
         }
 
         let descriptor = FetchDescriptor<LeagueCache>(
@@ -40,22 +56,10 @@ extension LeagueLocalDataSource {
         return try context.fetch(descriptor)
     }
 
-}
-
-// MARK: - Write
-extension LeagueLocalDataSource {
-
-    func saveAllLeagues(leagues: [LeagueCache], sportPath: String) throws {
-        try clearAllLeagues(sportPath: sportPath)
-        leagues.forEach { context.insert($0) }
-        try context.save()
-    }
-
     private func clearAllLeagues(sportPath: String) throws {
         let predicate = #Predicate<LeagueCache> { league in
             league.sport == sportPath
         }
         try context.delete(model: LeagueCache.self, where: predicate)
-        try context.save()
     }
 }

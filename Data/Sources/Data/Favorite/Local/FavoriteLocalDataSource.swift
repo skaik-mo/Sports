@@ -57,5 +57,6 @@ extension FavoriteLocalDataSource {
             $0.id == leagueId
         }
         try context.delete(model: FavoriteCache.self, where: predicate)
+        try context.save()
     }
 }

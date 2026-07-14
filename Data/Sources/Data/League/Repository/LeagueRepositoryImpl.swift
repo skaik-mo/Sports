@@ -34,6 +34,12 @@ extension LeagueRepositoryImpl {
             return try await getLocalLeagues(sportType: sportType)
         }
     }
+
+    public func getAllLeagues() async throws -> [League] {
+        try await safeCall {
+            try await local.getAllLeagues()
+        }
+    }
 }
 
 private extension LeagueRepositoryImpl {
