@@ -9,4 +9,5 @@ public protocol FavoriteRepository: Sendable {
     func toggleFavorite(leagueId: Int)
     func isFavorite(leagueId: Int) -> Bool
     func getFavorites() -> [League]
+    func removeFavorite(leagueId: Int)
 }
