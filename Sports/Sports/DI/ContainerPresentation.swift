@@ -40,4 +40,16 @@ extension Container {
             }
         }
     }
+
+    var favoriteViewModel: Factory<FavoriteViewModel> {
+        self {
+            MainActor.assumeIsolated {
+                FavoriteViewModel(
+                    getFavoritesUseCase: self.getFavoritesUseCase(),
+                    removeFavoriteUseCase: self.removeFavoriteUseCase()
+                )
+            }
+
+        }
+    }
 }

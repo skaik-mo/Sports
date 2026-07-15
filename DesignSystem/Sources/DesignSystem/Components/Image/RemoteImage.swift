@@ -27,7 +27,7 @@ public struct RemoteImage<PlaceholderView: View, FailureView: View>: View {
         KFImage.url(url)
             .resizable()
             .cancelOnDisappear(true)
-            .onFailureView { placeholderView }
-            .placeholder { failureView }
+            .onFailureView { failureView }
+            .placeholder { placeholderView }
     }
 }

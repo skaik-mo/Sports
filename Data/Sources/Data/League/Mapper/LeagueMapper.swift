@@ -8,7 +8,7 @@
 import Domain
 
 extension LeagueDto {
-    func toDomain() -> League {
+    func toDomain(sportType: SportType) -> League {
         return League(
             id: league_key,
             name: league_name.orEmpty(),
@@ -17,7 +17,8 @@ extension LeagueDto {
                 id: country_key,
                 name: country_name.orEmpty(),
                 logo: country_logo.orEmpty()
-            )
+            ),
+            sportType: sportType
         )
     }
 
@@ -45,7 +46,8 @@ extension LeagueCache {
                 id: countryId,
                 name: countryName,
                 logo: countryLogo
-            )
+            ),
+            sportType: SportType(path: sport)
         )
     }
 }

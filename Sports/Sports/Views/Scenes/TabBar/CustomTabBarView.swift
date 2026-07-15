@@ -21,11 +21,11 @@ struct CustomTabBarView: View {
 //                    .tag(TabbedItems.home)
 //                    .toolbar(.hidden, for: .tabBar)
 
-                CustomNavView(coordinator: favoriteCoordinator) {
-                    FavoriteView(viewModel: .init(coordinator: favoriteCoordinator))
-                }
-                    .tag(TabbedItems.favorite)
-                    .toolbar(.hidden, for: .tabBar)
+//                CustomNavView(coordinator: favoriteCoordinator) {
+//                    FavoriteView(viewModel: .init(coordinator: favoriteCoordinator))
+//                }
+//                    .tag(TabbedItems.favorite)
+//                    .toolbar(.hidden, for: .tabBar)
 
             }
             if (homeCoordinator.path.isEmpty && selectedTab == .home) || (favoriteCoordinator.path.isEmpty && selectedTab == .favorite) {

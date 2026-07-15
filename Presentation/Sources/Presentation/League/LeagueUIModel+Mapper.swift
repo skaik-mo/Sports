@@ -14,6 +14,7 @@ extension League {
             leagueName: name,
             leagueLogo: logo.orEmpty(),
             countryName: country.name,
+            sportType: sportType
         )
     }
 }

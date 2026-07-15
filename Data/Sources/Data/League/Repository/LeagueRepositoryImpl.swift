@@ -48,7 +48,7 @@ private extension LeagueRepositoryImpl {
         try await safeCall {
             let dtos = try await self.remote.getAllLeagues(sportType: sportType)
             await cacheSilently(leagues: dtos, sportType: sportType)
-            return dtos.map { $0.toDomain() }
+            return dtos.map { $0.toDomain(sportType: sportType) }
         }
     }
 

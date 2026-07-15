@@ -16,4 +16,6 @@ public enum AppIcons {
     public static let basketballSystem = "basketball.fill"
     public static let cricketSystem = "cricket.ball.fill"
     public static let tennisSystem = "tennisball.fill"
+    public static let sportsCourtSystem = "sportscourt"
+    public static let trashSystem = "trash"
 }
