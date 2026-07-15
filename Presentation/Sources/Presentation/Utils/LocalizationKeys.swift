@@ -35,6 +35,12 @@ enum L10n {
         static let empty: String = "events.empty".localized
     }
 
+    enum Favorite {
+        static let title: String = "favorite.title".localized
+        static let empty: String = "favorite.empty".localized
+        static let remove: String = "favorite.remove".localized
+    }
+
     enum General {
         static let retry = "general.retry".localized
     }

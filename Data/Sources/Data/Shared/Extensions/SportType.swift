@@ -16,4 +16,14 @@ extension SportType {
         case .tennis: "tennis"
         }
     }
+
+    init(path: String) {
+        switch path.lowercased() {
+        case "football": self = .football
+        case "basketball": self = .basketball
+        case "cricket": self = .cricket
+        case "tennis": self = .tennis
+        default: self = .football
+        }
+    }
 }

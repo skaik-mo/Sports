@@ -25,9 +25,11 @@ public struct LeagueCard: View {
                 url: URL(string: logo),
                 placeholderView: {
                     Image(AppIcons.logo)
+                        .resizable()
                 },
                 failureView: {
                     Image(AppIcons.logo)
+                        .resizable()
                 }
             )
             .frame(width: 70, height: 70)
