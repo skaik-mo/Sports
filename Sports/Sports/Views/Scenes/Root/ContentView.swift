@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Presentation
 
 struct ContentView: View {
     var body: some View {
-        LaunchView()
+//        LaunchView()
+        AppCoordinatorView()
     }
 }
 
