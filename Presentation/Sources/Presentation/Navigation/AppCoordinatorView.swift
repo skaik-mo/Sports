@@ -20,7 +20,7 @@ public struct AppCoordinatorView: View {
                     coordinator.launchDidFinish()
                 }
             case .main:
-                Text("main Loading...")
+                MainTabView()
             }
         }
         .task {

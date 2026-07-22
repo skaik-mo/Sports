@@ -37,9 +37,10 @@ final class DefaultCoordinator: RoutableCoordinator {
     func view(for route: Route) -> some View {
         switch route {
         case .LeaguesView(let sport):
-            LeaguesView(viewModel: Container.shared.leaguesViewModel())
+            Text("ssss")
+//            LeaguesView(viewModel: Container.shared.leaguesViewModel())
         case .EventsView(let sport, let league):
-            EventsView(viewModel: Container.shared.eventsViewModel())
+            Text("ssss")
         }
     }
 }

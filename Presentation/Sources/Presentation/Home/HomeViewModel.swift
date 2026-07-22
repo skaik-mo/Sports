@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Domain
+import Combine
 
 @Observable
 public final class HomeViewModel {
@@ -17,6 +18,7 @@ public final class HomeViewModel {
     }
     var leftSports: [SportType] { splitSports.left }
     var rightSports: [SportType] { splitSports.right }
+    let effect = PassthroughSubject<HomeEffect, Never>()
 
     public init(getAllSportTypeUseCase: GetAllSportTypeUseCase) {
         self.getAllSportTypeUseCase = getAllSportTypeUseCase
@@ -30,4 +32,7 @@ extension HomeViewModel {
         self.sportTypes = getAllSportTypeUseCase.execute()
     }
 
+    func didSelectSport(_ sportType: SportType) {
+        effect.send(.showLeagues(sportType: sportType))
+    }
 }
