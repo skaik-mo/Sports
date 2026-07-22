@@ -32,4 +32,9 @@ public enum AppColors {
     // MARK: Others
     public static let white = Color("white", bundle: .module)
     public static let clear = Color("clear", bundle: .module)
+    public static let blue = Color("blue", bundle: .module)
+    public static let orange = Color("orange", bundle: .module)
+    public static let green = Color("green", bundle: .module)
+    public static let yellow = Color("yellow", bundle: .module)
+    public static let black = Color("black", bundle: .module)
 }

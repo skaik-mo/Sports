@@ -15,7 +15,8 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Domain"),
-        .package(path: "../DesignSystem")
+        .package(path: "../DesignSystem"),
+        .package(url: "https://github.com/hmlongco/Factory", .upToNextMajor(from: "3.2.1")),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -25,6 +26,7 @@ let package = Package(
             dependencies: [
                 "Domain",
                 "DesignSystem",
+                .product(name: "FactoryKit", package: "Factory")
             ],
             resources: [
                 .process("Resources")

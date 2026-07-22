@@ -31,7 +31,7 @@ struct CustomNavView<Coordinator: RoutableCoordinator, Root: View>: View {
             path: $coordinator.path,
             root: {
                 root
-                    .navigationAppearance(backgroundColor: .background, foregroundColor: .main, hideSeparator: true)
+                    .navigationAppearance(backgroundColor: .black, foregroundColor: .main, hideSeparator: true)
                     .navigationDestination(for: Coordinator.Route.self) { route in
                     coordinator.view(for: route)
                         .navigationBarBackButtonHidden(true)

@@ -10,46 +10,55 @@ import Presentation
 
 extension Container {
 
-    var homeViewModel: Factory<HomeViewModel> {
-        self {
-            HomeViewModel(getAllSportTypeUseCase: self.getAllSportTypeUseCase())
+    func registerViewModelDependency() {
+        registerHomeViewModel()
+        registerLeaguesViewModel()
+        registerEventsViewModel()
+        registerFavoriteViewModel()
+    }
+
+    private func registerHomeViewModel() {
+        self.homeViewModel.register {
+            HomeViewModel(
+                getAllSportTypeUseCase: self.getAllSportTypeUseCase()
+            )
         }
     }
 
-    var leaguesViewModel: Factory<LeaguesViewModel> {
-        self {
+    private func registerLeaguesViewModel() {
+        leaguesViewModel.register { sportType in
             MainActor.assumeIsolated {
                 LeaguesViewModel(
-                    sportType: .football, // Change it so that it is passed from another interface.
+                    sportType: sportType,
                     getAllLeaguesUseCase: self.getAllLeaguesUseCase()
                 )
             }
         }
     }
 
-    var eventsViewModel: Factory<EventsViewModel> {
-        self {
+    private func registerEventsViewModel() {
+        eventsViewModel.register { parameters in
             MainActor.assumeIsolated {
                 EventsViewModel(
                     getUpcomingEventsUseCase: self.getUpcomingEventsUseCase(),
                     getLatestEventsUseCase: self.getLatestEventsUseCase(),
                     getTeamsUseCase: self.getTeamsUseCase(),
-                    sportType: .football, // Change it so that it is passed from another interface.
-                    leagueId: 1 // Change it so that it is passed from another interface.
+                    sportType: parameters.sportType,
+                    leagueId: parameters.leagueId
+
                 )
             }
         }
     }
 
-    var favoriteViewModel: Factory<FavoriteViewModel> {
-        self {
+    private func registerFavoriteViewModel() {
+        self.favoriteViewModel.register {
             MainActor.assumeIsolated {
                 FavoriteViewModel(
                     getFavoritesUseCase: self.getFavoritesUseCase(),
                     removeFavoriteUseCase: self.removeFavoriteUseCase()
                 )
             }
-
         }
     }
 }

@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SwiftData
+import FactoryKit
+import Presentation
 
 @main
 struct SportsApp: App {
@@ -15,14 +17,21 @@ struct SportsApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Favorite.self,
-            ])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        ])
+        let config = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false
+        )
         do {
             return try ModelContainer(for: schema, configurations: [config])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+
+    init() {
+        Container.shared.registerViewModelDependency()
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -32,10 +41,10 @@ struct SportsApp: App {
                 .environment(\.progressKey, progress)
                 .errorAlert($alert)
                 .overlay {
-                if progress.showProgress {
-                    CustomProgressView()
+                    if progress.showProgress {
+                        CustomProgressView()
+                    }
                 }
-            }
         }
     }
 
