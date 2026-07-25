@@ -20,7 +20,10 @@ public final class SwiftDataStack {
 
     private init() {
         let schema = Schema([
-            LeagueCache.self
+            LeagueCache.self,
+            EventCache.self,
+            TeamCache.self,
+            FavoriteCache.self,
         ])
 
         let config = ModelConfiguration(
@@ -31,7 +34,9 @@ public final class SwiftDataStack {
         do {
             container = try ModelContainer(for: schema, configurations: config)
         } catch {
-            fatalError("Could not initialize SwiftData ModelContainer: \(error.localizedDescription)")
+            fatalError(
+                "Could not initialize SwiftData ModelContainer: \(error.localizedDescription)"
+            )
         }
     }
 
