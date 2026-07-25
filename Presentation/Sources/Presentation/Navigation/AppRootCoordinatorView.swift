@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-public struct AppCoordinatorView: View {
-    @State private var coordinator = AppCoordinator()
+public struct AppRootCoordinatorView: View {
+    @State private var coordinator = AppRootCoordinator()
 
     public init() { }
 
@@ -20,7 +20,7 @@ public struct AppCoordinatorView: View {
                     coordinator.launchDidFinish()
                 }
             case .main:
-                MainTabView()
+                MainTabView(coordinator: MainTabCoordinator())
             }
         }
         .task {

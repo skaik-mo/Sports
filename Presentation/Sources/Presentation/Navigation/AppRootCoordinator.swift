@@ -9,7 +9,7 @@ import Observation
 
 @MainActor
 @Observable
-final class AppCoordinator {
+final class AppRootCoordinator {
 
     var route: AppRoute = .launch
 

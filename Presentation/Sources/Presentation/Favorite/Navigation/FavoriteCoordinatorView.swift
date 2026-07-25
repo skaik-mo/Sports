@@ -9,18 +9,27 @@ import SwiftUI
 import FactoryKit
 
 struct FavoriteCoordinatorView: View {
+    @State private var coordinator: FavoriteCoordinator
 
-    @State private var coordinator = FavoriteCoordinator()
+    init(coordinator: FavoriteCoordinator) {
+        self.coordinator = coordinator
+    }
 
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            FavoriteView(viewModel: Container.shared.favoriteViewModel())
+            FavoriteView(
+                viewModel: Container.shared.favoriteViewModel(),
+                onNavigateToEvents: { params in
+                    coordinator.push(.events(parameters: params))
+                }
+            )
             .navigationDestination(
                 for: FavoriteRoute.self
             ) { route in
                 destination(for: route)
             }
         }
+//        .navigationAppearance(backgroundColor: .black, foregroundColor: .main, hideSeparator: true)
     }
 
     @ViewBuilder
@@ -30,8 +39,4 @@ struct FavoriteCoordinatorView: View {
             EventsView(viewModel: Container.shared.eventsViewModel(parameters))
         }
     }
-}
-
-#Preview {
-    FavoriteCoordinatorView()
 }

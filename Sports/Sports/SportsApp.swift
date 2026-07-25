@@ -9,42 +9,19 @@ import SwiftUI
 import SwiftData
 import FactoryKit
 import Presentation
+import DesignSystem
 
 @main
 struct SportsApp: App {
-    @State var alert = AlertManager()
-    @State var progress = ProgressManager()
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Favorite.self,
-        ])
-        let config = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: false
-        )
-        do {
-            return try ModelContainer(for: schema, configurations: [config])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 
     init() {
+        DesignSystemFontLoader.registerFonts()
         Container.shared.registerViewModelDependency()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .modelContainer(sharedModelContainer)
-                .environment(\.alertKey, alert)
-                .environment(\.progressKey, progress)
-                .errorAlert($alert)
-                .overlay {
-                    if progress.showProgress {
-                        CustomProgressView()
-                    }
-                }
+            AppRootCoordinatorView()
         }
     }
 

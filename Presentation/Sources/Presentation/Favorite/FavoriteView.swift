@@ -8,14 +8,19 @@
 import SwiftUI
 import DesignSystem
 
-public struct FavoriteView: View {
+struct FavoriteView: View {
     @State private var viewModel: FavoriteViewModel
+    private let onNavigateToEvents: (EventsParameters) -> Void
 
-    public init(viewModel: FavoriteViewModel) {
+    init(
+        viewModel: FavoriteViewModel,
+        onNavigateToEvents: @escaping (EventsParameters) -> Void
+    ) {
         self.viewModel = viewModel
+        self.onNavigateToEvents = onNavigateToEvents
     }
 
-    public var body: some View {
+    var body: some View {
         Group {
             switch viewModel.state.favoriteState {
             case .loading:
@@ -47,7 +52,12 @@ public struct FavoriteView: View {
                 LeaguesSectionList(
                     sections: viewModel.filteredSections,
                     onTap: { league in
-                        // TODO: navigate to Event Screen (league: league)
+                        onNavigateToEvents(
+                            .init(
+                                sportType: league.sportType,
+                                leagueId: league.id
+                            )
+                        )
                     },
                     onRemove: { league in
                         viewModel.removeFavorite(league: league)

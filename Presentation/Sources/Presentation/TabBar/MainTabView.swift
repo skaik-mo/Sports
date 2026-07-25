@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @State private var coordinator: MainTabCoordinator
 
-    @State private var selectedTab: Tab = .home
+    init(coordinator: MainTabCoordinator) {
+        self.coordinator = coordinator
+    }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            HomeCoordinatorView()
-                .tag(Tab.home)
+        TabView(selection: $coordinator.selectedTab) {
+            HomeCoordinatorView(coordinator: coordinator.homeCoordinator)
+                .tag(TabRoute.home)
 
-            FavoriteCoordinatorView()
-                .tag(Tab.favorite)
+            FavoriteCoordinatorView(
+                coordinator: coordinator.favoriteCoordinator
+            )
+            .tag(TabRoute.favorite)
         }
     }
 }

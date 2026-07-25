@@ -8,14 +8,19 @@
 import SwiftUI
 import DesignSystem
 
-public struct LeaguesView: View {
+struct LeaguesView: View {
     @State private var viewModel: LeaguesViewModel
+    private let onNavigateToEvents: (EventsParameters) -> Void
 
-    public init(viewModel: LeaguesViewModel) {
-        self._viewModel = State(initialValue: viewModel)
+    init(
+        viewModel: LeaguesViewModel,
+        onNavigateToEvents: @escaping (EventsParameters) -> Void
+    ) {
+        self.viewModel = viewModel
+        self.onNavigateToEvents = onNavigateToEvents
     }
 
-    public var body: some View {
+    var body: some View {
         Group {
             switch viewModel.state.leaguesState {
             case .loading:
@@ -23,7 +28,12 @@ public struct LeaguesView: View {
 
             case .success:
                 LeagueList(leagues: viewModel.filteredLeagues) { league in
-                    // handle navigate to Event Screen
+                    onNavigateToEvents(
+                        .init(
+                            sportType: league.sportType,
+                            leagueId: league.id
+                        )
+                    )
                 }
 
             case .empty:
