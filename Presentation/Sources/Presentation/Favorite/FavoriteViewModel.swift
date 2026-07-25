@@ -98,7 +98,7 @@ extension FavoriteViewModel {
             onFailure: {
                 [weak self] error in self?
                     .onRemoveFavoritesFailure(
-                        error,
+                        error: error,
                         previousState: previousState
                     )
             },
@@ -109,7 +109,7 @@ extension FavoriteViewModel {
     }
 
     private func onRemoveFavoritesFailure(
-        _ error: DomainException,
+        error: DomainException,
         previousState: ViewState<[LeagueSection]>
     ){
         updateState(

@@ -7,18 +7,19 @@
 
 import SwiftUI
 import DesignSystem
+import Domain
 
 struct HomeView: View {
     @State private var viewModel: HomeViewModel
     @State private var currentLayout: HomeLayoutStyle = .waterfall
-    private let onNavigate: (HomeRoute) -> Void
+    private let onNavigateToLeagues: (SportType) -> Void
 
     init(
         viewModel: HomeViewModel,
-        onNavigate: @escaping (HomeRoute) -> Void
+        onNavigateToLeagues: @escaping (SportType) -> Void
     ) {
-        self._viewModel = State(initialValue: viewModel)
-        self.onNavigate = onNavigate
+        self.viewModel = viewModel
+        self.onNavigateToLeagues = onNavigateToLeagues
     }
 
     var body: some View {
@@ -28,14 +29,14 @@ struct HomeView: View {
                 height: currentLayout.heightImage,
                 font: currentLayout.font
             ) { sportType in
-                viewModel.didSelectSport(sportType)
+                onNavigateToLeagues(sportType)
             }
             SportShapeStack(
                 sportTypes:viewModel.rightSports,
                 height: currentLayout.heightImage,
                 font: currentLayout.font
             ) { sportType in
-                viewModel.didSelectSport(sportType)
+                onNavigateToLeagues(sportType)
             }
         }
         .animation(.easeInOut(duration: 0.2), value: currentLayout)
@@ -49,12 +50,6 @@ struct HomeView: View {
         }
         .onAppear {
             viewModel.getSportTypes()
-        }
-        .onReceive(viewModel.effect) { effect in
-            switch effect {
-            case .showLeagues(let sportType):
-                onNavigate(.leagues(sportType: sportType))
-            }
         }
     }
 
