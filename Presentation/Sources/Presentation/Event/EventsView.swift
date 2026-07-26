@@ -84,6 +84,11 @@ public struct EventsView: View {
         }
         .navigationTitle(L10n.Events.title)
         .navigationBarTitleDisplayMode(.inline)
+        .customBackButton(
+            tintColor: .green,
+            backgroundColor: AppColors.backButtonBackground,
+            backgroundShadowColor: AppColors.foreground.opacity(0.3)
+        )
         .background(AppColors.background)
         .task {
             viewModel.getData()

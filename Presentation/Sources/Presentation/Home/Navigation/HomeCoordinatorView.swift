@@ -23,13 +23,12 @@ struct HomeCoordinatorView: View {
                     coordinator.push(.leagues(sportType: sportType))
                 }
             )
-                .navigationDestination(
-                    for: HomeRoute.self
-                ) { route in
-                    destination(for: route)
-                }
+            .navigationDestination(
+                for: HomeRoute.self
+            ) { route in
+                destination(for: route)
+            }
         }
-//        .navigationAppearance(backgroundColor: .black, foregroundColor: .main, hideSeparator: true)
     }
 
     @ViewBuilder

@@ -39,9 +39,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E704B8ED30152A9100B0A690 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		E759CC382CCF8FE600ED0F5E /* SportsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SportsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7CA78422CA8550400926FD0 /* Sports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sports.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7E779882FDF309400D1C744 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -66,11 +66,6 @@
 				E73A2D012CADABF9006395B4 /* Exceptions for "Sports" folder in "Sports" target */,
 			);
 			path = Sports;
-			sourceTree = "<group>";
-		};
-		E7E7798A2FDF312500D1C744 /* Config */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -99,12 +94,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E79874FF2FDF4B2B00F70294 /* Recovered References */ = {
+		E704B8EC30152A3800B0A690 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				E7E779882FDF309400D1C744 /* Secrets.xcconfig */,
+				E704B8ED30152A9100B0A690 /* Secrets.xcconfig */,
 			);
-			name = "Recovered References";
+			path = Config;
 			sourceTree = "<group>";
 		};
 		E7C2EEBE2FCE7E0E00573CE8 /* Frameworks */ = {
@@ -117,12 +112,11 @@
 		E7CA78392CA8550400926FD0 = {
 			isa = PBXGroup;
 			children = (
-				E7E7798A2FDF312500D1C744 /* Config */,
+				E704B8EC30152A3800B0A690 /* Config */,
 				E7CA78442CA8550400926FD0 /* Sports */,
 				E759CC392CCF8FE600ED0F5E /* SportsTests */,
 				E7C2EEBE2FCE7E0E00573CE8 /* Frameworks */,
 				E7CA78432CA8550400926FD0 /* Products */,
-				E79874FF2FDF4B2B00F70294 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -176,7 +170,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				E7CA78442CA8550400926FD0 /* Sports */,
-				E7E7798A2FDF312500D1C744 /* Config */,
 			);
 			name = Sports;
 			packageProductDependencies = (
@@ -322,8 +315,7 @@
 		};
 		E7CA784E2CA8550500926FD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E7E7798A2FDF312500D1C744 /* Config */;
-			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
+			baseConfigurationReference = E704B8ED30152A9100B0A690 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -387,8 +379,7 @@
 		};
 		E7CA784F2CA8550500926FD0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E7E7798A2FDF312500D1C744 /* Config */;
-			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
+			baseConfigurationReference = E704B8ED30152A9100B0A690 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -445,8 +436,6 @@
 		};
 		E7CA78512CA8550500926FD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E7E7798A2FDF312500D1C744 /* Config */;
-			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -482,8 +471,6 @@
 		};
 		E7CA78522CA8550500926FD0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = E7E7798A2FDF312500D1C744 /* Config */;
-			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
