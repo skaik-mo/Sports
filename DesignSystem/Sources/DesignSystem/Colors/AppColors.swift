@@ -15,6 +15,7 @@ public enum AppColors {
     // MARK: - Background
     public static let background = Color("background", bundle: .module)
     public static let secondaryBackground = Color("secondaryBackground", bundle: .module)
+    public static let backButtonBackground = Color("backButtonBackground", bundle: .module)
 
     // MARK: - Foreground
     public static let foreground = Color("foreground", bundle: .module)
