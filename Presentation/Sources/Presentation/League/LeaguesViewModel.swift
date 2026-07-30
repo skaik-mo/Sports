@@ -38,7 +38,8 @@ public final class LeaguesViewModel: BaseViewModel<LeagueState> {
 
 extension LeaguesViewModel {
 
-    func getLeagues() {
+    func getLeagues(withLoading: Bool = true) {
+        if withLoading { setLoading() }
         tryToExecute(
             id: TaskID.leagues.rawValue,
             onFailure: getLeagueFailure(),
@@ -49,6 +50,13 @@ extension LeaguesViewModel {
                 .execute(sportType: self.sportType)
                 .toUIModels()
         }
+    }
+
+    private func setLoading() {
+        updateState(
+            key: \.leaguesState,
+            to: .loading
+        )
     }
 
     private func getLeagueSuccess() -> ([LeagueUIModel]) -> Void {
