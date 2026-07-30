@@ -104,7 +104,7 @@ private extension EventsView {
             content()
         }
         .refreshable {
-            viewModel.getData()
+            viewModel.getData(withLoading: false)
         }
     }
 

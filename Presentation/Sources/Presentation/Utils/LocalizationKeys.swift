@@ -41,6 +41,11 @@ enum L10n {
         static let remove: String = "favorite.remove".localized
     }
 
+    enum Tab {
+        static let home: String = "tab.home".localized
+        static let favorite: String = "tab.favorite".localized
+    }
+
     enum General {
         static let retry = "general.retry".localized
     }

@@ -25,6 +25,7 @@ struct LeaguesView: View {
             switch viewModel.state.leaguesState {
             case .loading:
                 LoadingView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             case .success:
                 LeagueList(leagues: viewModel.filteredLeagues) { league in
@@ -35,12 +36,21 @@ struct LeaguesView: View {
                         )
                     )
                 }
+                .refreshable {
+                    viewModel.getLeagues(withLoading: false)
+                }
 
             case .empty:
-                EmptyStateView(
-                    message: L10n.Leagues.empty(viewModel.sportType.title),
-                    iconSystem: viewModel.sportType.icon
-                )
+                ScrollView(.vertical) {
+                    EmptyStateView(
+                        message: L10n.Leagues.empty(viewModel.sportType.title),
+                        iconSystem: viewModel.sportType.icon
+                    )
+                    .containerRelativeFrame([.horizontal, .vertical])
+                }
+                .refreshable {
+                    viewModel.getLeagues(withLoading: false)
+                }
             case .failure(let message):
                 ErrorView(
                     message: message,
@@ -48,6 +58,7 @@ struct LeaguesView: View {
                         viewModel.getLeagues()
                     }
                 )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .background(AppColors.background)

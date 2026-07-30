@@ -19,4 +19,6 @@ public enum AppIcons {
     public static let sportsCourtSystem = "sportscourt"
     public static let trashSystem = "trash"
     public static let chevronLeftSystem = "chevron.left"
+    public static let houseSystem = "house.fill"
+    public static let starSystem = "star.fill"
 }

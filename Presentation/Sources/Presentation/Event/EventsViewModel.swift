@@ -38,7 +38,9 @@ public final class EventsViewModel: BaseViewModel<EventState> {
 
 extension EventsViewModel {
 
-    func getData() {
+    func getData(withLoading: Bool = true) {
+        if withLoading { setLoading() }
+
         tryToExecute(
             id: TaskID.events.rawValue,
             onFailure: getDataFailure(),
@@ -61,6 +63,13 @@ extension EventsViewModel {
                 teams: teamsResult
             )
         }
+    }
+
+    private func setLoading() {
+        updateState(
+            key: \.eventsState,
+            to: .loading
+        )
     }
 
     private func getDataSuccess() -> (EventScreenData) -> Void {
