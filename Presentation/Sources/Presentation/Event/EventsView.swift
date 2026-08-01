@@ -29,7 +29,7 @@ public struct EventsView: View {
                 ErrorView(
                     message: message,
                     onRetry: {
-                        viewModel.getData()
+                        viewModel.getEvents()
                     }
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -47,7 +47,9 @@ public struct EventsView: View {
             case .success(let data):
                 refreshableScroll {
                     if !data.upcomingEvents.isEmpty {
-                        upcomingEventsSection(upcomingEvents: data.upcomingEvents)
+                        upcomingEventsSection(
+                            upcomingEvents: data.upcomingEvents
+                        )
                     }
                     if !data.latestEvents.isEmpty {
                         latestEventsSection(latestEvents: data.latestEvents)
@@ -65,9 +67,21 @@ public struct EventsView: View {
             backgroundColor: AppColors.backButtonBackground,
             backgroundShadowColor: AppColors.foreground.opacity(0.3)
         )
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                FavoriteButton(isFavorite: viewModel.state.isFavorite) {
+                    viewModel.setFavorite()
+                }
+            }
+            .hideSharedBackgroundIfAvailable()
+        }
         .background(AppColors.background)
         .task {
-            viewModel.getData()
+            viewModel.getEvents()
+            viewModel.getFavoriteStatus()
+        }
+        .onDisappear {
+            viewModel.cancelAllTasks()
         }
     }
 }
@@ -127,7 +141,7 @@ private extension EventsView {
             content()
         }
         .refreshable {
-            viewModel.getData(withLoading: false)
+            viewModel.getEvents(withLoading: false)
         }
     }
 

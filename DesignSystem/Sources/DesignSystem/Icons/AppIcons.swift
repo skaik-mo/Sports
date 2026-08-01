@@ -20,5 +20,6 @@ public enum AppIcons {
     public static let trashSystem = "trash"
     public static let chevronLeftSystem = "chevron.left"
     public static let houseSystem = "house.fill"
-    public static let starSystem = "star.fill"
+    public static let starFillSystem = "star.fill"
+    public static let starSystem = "star"
 }

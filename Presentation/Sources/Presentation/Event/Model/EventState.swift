@@ -14,4 +14,5 @@ struct EventScreenData {
 
 public struct EventState {
     var eventsState: ViewState<EventScreenData> = .loading
+    var isFavorite: Bool = false
 }

@@ -32,7 +32,7 @@ public class BaseViewModel<State> {
     public func tryToExecute<T>(
         id: String,
         onFailure: @escaping (DomainException) -> Void,
-        onSuccess: @escaping (T) -> Void,
+        onSuccess: @escaping (T) -> Void = { _ in },
         block: @escaping () async throws -> T
     ) {
         taskManager.run(id: id) { [weak self] in
