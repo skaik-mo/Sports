@@ -70,7 +70,7 @@ struct LeaguesView: View {
             backgroundShadowColor: AppColors.foreground.opacity(0.3)
         )
         .searchable(text: $viewModel.searchText)
-        .task {
+        .onFirstAppear {
             viewModel.getLeagues()
         }
         .onDisappear {
