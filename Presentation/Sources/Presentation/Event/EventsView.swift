@@ -29,7 +29,7 @@ public struct EventsView: View {
                 ErrorView(
                     message: message,
                     onRetry: {
-                        viewModel.getData()
+                        viewModel.getEvents()
                     }
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -46,38 +46,16 @@ public struct EventsView: View {
 
             case .success(let data):
                 refreshableScroll {
-                    SectionHeaderView(title: L10n.Events.upcomingMatches)
-                    HorizontalCarousel(items: data.upcomingEvents) { event in
-                        eventCard(for: event)
-                            .padding(.top, AppSpacing.xs)
-                            .padding(.bottom, AppSpacing.sm)
-                    }
-
-                    SectionHeaderView(title: L10n.Events.latest_matches)
-                    LazyVStack(spacing: AppSpacing.lg) {
-                        ForEach(data.latestEvents) { event in
-                            eventCard(for: event)
-                        }
-                    }
-                    .padding(.top, AppSpacing.xs)
-
-                    SectionHeaderView(title: participantsTitle)
-                    HorizontalCarousel(items: data.teams) { team in
-                        TeamCard(logo: team.logo, name: team.name) {
-                            placeholderLogoView()
-                        } failureView: {
-                            placeholderLogoView()
-                        }
-                        .padding(AppSpacing.lg)
-                        .background(AppColors.secondaryBackground)
-                        .cornerRadius(AppRadius.large)
-                        .shadow(
-                            color: AppColors.shadow,
-                            radius: AppRadius.xSmall,
-                            y: 2
+                    if !data.upcomingEvents.isEmpty {
+                        upcomingEventsSection(
+                            upcomingEvents: data.upcomingEvents
                         )
-                        .padding(.top, AppSpacing.xs)
-                        .padding(.bottom, AppSpacing.sm)
+                    }
+                    if !data.latestEvents.isEmpty {
+                        latestEventsSection(latestEvents: data.latestEvents)
+                    }
+                    if !data.teams.isEmpty {
+                        teamsSection(teams: data.teams)
                     }
                 }
             }
@@ -85,13 +63,72 @@ public struct EventsView: View {
         .navigationTitle(L10n.Events.title)
         .navigationBarTitleDisplayMode(.inline)
         .customBackButton(
-            tintColor: .green,
+            tintColor: AppColors.primary,
             backgroundColor: AppColors.backButtonBackground,
             backgroundShadowColor: AppColors.foreground.opacity(0.3)
         )
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                FavoriteButton(isFavorite: viewModel.state.isFavorite) {
+                    viewModel.setFavorite()
+                }
+            }
+            .hideSharedBackgroundIfAvailable()
+        }
         .background(AppColors.background)
         .task {
-            viewModel.getData()
+            viewModel.getEvents()
+            viewModel.getFavoriteStatus()
+        }
+        .onDisappear {
+            viewModel.cancelAllTasks()
+        }
+    }
+}
+
+
+private extension EventsView {
+
+    @ViewBuilder
+    func upcomingEventsSection(upcomingEvents: [EventUIModel]) -> some View {
+        SectionHeaderView(title: L10n.Events.upcomingMatches)
+        HorizontalCarousel(items: upcomingEvents) { event in
+            eventCard(for: event)
+                .padding(.top, AppSpacing.xs)
+                .padding(.bottom, AppSpacing.sm)
+        }
+    }
+
+    @ViewBuilder
+    func latestEventsSection(latestEvents: [EventUIModel]) -> some View {
+        SectionHeaderView(title: L10n.Events.latest_matches)
+        LazyVStack(spacing: AppSpacing.lg) {
+            ForEach(latestEvents) { event in
+                eventCard(for: event)
+            }
+        }
+        .padding(.top, AppSpacing.xs)
+    }
+
+    @ViewBuilder
+    func teamsSection(teams: [TeamUIModel]) -> some View {
+        SectionHeaderView(title: participantsTitle)
+        HorizontalCarousel(items: teams) { team in
+            TeamCard(logo: team.logo, name: team.name) {
+                placeholderLogoView()
+            } failureView: {
+                placeholderLogoView()
+            }
+            .padding(AppSpacing.lg)
+            .background(AppColors.secondaryBackground)
+            .cornerRadius(AppRadius.large)
+            .shadow(
+                color: AppColors.shadow,
+                radius: AppRadius.xSmall,
+                y: 2
+            )
+            .padding(.top, AppSpacing.xs)
+            .padding(.bottom, AppSpacing.sm)
         }
     }
 }
@@ -104,7 +141,7 @@ private extension EventsView {
             content()
         }
         .refreshable {
-            viewModel.getData(withLoading: false)
+            viewModel.getEvents(withLoading: false)
         }
     }
 

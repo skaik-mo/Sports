@@ -21,7 +21,7 @@ enum TabRoute: Hashable, CaseIterable {
     var icon: String {
         switch self {
         case .home: return AppIcons.houseSystem
-        case .favorite: return AppIcons.starSystem
+        case .favorite: return AppIcons.starFillSystem
         }
     }
 }

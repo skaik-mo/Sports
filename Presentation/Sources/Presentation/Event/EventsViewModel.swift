@@ -8,6 +8,8 @@
 import Domain
 
 public final class EventsViewModel: BaseViewModel<EventState> {
+    private let toggleFavoriteUseCase: ToggleFavoriteUseCase
+    private let isFavoriteUseCase: IsFavoriteUseCase
     private let getUpcomingEventsUseCase: GetUpcomingEventsUseCase
     private let getLatestEventsUseCase: GetLatestEventsUseCase
     private let getTeamsUseCase: GetTeamsUseCase
@@ -16,15 +18,21 @@ public final class EventsViewModel: BaseViewModel<EventState> {
 
     private enum TaskID: String {
         case events
+        case toggleFavorite
+        case isFavorite
     }
 
     public init(
+        toggleFavoriteUseCase: ToggleFavoriteUseCase,
+        isFavoriteUseCase: IsFavoriteUseCase,
         getUpcomingEventsUseCase: GetUpcomingEventsUseCase,
         getLatestEventsUseCase: GetLatestEventsUseCase,
         getTeamsUseCase: GetTeamsUseCase,
         sportType: SportType,
         leagueId: Int
     ) {
+        self.toggleFavoriteUseCase = toggleFavoriteUseCase
+        self.isFavoriteUseCase = isFavoriteUseCase
         self.getUpcomingEventsUseCase = getUpcomingEventsUseCase
         self.getLatestEventsUseCase = getLatestEventsUseCase
         self.getTeamsUseCase = getTeamsUseCase
@@ -35,15 +43,14 @@ public final class EventsViewModel: BaseViewModel<EventState> {
 
 }
 
-
 extension EventsViewModel {
 
-    func getData(withLoading: Bool = true) {
+    func getEvents(withLoading: Bool = true) {
         if withLoading { setLoading() }
 
         tryToExecute(
             id: TaskID.events.rawValue,
-            onFailure: getDataFailure(),
+            onFailure: handleFailure(),
             onSuccess: getDataSuccess()
         ) { [weak self] in
             guard let self else { throw DomainException.unknown }
@@ -82,7 +89,56 @@ extension EventsViewModel {
         }
     }
 
-    private func getDataFailure() -> (Error) -> Void {
+}
+
+extension EventsViewModel {
+
+    func setFavorite() {
+        let previousValue = state.isFavorite
+        updateState(key: \.isFavorite, to: !previousValue)
+
+        tryToExecute(
+            id: TaskID.toggleFavorite.rawValue,
+            onFailure: handleFavoriteFailure(previousValue: previousValue),
+        ) { [weak self] in
+            guard let self else { throw DomainException.unknown }
+            return try await toggleFavoriteUseCase
+                .execute(leagueId: self.leagueId)
+        }
+
+    }
+
+    private func handleFavoriteFailure(previousValue: Bool) -> (DomainException) -> Void {
+        return { [weak self] _ in
+            self?.updateState(key: \.isFavorite, to: previousValue)
+        }
+    }
+}
+
+extension EventsViewModel {
+
+    func getFavoriteStatus() {
+        tryToExecute(
+            id: TaskID.isFavorite.rawValue,
+            onFailure: handleFailure(),
+            onSuccess: getFavoriteStatusSuccess()
+        ) { [weak self] in
+            guard let self else { throw DomainException.unknown }
+            return try await isFavoriteUseCase.execute(leagueId: self.leagueId)
+        }
+
+    }
+
+    private func getFavoriteStatusSuccess() -> (Bool) -> Void {
+        return { [weak self] status in
+            self?.updateState(key: \.isFavorite, to: status)
+        }
+    }
+}
+
+
+private extension EventsViewModel {
+    func handleFailure() -> (Error) -> Void {
         return { [weak self] error in
             self?.updateState(
                 key: \.eventsState,

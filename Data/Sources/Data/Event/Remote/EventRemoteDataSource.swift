@@ -68,7 +68,7 @@ extension EventRemoteDataSource {
         guard response.success == 1 else {
             throw NetworkError.serverError(statusCode: 500)
         }
-        return response.result
+        return response.result ?? []
     }
 
 }

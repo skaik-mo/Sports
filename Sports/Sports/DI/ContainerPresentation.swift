@@ -40,6 +40,8 @@ extension Container {
         eventsViewModel.register { parameters in
             MainActor.assumeIsolated {
                 EventsViewModel(
+                    toggleFavoriteUseCase: self.toggleFavoriteUseCase(),
+                    isFavoriteUseCase: self.isFavoriteUseCase(),
                     getUpcomingEventsUseCase: self.getUpcomingEventsUseCase(),
                     getLatestEventsUseCase: self.getLatestEventsUseCase(),
                     getTeamsUseCase: self.getTeamsUseCase(),

@@ -65,12 +65,12 @@ struct LeaguesView: View {
         .navigationTitle(L10n.Leagues.title(viewModel.sportType.title))
         .navigationBarTitleDisplayMode(.inline)
         .customBackButton(
-            tintColor: .green,
+            tintColor: AppColors.primary,
             backgroundColor: AppColors.backButtonBackground,
             backgroundShadowColor: AppColors.foreground.opacity(0.3)
         )
         .searchable(text: $viewModel.searchText)
-        .task {
+        .onFirstAppear {
             viewModel.getLeagues()
         }
         .onDisappear {
