@@ -9,11 +9,12 @@ import Domain
 
 extension League {
     func toUIModel() -> LeagueUIModel {
-        LeagueUIModel(
+        let countryName = country?.name
+        return LeagueUIModel(
             id: id,
             leagueName: name,
             leagueLogo: logo.orEmpty(),
-            countryName: country.name,
+            countryName: countryName.orEmpty(),
             sportType: sportType
         )
     }

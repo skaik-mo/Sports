@@ -9,15 +9,19 @@ import Domain
 
 extension LeagueDto {
     func toDomain(sportType: SportType) -> League {
+        var country: Country? = nil
+        if let country_key {
+            country = Country(
+                id: country_key,
+                name: country_name.orEmpty(),
+                logo: country_logo
+            )
+        }
         return League(
             id: league_key,
             name: league_name.orEmpty(),
-            logo: league_logo.orEmpty(),
-            country: Country(
-                id: country_key,
-                name: country_name.orEmpty(),
-                logo: country_logo.orEmpty()
-            ),
+            logo: league_logo,
+            country: country,
             sportType: sportType
         )
     }
@@ -30,7 +34,7 @@ extension LeagueDto {
             sport: sportPath,
             countryId: country_key,
             countryName: country_name.orEmpty(),
-            countryLogo: country_logo.orEmpty()
+            countryLogo: country_logo
         )
     }
 }
@@ -38,15 +42,19 @@ extension LeagueDto {
 extension LeagueCache {
 
     func toDomain() -> League {
-        League(
-            id: id,
-            name: name,
-            logo: logo,
-            country: Country(
+        var country: Country? = nil
+        if let countryId {
+            country = Country(
                 id: countryId,
                 name: countryName,
                 logo: countryLogo
-            ),
+            )
+        }
+        return League(
+            id: id,
+            name: name,
+            logo: logo,
+            country: country,
             sportType: SportType(path: sport)
         )
     }

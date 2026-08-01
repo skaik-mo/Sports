@@ -9,10 +9,10 @@ public struct League: Sendable {
     public let id: Int
     public let name: String
     public let logo: String?
-    public let country: Country
+    public let country: Country?
     public let sportType: SportType
 
-    public init(id: Int, name: String, logo: String?, country: Country, sportType: SportType) {
+    public init(id: Int, name: String, logo: String?, country: Country?, sportType: SportType) {
         self.id = id
         self.name = name
         self.logo = logo

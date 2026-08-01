@@ -37,9 +37,11 @@ public struct LeagueCard: View {
                 Text(leagueName)
                     .font(AppFonts.medium14)
                     .foregroundStyle(AppColors.primaryText)
-                Text(countryName)
-                    .font(AppFonts.regular14)
-                    .foregroundStyle(AppColors.secondaryText)
+                if !countryName.isEmpty {
+                    Text(countryName)
+                        .font(AppFonts.regular14)
+                        .foregroundStyle(AppColors.secondaryText)
+                }
 
             }
             Spacer()
