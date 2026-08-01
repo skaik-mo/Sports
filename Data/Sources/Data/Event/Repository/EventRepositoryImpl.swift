@@ -29,6 +29,7 @@ public extension EventRepositoryImpl {
     func getUpcomingEvents(sportType: SportType, leagueId: Int) async throws -> [Event] {
         try await fetch(
             section: .upcoming,
+            sportType: sportType,
             fetchRemote: {
                 try await self.remote
                     .getUpcomingEvents(sportType: sportType, leagueId: leagueId)
@@ -38,7 +39,7 @@ public extension EventRepositoryImpl {
             },
             saveLocal: {
                 try await self.local
-                    .saveUpcomingEvents(events: $0, leagueId: leagueId)
+                    .saveUpcomingEvents(events: $0, leagueId: leagueId, sportType: sportType)
             }
         )
     }
@@ -46,6 +47,7 @@ public extension EventRepositoryImpl {
     func getLatestEvents(sportType: SportType, leagueId: Int) async throws -> [Event] {
         try await fetch(
             section: .latest,
+            sportType: sportType,
             fetchRemote: {
                 try await self.remote
                     .getLatestEvents(sportType: sportType, leagueId: leagueId)
@@ -55,7 +57,7 @@ public extension EventRepositoryImpl {
             },
             saveLocal: {
                 try await self.local
-                    .saveLatestEvents(events: $0, leagueId: leagueId)
+                    .saveLatestEvents(events: $0, leagueId: leagueId, sportType: sportType)
             }
         )
     }
@@ -64,6 +66,7 @@ public extension EventRepositoryImpl {
 private extension EventRepositoryImpl {
     func fetch(
         section: EventSection,
+        sportType: SportType,
         fetchRemote: () async throws -> [EventDto],
         fetchLocal: () async throws -> [Event],
         saveLocal: ([EventDto]) async throws -> Void
@@ -74,7 +77,7 @@ private extension EventRepositoryImpl {
                 events: remoteEvents,
                 saveLocal: saveLocal
             )
-            return try remoteEvents.map { try $0.toDomain() }
+            return try remoteEvents.map { try $0.toDomain(sportType: sportType) }
         } catch DomainException.noInternet {
             return try await fetchFromCache(
                 section: section,

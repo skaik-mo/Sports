@@ -57,7 +57,8 @@ extension EventsViewModel {
 
             async let upcoming = self.getUpcomingEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
             async let latest = self.getLatestEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
-            async let teams = self.getTeamsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModels()
+
+            async let teams = self.getTeams()
 
             let (upcomingResult, latestResult, teamsResult) = try await (
                 upcoming,
@@ -70,6 +71,19 @@ extension EventsViewModel {
                 teams: teamsResult
             )
         }
+    }
+
+    private func getTeams() async throws -> [TeamUIModel] {
+        guard sportType != .tennis else {
+            return []
+        }
+
+        return try await getTeamsUseCase
+            .execute(
+                sportType: sportType,
+                leagueId: leagueId
+            )
+            .toUIModels()
     }
 
     private func setLoading() {
