@@ -19,8 +19,8 @@ extension TeamDto {
     func toCache(leagueId: Int) -> TeamCache {
         TeamCache(
             id: self.team_key,
-            name: self.team_name,
-            logo: self.team_logo,
+            name: self.team_name.orEmpty(),
+            logo: self.team_logo.orEmpty(),
             leagueId: leagueId
         )
     }

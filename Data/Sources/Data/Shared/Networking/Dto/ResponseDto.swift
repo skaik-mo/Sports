@@ -6,6 +6,6 @@
 //
 
 struct ResponseDto<T: Decodable>: Decodable {
-    let success: Int
-    let result: [T]
+    let success: Int?
+    let result: [T]?
 }

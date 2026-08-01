@@ -14,5 +14,6 @@ public final class GetUpcomingEventsUseCase: Sendable {
 
     public func execute(sportType: SportType, leagueId: Int) async throws -> [Event] {
         try await repository.getUpcomingEvents(sportType: sportType, leagueId: leagueId)
+            .sorted(by: < )
     }
 }
