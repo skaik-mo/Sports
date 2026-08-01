@@ -61,6 +61,7 @@ enum L10n {
         static let noDataFound = "error.no_data_found".localized
         static let dateCalculation = "error.date_calculation".localized
         static let invalidDate = "error.invalid_date".localized
+        static let invalidData = "error.invalid_data".localized
         static let unknown = "error.unknown".localized
     }
 

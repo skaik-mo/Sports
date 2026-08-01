@@ -34,6 +34,17 @@
         }
       }
     },
+    "error.invalid_data" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invalid data"
+          }
+        }
+      }
+    },
     "error.invalid_date" : {
       "extractionState" : "manual",
       "localizations" : {

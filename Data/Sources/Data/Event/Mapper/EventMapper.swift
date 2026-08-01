@@ -10,7 +10,7 @@ import Foundation
 
 extension EventDto {
 
-    func toDomain() throws -> Event {
+    func toDomain(sportType: SportType) throws -> Event {
         let formatter = DateFormatter.dateFormat(format: "yyyy-MM-dd HH:mm")
 
         guard let event_date,
@@ -27,23 +27,11 @@ extension EventDto {
             date: eventDateTime,
             finalResult: self.event_final_result,
             status: self.event_status,
-            teams: MatchTeams(
-                homeTeam: Team(
-                    id: self.home_team_key,
-                    name: self.event_home_team,
-                    logoUrl: self.home_team_logo
-                ),
-                awayTeam: Team(
-                    id: self.away_team_key,
-                    name: self.event_away_team,
-                    logoUrl: self.away_team_logo
-                )
-            )
+            teams: try makeMatchTeams(sportType: sportType)
         )
     }
 
-
-    func toCache(leagueId: Int, section: EventSection) throws -> EventCache {
+    func toCache(leagueId: Int, section: EventSection, sportType: SportType) throws -> EventCache {
         let formatter = DateFormatter.dateFormat(format: "yyyy-MM-dd HH:mm")
 
         guard let event_date,
@@ -55,6 +43,7 @@ extension EventDto {
             throw DomainException.invalidDate
         }
 
+        let teams = try makeMatchTeams(sportType: sportType)
         return EventCache(
             id: self.event_key,
             date: eventDateTime,
@@ -62,12 +51,12 @@ extension EventDto {
             status: self.event_status,
             leagueId: leagueId,
             section: section.rawValue,
-            homeTeamKey: self.home_team_key,
-            homeTeamName: self.event_home_team,
-            homeTeamLogo: self.home_team_logo,
-            awayTeamKey: self.away_team_key,
-            awayTeamName: self.event_away_team,
-            awayTeamLogo: self.away_team_logo,
+            homeTeamKey: teams.homeTeam.id,
+            homeTeamName: teams.homeTeam.name,
+            homeTeamLogo: teams.homeTeam.logoUrl,
+            awayTeamKey: teams.awayTeam.id,
+            awayTeamName: teams.awayTeam.name,
+            awayTeamLogo: teams.awayTeam.logoUrl,
         )
     }
 }
@@ -92,5 +81,53 @@ extension EventCache {
                 )
             )
         )
+    }
+}
+
+private extension EventDto {
+
+    func makeMatchTeams(sportType: SportType) throws -> MatchTeams {
+        switch sportType {
+        case .football, .basketball, .cricket:
+            guard let homeId = home_team_key,
+                  let awayId = away_team_key
+            else {
+                throw DomainException.missingTeams
+            }
+
+            return MatchTeams(
+                homeTeam: Team(
+                    id: homeId,
+                    name: event_home_team,
+                    logoUrl: home_team_logo
+                ),
+                awayTeam: Team(
+                    id: awayId,
+                    name: event_away_team,
+                    logoUrl: away_team_logo
+                )
+            )
+
+
+        case .tennis:
+            guard let firstId = first_player_key,
+                  let secondId = second_player_key
+            else {
+                throw DomainException.missingPlayers
+            }
+
+            return MatchTeams(
+                homeTeam: Team(
+                    id: firstId,
+                    name: event_first_player,
+                    logoUrl: event_first_player_logo
+                ),
+                awayTeam: Team(
+                    id: secondId,
+                    name: event_second_player,
+                    logoUrl: event_second_player_logo
+                )
+            )
+        }
     }
 }

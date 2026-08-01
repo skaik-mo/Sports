@@ -14,7 +14,7 @@ extension NetworkError {
         case .unauthorized: return .unauthorized
         case .forbidden: return .forbidden
         case .notFound: return .notFound
-        case .serverError: return .serverError
+        case .serverError(let statusCode): return .serverError(statusCode: statusCode)
         case .noInternetConnection: return .noInternet
         case .timeout: return .timeout
         case .decodingFailed: return .decodingFailed

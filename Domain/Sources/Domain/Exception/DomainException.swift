@@ -9,7 +9,7 @@ public enum DomainException: Error {
     case unauthorized
     case forbidden
     case notFound
-    case serverError
+    case serverError(statusCode: Int)
     case noInternet
     case timeout
     case decodingFailed
@@ -17,5 +17,7 @@ public enum DomainException: Error {
     case noDataFound
     case dateCalculationFailed
     case invalidDate
+    case missingTeams
+    case missingPlayers
     case unknown
 }

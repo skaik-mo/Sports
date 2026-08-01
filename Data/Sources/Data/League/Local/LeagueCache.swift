@@ -17,7 +17,7 @@ final class LeagueCache  {
     var name: String
     var logo: String?
     var sport: String
-    var countryId: Int
+    var countryId: Int?
     var countryName: String
     var countryLogo: String?
 
@@ -26,7 +26,7 @@ final class LeagueCache  {
         name: String,
         logo: String?,
         sport: String,
-        countryId: Int,
+        countryId: Int?,
         countryName: String,
         countryLogo: String?
     ) {

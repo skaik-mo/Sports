@@ -25,6 +25,7 @@ extension Error {
         case .noDataFound: return L10n.Error.noDataFound
         case .dateCalculationFailed: return L10n.Error.dateCalculation
         case .invalidDate: return L10n.Error.invalidDate
+        case .missingTeams, .missingPlayers: return L10n.Error.invalidData
 
         // MARK: - General
         case .unknown, .none: return L10n.Error.unknown
