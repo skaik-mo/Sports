@@ -10,6 +10,6 @@ struct EventUIModel: Identifiable {
     let date: String
     let time: String
     let finalResult: String
-    let homeTeams: TeamUIModel
-    let awayTeams: TeamUIModel
+    let firstParticipant: ParticipantUIModel
+    let secondParticipant: ParticipantUIModel
 }

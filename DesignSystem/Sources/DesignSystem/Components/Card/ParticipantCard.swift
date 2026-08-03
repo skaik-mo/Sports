@@ -1,5 +1,5 @@
 //
-//  TeamCard.swift
+//  Participant.swift
 //  DesignSystem
 //
 //  Created by Mohammed Skaik on 09/07/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct TeamCard<PlaceholderView: View, FailureView: View>: View {
+public struct ParticipantCard<PlaceholderView: View, FailureView: View>: View {
     private let logo: String
     private let name: String
     private let placeholderView: PlaceholderView
@@ -43,7 +43,7 @@ public struct TeamCard<PlaceholderView: View, FailureView: View>: View {
 }
 
 #Preview {
-    TeamCard(
+    ParticipantCard(
         logo: "https://media.api-sports.io/football/teams/541.png",
         name: "Real Madrid",
         placeholderView: {

@@ -10,53 +10,78 @@ import Foundation
 
 extension EventDto {
 
-    func toDomain(sportType: SportType) throws -> Event {
-        let formatter = DateFormatter.dateFormat(format: "yyyy-MM-dd HH:mm")
+    func toDomain(sportType: SportType) -> Event? {
+        guard let event_key else { return nil }
 
-        guard let event_date,
-              let event_time,
-              let eventDateTime = formatter.date(
-                from: "\(event_date) \(event_time)"
-              )
-        else {
-            throw DomainException.invalidDate
+        let firstParticipant: Participant
+        let secondParticipant: Participant
+
+        switch sportType {
+        case .football, .basketball, .cricket:
+            guard let homeKey = home_team_key, let awayKey = away_team_key else {
+                return nil
+            }
+            firstParticipant = Participant(
+                id: homeKey,
+                name: event_home_team,
+                logoUrl: home_team_logo
+            )
+            secondParticipant = Participant(
+                id: awayKey,
+                name: event_away_team,
+                logoUrl: away_team_logo
+            )
+
+        case .tennis:
+            guard let firstKey = first_player_key, let secondKey = second_player_key else {
+                return nil
+            }
+            firstParticipant = Participant(
+                id: firstKey,
+                name: event_first_player,
+                logoUrl: event_first_player_logo
+            )
+            secondParticipant = Participant(
+                id: secondKey,
+                name: event_second_player,
+                logoUrl: event_second_player_logo
+            )
         }
 
+        let rawDate = sportType == .cricket ? event_date_start : event_date
+        let combinedDateString = "\(rawDate ?? "") \(event_time ?? "")"
+        let parsedDate = DateFormatter
+            .dateFormat(format: "yyyy-MM-dd HH:mm")
+            .date(
+                from: combinedDateString
+            )
+
         return Event(
-            id: self.event_key,
-            date: eventDateTime,
-            finalResult: self.event_final_result,
-            status: self.event_status,
-            teams: try makeMatchTeams(sportType: sportType)
+            id: event_key,
+            date: parsedDate,
+            finalResult: event_final_result,
+            firstParticipant: firstParticipant,
+            secondParticipant: secondParticipant
         )
     }
 
-    func toCache(leagueId: Int, section: EventSection, sportType: SportType) throws -> EventCache {
-        let formatter = DateFormatter.dateFormat(format: "yyyy-MM-dd HH:mm")
+}
 
-        guard let event_date,
-              let event_time,
-              let eventDateTime = formatter.date(
-                from: "\(event_date) \(event_time)"
-              )
-        else {
-            throw DomainException.invalidDate
-        }
 
-        let teams = try makeMatchTeams(sportType: sportType)
-        return EventCache(
-            id: self.event_key,
-            date: eventDateTime,
-            finalResult: self.event_final_result,
-            status: self.event_status,
+extension Event {
+    func toCache(leagueId: Int, section: EventSection) -> EventCache {
+        EventCache(
+            id: id,
+            date: date,
+            finalResult: finalResult,
             leagueId: leagueId,
             section: section.rawValue,
-            homeTeamKey: teams.homeTeam.id,
-            homeTeamName: teams.homeTeam.name,
-            homeTeamLogo: teams.homeTeam.logoUrl,
-            awayTeamKey: teams.awayTeam.id,
-            awayTeamName: teams.awayTeam.name,
-            awayTeamLogo: teams.awayTeam.logoUrl,
+            firstParticipantKey: firstParticipant.id,
+            firstParticipantName: firstParticipant.name,
+            firstParticipantLogo: firstParticipant.logoUrl,
+            secondParticipantKey: secondParticipant.id,
+            secondParticipantName: secondParticipant.name,
+            secondParticipantLogo: secondParticipant.logoUrl
         )
     }
 }
@@ -64,70 +89,19 @@ extension EventDto {
 extension EventCache {
     func toDomain() -> Event {
         Event(
-            id: self.id,
-            date: self.date,
-            finalResult: self.finalResult,
-            status: self.status,
-            teams: MatchTeams(
-                homeTeam: Team(
-                    id: self.homeTeamKey,
-                    name: self.homeTeamName,
-                    logoUrl: self.homeTeamLogo
-                ),
-                awayTeam: Team(
-                    id: self.awayTeamKey,
-                    name: self.awayTeamName,
-                    logoUrl: self.awayTeamLogo
-                )
+            id: id,
+            date: date,
+            finalResult: finalResult,
+            firstParticipant: Participant(
+                id: firstParticipantKey,
+                name: firstParticipantName,
+                logoUrl: firstParticipantLogo
+            ),
+            secondParticipant: Participant(
+                id: secondParticipantKey,
+                name: secondParticipantName,
+                logoUrl: secondParticipantLogo
             )
         )
-    }
-}
-
-private extension EventDto {
-
-    func makeMatchTeams(sportType: SportType) throws -> MatchTeams {
-        switch sportType {
-        case .football, .basketball, .cricket:
-            guard let homeId = home_team_key,
-                  let awayId = away_team_key
-            else {
-                throw DomainException.missingTeams
-            }
-
-            return MatchTeams(
-                homeTeam: Team(
-                    id: homeId,
-                    name: event_home_team,
-                    logoUrl: home_team_logo
-                ),
-                awayTeam: Team(
-                    id: awayId,
-                    name: event_away_team,
-                    logoUrl: away_team_logo
-                )
-            )
-
-
-        case .tennis:
-            guard let firstId = first_player_key,
-                  let secondId = second_player_key
-            else {
-                throw DomainException.missingPlayers
-            }
-
-            return MatchTeams(
-                homeTeam: Team(
-                    id: firstId,
-                    name: event_first_player,
-                    logoUrl: event_first_player_logo
-                ),
-                awayTeam: Team(
-                    id: secondId,
-                    name: event_second_player,
-                    logoUrl: event_second_player_logo
-                )
-            )
-        }
     }
 }

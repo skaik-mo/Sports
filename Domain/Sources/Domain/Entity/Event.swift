@@ -11,19 +11,34 @@ public struct Event: Sendable {
     public let id: Int
     public let date: Date?
     public let finalResult: String?
-    public let status: String?
-    public let teams: MatchTeams?
+    public let firstParticipant: Participant
+    public let secondParticipant: Participant
 
-    public init(id: Int, date: Date?, finalResult: String?, status: String?, teams: MatchTeams?) {
+    public init(
+        id: Int,
+        date: Date?,
+        finalResult: String?,
+        firstParticipant: Participant,
+        secondParticipant: Participant
+    ) {
         self.id = id
         self.date = date
         self.finalResult = finalResult
-        self.status = status
-        self.teams = teams
+        self.firstParticipant = firstParticipant
+        self.secondParticipant = secondParticipant
     }
 
     public static func < (lhs: Event, rhs: Event) -> Bool {
-            guard let lhsDate = lhs.date, let rhsDate = rhs.date else { return false }
-            return lhsDate < rhsDate
+        guard let lhsDate = lhs.date, let rhsDate = rhs.date else {
+            return false
         }
+        return lhsDate < rhsDate
+    }
+
+    public static func > (lhs: Event, rhs: Event) -> Bool {
+        guard let lhsDate = lhs.date, let rhsDate = rhs.date else {
+            return false
+        }
+        return lhsDate > rhsDate
+    }
 }

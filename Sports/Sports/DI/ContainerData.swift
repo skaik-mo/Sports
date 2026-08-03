@@ -84,10 +84,10 @@ extension Container {
         }
     }
 
-    var teamLocalDataSource: Factory<TeamLocalDataSource> {
+    var participantLocalDataSource: Factory<ParticipantLocalDataSource> {
         self {
             MainActor.assumeIsolated {
-                TeamLocalDataSource(
+                ParticipantLocalDataSource(
                     context: SwiftDataStack.shared.mainContext
                 )
             }
@@ -100,11 +100,27 @@ extension Container {
         }
     }
 
+    var playerRemoteDataSource: Factory<PlayerRemoteDataSource> {
+        self {
+            PlayerRemoteDataSource(client: self.client())
+        }
+    }
+
     var teamRepository: Factory<TeamRepository> {
         self {
             TeamRepositoryImpl(
                 remote: self.teamRemoteDataSource(),
-                local: self.teamLocalDataSource()
+                local: self.participantLocalDataSource()
+
+            )
+        }
+    }
+
+    var playerRepository: Factory<PlayerRepository> {
+        self {
+            PlayerRepositoryImpl(
+                remote: self.playerRemoteDataSource(),
+                local: self.participantLocalDataSource()
 
             )
         }

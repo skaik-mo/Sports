@@ -69,15 +69,16 @@ private extension EventRepositoryImpl {
         sportType: SportType,
         fetchRemote: () async throws -> [EventDto],
         fetchLocal: () async throws -> [Event],
-        saveLocal: ([EventDto]) async throws -> Void
+        saveLocal: ([Event]) async throws -> Void
     ) async throws -> [Event] {
         do {
             let remoteEvents = try await safeCall { try await fetchRemote() }
+            let events = remoteEvents.compactMap { $0.toDomain(sportType: sportType) }
             await cacheSilently(
-                events: remoteEvents,
+                events: events,
                 saveLocal: saveLocal
             )
-            return try remoteEvents.map { try $0.toDomain(sportType: sportType) }
+            return events
         } catch DomainException.noInternet {
             return try await fetchFromCache(
                 section: section,
@@ -87,8 +88,8 @@ private extension EventRepositoryImpl {
     }
 
     func cacheSilently(
-        events: [EventDto],
-        saveLocal: ([EventDto]) async throws -> Void
+        events: [Event],
+        saveLocal: ([Event]) async throws -> Void
     ) async {
         do {
             try await saveLocal(events)

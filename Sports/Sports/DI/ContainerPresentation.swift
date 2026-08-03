@@ -45,6 +45,7 @@ extension Container {
                     getUpcomingEventsUseCase: self.getUpcomingEventsUseCase(),
                     getLatestEventsUseCase: self.getLatestEventsUseCase(),
                     getTeamsUseCase: self.getTeamsUseCase(),
+                    getPlayersUseCase: self.getPlayersUseCase(),
                     sportType: parameters.sportType,
                     leagueId: parameters.leagueId
 

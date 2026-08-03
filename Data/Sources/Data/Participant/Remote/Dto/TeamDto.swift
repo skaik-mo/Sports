@@ -6,7 +6,7 @@
 //
 
 struct TeamDto: Decodable {
-    let team_key: Int
+    let team_key: Int?
     let team_name: String?
     let team_logo: String?
 }
