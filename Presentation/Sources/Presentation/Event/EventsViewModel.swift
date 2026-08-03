@@ -58,9 +58,15 @@ extension EventsViewModel {
         ) { [weak self] in
             guard let self else { throw DomainException.unknown }
 
-            async let upcoming = self.getUpcomingEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
-            async let latest = self.getLatestEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
-            async let participants = self.getParticipants()
+            async let upcoming = self.fetchOrEmpty {
+                try await self.getUpcomingEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
+            }
+            async let latest = self.fetchOrEmpty {
+                try await self.getLatestEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
+            }
+            async let participants = self.fetchOrEmpty {
+                try await self.getParticipants()
+            }
 
             let (upcomingResult, latestResult, participantsResult) = try await (
                 upcoming,
@@ -91,6 +97,17 @@ extension EventsViewModel {
                     leagueId: leagueId
                 )
                 .toUIModels()
+        }
+    }
+
+    private func fetchOrEmpty<T>(_ operation: () async throws -> [T]) async throws -> [T] {
+        do {
+            return try await operation()
+        } catch DomainException.noDataFound {
+            return []
+        }  catch {
+            debugPrint("EventsViewModel: failed with \(error)")
+            throw error
         }
     }
 
