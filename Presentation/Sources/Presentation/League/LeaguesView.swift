@@ -69,7 +69,15 @@ struct LeaguesView: View {
             backgroundColor: AppColors.backButtonBackground,
             backgroundShadowColor: AppColors.foreground.opacity(0.3)
         )
-        .searchable(text: $viewModel.searchText)
+        .searchable(
+            text:
+                Binding(
+                    get: { viewModel.state.searchText },
+                    set: {
+                        viewModel.updateState(key: \.searchText, to: $0)
+                    }
+                )
+        )
         .onFirstAppear {
             viewModel.getLeagues()
         }

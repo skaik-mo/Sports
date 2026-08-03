@@ -8,4 +8,5 @@
 
 public struct FavoriteState {
     var favoriteState: ViewState<[LeagueSection]> = .loading
+    var searchText: String = ""
 }

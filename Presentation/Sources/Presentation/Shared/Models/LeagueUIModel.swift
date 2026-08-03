@@ -14,3 +14,10 @@ struct LeagueUIModel: Identifiable {
     let countryName: String
     let sportType: SportType
 }
+
+extension LeagueUIModel {
+    func matches(query: String) -> Bool {
+        leagueName.localizedCaseInsensitiveContains(query) ||
+        countryName.localizedCaseInsensitiveContains(query)
+    }
+}

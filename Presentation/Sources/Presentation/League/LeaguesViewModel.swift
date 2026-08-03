@@ -11,14 +11,13 @@ import Domain
 public final class LeaguesViewModel: BaseViewModel<LeagueState> {
     private var getAllLeaguesUseCase: GetAllLeaguesUseCase
     private(set) var sportType: SportType
-    var searchText: String = ""
     var filteredLeagues: [LeagueUIModel] {
         guard case .success(let leagues) = state.leaguesState else { return [] }
-        guard !searchText.isEmpty else { return leagues }
-        return leagues.filter {
-            $0.leagueName.localizedCaseInsensitiveContains(searchText) ||
-            $0.countryName.localizedCaseInsensitiveContains(searchText)
-        }
+        let query = state.searchText.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+        guard !query.isEmpty else { return leagues }
+        return leagues.filter { $0.matches(query: query) }
     }
 
     private enum TaskID: String {
