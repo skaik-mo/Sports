@@ -41,24 +41,6 @@ extension NetworkError: Equatable {
     }
 }
 
-// MARK: - User Facing Message
-extension NetworkError {
-
-    public var errorDescription: String? {
-        return switch self {
-        case .unauthorized: "Session expired. Please login again."
-        case .forbidden: "You don't have permission."
-        case .notFound: "Resource not found."
-        case .serverError(let code): "Server error (\(code)). Try again later."
-        case .noInternetConnection: "No internet connection."
-        case .timeout: "Request timed out."
-        case .decodingFailed: "Failed to parse server response."
-        case .apiError(message: let message, code: _): message
-        case .unknown(let e): e.localizedDescription
-        }
-    }
-}
-
 // MARK: - Mapping
 extension NetworkError {
 
