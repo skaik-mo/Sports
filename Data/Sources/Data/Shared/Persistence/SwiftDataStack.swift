@@ -22,7 +22,7 @@ public final class SwiftDataStack {
         let schema = Schema([
             LeagueCache.self,
             EventCache.self,
-            TeamCache.self,
+            ParticipantCache.self,
             FavoriteCache.self,
         ])
 

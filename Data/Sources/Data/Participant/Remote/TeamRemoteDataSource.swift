@@ -19,7 +19,6 @@ public final class TeamRemoteDataSource: Sendable {
     }
 }
 
-// MARK: - Leagues
 extension TeamRemoteDataSource {
 
     func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [TeamDto] {

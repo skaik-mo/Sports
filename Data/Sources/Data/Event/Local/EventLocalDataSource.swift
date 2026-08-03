@@ -51,7 +51,7 @@ extension EventLocalDataSource {
 // MARK: - Save
 extension EventLocalDataSource {
 
-    func saveUpcomingEvents(events: [EventDto], leagueId: Int, sportType: SportType) throws {
+    func saveUpcomingEvents(events: [Event], leagueId: Int, sportType: SportType) throws {
         try replaceEvents(
             events: events,
             leagueId: leagueId,
@@ -60,7 +60,7 @@ extension EventLocalDataSource {
         )
     }
 
-    func saveLatestEvents(events: [EventDto], leagueId: Int, sportType: SportType) throws {
+    func saveLatestEvents(events: [Event], leagueId: Int, sportType: SportType) throws {
         try replaceEvents(
             events: events,
             leagueId: leagueId,
@@ -69,9 +69,9 @@ extension EventLocalDataSource {
         )
     }
 
-    private func replaceEvents(events: [EventDto], leagueId: Int, section: EventSection, sportType: SportType) throws {
+    private func replaceEvents(events: [Event], leagueId: Int, section: EventSection, sportType: SportType) throws {
         try clearEvents(leagueId: leagueId, section: section)
-        let cacheModels = try events.map { try $0.toCache(leagueId: leagueId, section: section, sportType: sportType) }
+        let cacheModels = events.map { $0.toCache(leagueId: leagueId, section: section) }
         cacheModels.forEach { context.insert($0) }
         try context.save()
     }

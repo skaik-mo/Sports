@@ -14,43 +14,40 @@ final class EventCache {
     var id: Int
     var date: Date?
     var finalResult: String?
-    var status: String?
     var leagueId: Int
     var section: String
 
-    var homeTeamKey: Int
-    var homeTeamName: String?
-    var homeTeamLogo: String?
+    var firstParticipantKey: Int
+    var firstParticipantName: String?
+    var firstParticipantLogo: String?
 
-    var awayTeamKey: Int
-    var awayTeamName: String?
-    var awayTeamLogo: String?
+    var secondParticipantKey: Int
+    var secondParticipantName: String?
+    var secondParticipantLogo: String?
 
     init(
         id: Int,
         date: Date?,
         finalResult: String?,
-        status: String?,
         leagueId: Int,
         section: String,
-        homeTeamKey: Int,
-        homeTeamName: String?,
-        homeTeamLogo: String?,
-        awayTeamKey: Int,
-        awayTeamName: String?,
-        awayTeamLogo: String?
+        firstParticipantKey: Int,
+        firstParticipantName: String?,
+        firstParticipantLogo: String?,
+        secondParticipantKey: Int,
+        secondParticipantName: String?,
+        secondParticipantLogo: String?
     ) {
         self.id = id
         self.date = date
         self.finalResult = finalResult
-        self.status = status
         self.leagueId = leagueId
         self.section = section
-        self.homeTeamKey = homeTeamKey
-        self.homeTeamName = homeTeamName
-        self.homeTeamLogo = homeTeamLogo
-        self.awayTeamKey = awayTeamKey
-        self.awayTeamName = awayTeamName
-        self.awayTeamLogo = awayTeamLogo
+        self.firstParticipantKey = firstParticipantKey
+        self.firstParticipantName = firstParticipantName
+        self.firstParticipantLogo = firstParticipantLogo
+        self.secondParticipantKey = secondParticipantKey
+        self.secondParticipantName = secondParticipantName
+        self.secondParticipantLogo = secondParticipantLogo
     }
 }

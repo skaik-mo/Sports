@@ -54,8 +54,8 @@ public struct EventsView: View {
                     if !data.latestEvents.isEmpty {
                         latestEventsSection(latestEvents: data.latestEvents)
                     }
-                    if !data.teams.isEmpty {
-                        teamsSection(teams: data.teams)
+                    if !data.participants.isEmpty {
+                        participantsSection(participants: data.participants)
                     }
                 }
             }
@@ -111,10 +111,10 @@ private extension EventsView {
     }
 
     @ViewBuilder
-    func teamsSection(teams: [TeamUIModel]) -> some View {
+    func participantsSection(participants: [ParticipantUIModel]) -> some View {
         SectionHeaderView(title: participantsTitle)
-        HorizontalCarousel(items: teams) { team in
-            TeamCard(logo: team.logo, name: team.name) {
+        HorizontalCarousel(items: participants) { participant in
+            ParticipantCard(logo: participant.logo, name: participant.name) {
                 placeholderLogoView()
             } failureView: {
                 placeholderLogoView()
@@ -160,10 +160,10 @@ private extension EventsView {
             vs: L10n.Events.vs,
             score: event.finalResult,
             time: event.time,
-            homeTeamName: event.homeTeams.name,
-            homeTeamLogo: event.homeTeams.logo,
-            awayTeamName: event.awayTeams.name,
-            awayTeamLogo: event.awayTeams.logo
+            firstParticipantName: event.firstParticipant.name,
+            firstParticipantLogo: event.firstParticipant.logo,
+            secondParticipantName: event.secondParticipant.name,
+            secondParticipantLogo: event.secondParticipant.logo
         ) {
             placeholderLogoView()
         } failureView: {

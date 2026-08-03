@@ -33,6 +33,12 @@ extension Container {
         }
     }
 
+    var getPlayersUseCase: Factory<GetPlayersUseCase> {
+        self {
+            GetPlayersUseCase(repository: self.playerRepository())
+        }
+    }
+
     var getAllSportTypeUseCase: Factory<GetAllSportTypeUseCase> {
         self {
             GetAllSportTypeUseCase()

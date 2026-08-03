@@ -2,7 +2,7 @@
 //  TeamRepositoryImpl.swift
 //  Data
 //
-//  Created by Mohammed Skaik on 27/06/2026.
+//  Created by Mohammed Skaik on 03/08/2026.
 //
 
 import Domain
@@ -11,22 +11,22 @@ public final class TeamRepositoryImpl: TeamRepository {
 
     // MARK: - Properties
     private let remote: TeamRemoteDataSource
-    private let local: TeamLocalDataSource
+    private let local: ParticipantLocalDataSource
 
     // MARK: - Init
     public init(
         remote: TeamRemoteDataSource,
-        local: TeamLocalDataSource
+        local: ParticipantLocalDataSource
     ) {
         self.remote = remote
         self.local = local
     }
-
 }
 
 extension TeamRepositoryImpl {
 
-    public func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Team] {
+
+    public func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Participant] {
         do {
             return try await getRemoteLeagueTeams(
                 sportType: sportType,
@@ -39,29 +39,30 @@ extension TeamRepositoryImpl {
 }
 
 private extension TeamRepositoryImpl {
-    func getRemoteLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Team] {
+    func getRemoteLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Participant] {
         try await safeCall {
             let dtos = try await remote.getLeagueTeams(
                 sportType: sportType,
                 leagueId: leagueId
             )
-            await cacheSilently(teams: dtos, leagueId: leagueId)
-            return dtos.map { $0.toDomain() }
+            let participants = dtos.toDomain()
+            await cacheSilently(participants: participants, leagueId: leagueId)
+            return participants
         }
     }
 
-    func cacheSilently(teams: [TeamDto], leagueId: Int) async {
+    func cacheSilently(participants: [Participant], leagueId: Int) async {
         do {
-            let caches = teams.map { $0.toCache(leagueId: leagueId) }
-            try await local.saveTeams(teams: caches, leagueId: leagueId)
+            try await local
+                .saveTeams(participants: participants, leagueId: leagueId)
         } catch {
             debugPrint("Data: Failed to cache teams: \(error)")
         }
     }
 
-    func getLocalLeagueTeams(leagueId: Int) async throws -> [Team] {
+    func getLocalLeagueTeams(leagueId: Int) async throws -> [Participant] {
         try await safeCall {
-            let caches = try await self.local.getTeams(leagueId: leagueId)
+            let caches = try await self.local.getLeagueTeams(leagueId: leagueId)
             guard !caches.isEmpty else {
                 throw DomainException.noDataFound
             }

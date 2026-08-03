@@ -9,7 +9,7 @@
 struct EventScreenData {
     var upcomingEvents: [EventUIModel]
     let latestEvents: [EventUIModel]
-    let teams: [TeamUIModel]
+    let participants: [ParticipantUIModel]
 }
 
 public struct EventState {

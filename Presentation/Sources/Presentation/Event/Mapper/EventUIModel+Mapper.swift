@@ -9,9 +9,7 @@ import Domain
 
 extension Event { 
     func toUIModel() -> EventUIModel? {
-        guard let homeTeam = teams?.homeTeam,
-              let awayTeam = teams?.awayTeam,
-              let date else {
+        guard let date else {
             return nil
         }
         let dateFormatted = date.ddMMyyyy
@@ -21,8 +19,8 @@ extension Event {
             date: dateFormatted,
             time: timeFormatted,
             finalResult: finalResult.orEmpty(),
-            homeTeams: homeTeam.toUIModel(),
-            awayTeams: awayTeam.toUIModel()
+            firstParticipant: firstParticipant.toUIModel(),
+            secondParticipant: secondParticipant.toUIModel()
         )
     }
 }

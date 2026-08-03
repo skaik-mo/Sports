@@ -2,8 +2,9 @@
 //  GetTeamsUseCase.swift
 //  Domain
 //
-//  Created by Mohammed Skaik on 09/06/2026.
+//  Created by Mohammed Skaik on 03/08/2026.
 //
+
 
 public final class GetTeamsUseCase: Sendable {
     private let repository: TeamRepository
@@ -12,7 +13,7 @@ public final class GetTeamsUseCase: Sendable {
         self.repository = repository
     }
 
-    public func execute(sportType: SportType, leagueId: Int) async throws -> [Team] {
+    public func execute(sportType: SportType, leagueId: Int) async throws -> [Participant] {
         try await repository.getLeagueTeams(sportType: sportType, leagueId: leagueId)
     }
 }

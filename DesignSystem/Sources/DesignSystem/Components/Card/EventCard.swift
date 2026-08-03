@@ -12,10 +12,10 @@ public struct EventCard<PlaceholderView: View, FailureView: View>: View {
     private let vs: String
     private let score: String
     private let time: String
-    private let homeTeamName: String
-    private let homeTeamLogo: String
-    private let awayTeamName: String
-    private let awayTeamLogo: String
+    private let firstParticipantName: String
+    private let firstParticipantLogo: String
+    private let secondParticipantName: String
+    private let secondParticipantLogo: String
     private let placeholderView: PlaceholderView
     private let failureView: FailureView
 
@@ -24,10 +24,10 @@ public struct EventCard<PlaceholderView: View, FailureView: View>: View {
         vs: String,
         score: String,
         time: String,
-        homeTeamName: String,
-        homeTeamLogo: String,
-        awayTeamName: String,
-        awayTeamLogo: String,
+        firstParticipantName: String,
+        firstParticipantLogo: String,
+        secondParticipantName: String,
+        secondParticipantLogo: String,
         @ViewBuilder placeholderView: () -> PlaceholderView,
         @ViewBuilder failureView: () -> FailureView,
     ) {
@@ -35,10 +35,10 @@ public struct EventCard<PlaceholderView: View, FailureView: View>: View {
         self.vs = vs
         self.score = score
         self.time = time
-        self.homeTeamName = homeTeamName
-        self.homeTeamLogo = homeTeamLogo
-        self.awayTeamName = awayTeamName
-        self.awayTeamLogo = awayTeamLogo
+        self.firstParticipantName = firstParticipantName
+        self.firstParticipantLogo = firstParticipantLogo
+        self.secondParticipantName = secondParticipantName
+        self.secondParticipantLogo = secondParticipantLogo
         self.placeholderView = placeholderView()
         self.failureView = failureView()
     }
@@ -50,9 +50,9 @@ public struct EventCard<PlaceholderView: View, FailureView: View>: View {
                 .foregroundStyle(AppColors.secondaryText)
 
             HStack {
-                TeamCard(
-                    logo: homeTeamLogo,
-                    name: homeTeamName,
+                ParticipantCard(
+                    logo: firstParticipantLogo,
+                    name: firstParticipantName,
                     placeholderView: { placeholderView },
                     failureView: { failureView }
                 )
@@ -69,9 +69,9 @@ public struct EventCard<PlaceholderView: View, FailureView: View>: View {
                     }
                 }
                 Spacer()
-                TeamCard(
-                    logo: awayTeamLogo,
-                    name: awayTeamName,
+                ParticipantCard(
+                    logo: secondParticipantLogo,
+                    name: secondParticipantName,
                     placeholderView: { placeholderView },
                     failureView: { failureView }
                 )
@@ -95,10 +95,10 @@ public struct EventCard<PlaceholderView: View, FailureView: View>: View {
         vs: "VS",
         score: "",
         time: "20:00",
-        homeTeamName: "Athletic Club de Bilbao",
-        homeTeamLogo: "https://media.api-sports.io/football/teams/531.png",
-        awayTeamName: "Real Sociedad de Fútbol Sociedad de Fútbol",
-        awayTeamLogo: "https://media.api-sports.io/football/teams/548.png",
+        firstParticipantName: "Athletic Club de Bilbao",
+        firstParticipantLogo: "https://media.api-sports.io/football/teams/531.png",
+        secondParticipantName: "Real Sociedad de Fútbol Sociedad de Fútbol",
+        secondParticipantLogo: "https://media.api-sports.io/football/teams/548.png",
         placeholderView: { ProgressView() },
         failureView: {
             Image(systemName: "shield.slash")

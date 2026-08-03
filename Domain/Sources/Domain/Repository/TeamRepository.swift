@@ -6,5 +6,5 @@
 //
 
 public protocol TeamRepository: Sendable {
-    func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Team]
+    func getLeagueTeams(sportType: SportType, leagueId: Int) async throws -> [Participant]
 }

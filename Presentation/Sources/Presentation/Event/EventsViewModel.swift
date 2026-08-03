@@ -13,6 +13,7 @@ public final class EventsViewModel: BaseViewModel<EventState> {
     private let getUpcomingEventsUseCase: GetUpcomingEventsUseCase
     private let getLatestEventsUseCase: GetLatestEventsUseCase
     private let getTeamsUseCase: GetTeamsUseCase
+    private let getPlayersUseCase: GetPlayersUseCase
     private let sportType: SportType
     private let leagueId: Int
 
@@ -28,6 +29,7 @@ public final class EventsViewModel: BaseViewModel<EventState> {
         getUpcomingEventsUseCase: GetUpcomingEventsUseCase,
         getLatestEventsUseCase: GetLatestEventsUseCase,
         getTeamsUseCase: GetTeamsUseCase,
+        getPlayersUseCase: GetPlayersUseCase,
         sportType: SportType,
         leagueId: Int
     ) {
@@ -36,6 +38,7 @@ public final class EventsViewModel: BaseViewModel<EventState> {
         self.getUpcomingEventsUseCase = getUpcomingEventsUseCase
         self.getLatestEventsUseCase = getLatestEventsUseCase
         self.getTeamsUseCase = getTeamsUseCase
+        self.getPlayersUseCase = getPlayersUseCase
         self.sportType = sportType
         self.leagueId = leagueId
         super.init(initialState: EventState())
@@ -57,33 +60,38 @@ extension EventsViewModel {
 
             async let upcoming = self.getUpcomingEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
             async let latest = self.getLatestEventsUseCase.execute(sportType: self.sportType, leagueId: self.leagueId).toUIModel()
+            async let participants = self.getParticipants()
 
-            async let teams = self.getTeams()
-
-            let (upcomingResult, latestResult, teamsResult) = try await (
+            let (upcomingResult, latestResult, participantsResult) = try await (
                 upcoming,
                 latest,
-                teams
+                participants
             )
+
             return EventScreenData(
                 upcomingEvents: upcomingResult,
                 latestEvents: latestResult,
-                teams: teamsResult
+                participants: participantsResult
             )
         }
     }
 
-    private func getTeams() async throws -> [TeamUIModel] {
-        guard sportType != .tennis else {
-            return []
+    private func getParticipants() async throws -> [ParticipantUIModel] {
+        if sportType == .tennis {
+            return try await getPlayersUseCase
+                .execute(
+                    sportType: sportType,
+                    leagueId: leagueId
+                )
+                .toUIModels()
+        } else {
+            return try await getTeamsUseCase
+                .execute(
+                    sportType: sportType,
+                    leagueId: leagueId
+                )
+                .toUIModels()
         }
-
-        return try await getTeamsUseCase
-            .execute(
-                sportType: sportType,
-                leagueId: leagueId
-            )
-            .toUIModels()
     }
 
     private func setLoading() {
@@ -95,7 +103,7 @@ extension EventsViewModel {
 
     private func getDataSuccess() -> (EventScreenData) -> Void {
         return { [weak self] (data: EventScreenData) in
-            let isEmpty = data.upcomingEvents.isEmpty && data.latestEvents.isEmpty && data.teams.isEmpty
+            let isEmpty = data.upcomingEvents.isEmpty && data.latestEvents.isEmpty && data.participants.isEmpty
             self?.updateState(
                 key: \.eventsState,
                 to: isEmpty ? .empty : .success(data)
