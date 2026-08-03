@@ -10,28 +10,11 @@ import Domain
 public final class FavoriteViewModel: BaseViewModel<FavoriteState> {
     private let getFavoritesUseCase: GetFavoritesUseCase
     private let removeFavoriteUseCase: RemoveFavoriteUseCase
-    var searchText: String = ""
     var filteredSections: [LeagueSection] {
         guard case .success(let sections) = state.favoriteState else {
             return []
         }
-        guard !searchText
-            .trimmingCharacters(in: .whitespaces).isEmpty else {
-            return sections
-        }
-        return sections
-            .map { section in
-                LeagueSection(
-                    sportType: section.sportType,
-                    leagues: section.leagues.filter {
-                        $0.leagueName
-                            .localizedCaseInsensitiveContains(searchText) ||
-                        $0.countryName
-                            .localizedCaseInsensitiveContains(searchText)
-                    }
-                )
-            }
-            .filter { !$0.leagues.isEmpty }
+        return sections.filtered(by: state.searchText)
     }
 
     private enum TaskID: String {

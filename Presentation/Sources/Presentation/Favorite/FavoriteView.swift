@@ -71,7 +71,15 @@ struct FavoriteView: View {
         .background(AppColors.background)
         .navigationTitle(L10n.Favorite.title)
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $viewModel.searchText)
+        .searchable(
+            text:
+                Binding(
+                    get: { viewModel.state.searchText },
+                    set: {
+                        viewModel.updateState(key: \.searchText, to: $0)
+                    }
+                )
+        )
         .task {
             viewModel.getFavorites()
         }

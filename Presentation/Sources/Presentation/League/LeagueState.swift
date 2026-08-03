@@ -7,4 +7,5 @@
 
 public struct LeagueState {
     var leaguesState: ViewState<[LeagueUIModel]> = .loading
+    var searchText: String = ""
 }
