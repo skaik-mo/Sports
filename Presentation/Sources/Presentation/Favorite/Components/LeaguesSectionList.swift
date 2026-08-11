@@ -53,8 +53,14 @@ struct LeaguesSectionList: View {
                     SectionHeaderView(title: section.sportType.title)
                 }
             }
+            Color.clear
+                    .frame(height: 80)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(AppColors.clear)
+                    .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
+        .listSectionSpacing(0)
         .scrollIndicators(.hidden)
     }
 }
