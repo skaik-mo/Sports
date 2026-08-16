@@ -1,5 +1,5 @@
 //
-//  AppCoordinatorView.swift
+//  AppRootCoordinatorView.swift
 //  Presentation
 //
 //  Created by Mohammed Skaik on 21/07/2026.
@@ -14,7 +14,7 @@ public struct AppRootCoordinatorView: View {
 
     public var body: some View {
         Group {
-            switch coordinator.route {
+            switch coordinator.destination {
             case .launch:
                 LaunchView {
                     coordinator.launchDidFinish()
@@ -28,3 +28,4 @@ public struct AppRootCoordinatorView: View {
         }
     }
 }
+
