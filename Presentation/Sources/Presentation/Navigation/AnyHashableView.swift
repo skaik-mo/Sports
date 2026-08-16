@@ -7,20 +7,15 @@
 
 import SwiftUI
 
-public struct AnyHashableView: Hashable {
-    public let id: AnyHashable
-    public let view: AnyView
+struct AnyHashableView: Hashable {
+    let id: AnyHashable
+    let view: AnyView
 
-    public init(id: AnyHashable, view: AnyView) {
-        self.id = id
-        self.view = view
-    }
-
-    public static func == (lhs: AnyHashableView, rhs: AnyHashableView) -> Bool {
+    static func == (lhs: borrowing AnyHashableView, rhs: borrowing AnyHashableView) -> Bool {
         lhs.id == rhs.id
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
