@@ -1,13 +1,13 @@
 //
-//  HomeRoute.swift
+//  HomeDestination.swift
 //  Presentation
 //
-//  Created by Mohammed Skaik on 19/07/2026.
+//  Created by Mohammed Skaik on 16/08/2026.
 //
 
 import Domain
 
-enum HomeRoute: Hashable {
+enum HomeDestination: Hashable {
     case leagues(sportType: SportType)
     case events(parameters: EventsParameters)
 }

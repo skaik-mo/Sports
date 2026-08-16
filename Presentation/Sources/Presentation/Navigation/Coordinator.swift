@@ -5,32 +5,19 @@
 //  Created by Mohammed Skaik on 21/07/2026.
 //
 
+import Foundation
 
 @MainActor
 protocol Coordinator: AnyObject {
-
-    associatedtype Route: Hashable
-
-    var path: [Route] { get set }
+    var router: Router { get }
 }
 
 extension Coordinator {
-
-    func push(_ route: Route) {
-        path.append(route)
-    }
-
     func pop() {
-        guard !path.isEmpty else { return }
-        path.removeLast()
+        router.pop()
     }
 
     func popToRoot() {
-        path.removeAll()
+        router.popToRoot()
     }
 }
-
-
-
-
-

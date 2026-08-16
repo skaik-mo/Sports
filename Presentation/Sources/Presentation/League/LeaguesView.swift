@@ -10,14 +10,9 @@ import DesignSystem
 
 struct LeaguesView: View {
     @State private var viewModel: LeaguesViewModel
-    private let onNavigateToEvents: (EventsParameters) -> Void
 
-    init(
-        viewModel: LeaguesViewModel,
-        onNavigateToEvents: @escaping (EventsParameters) -> Void
-    ) {
+    init(viewModel: LeaguesViewModel) {
         self.viewModel = viewModel
-        self.onNavigateToEvents = onNavigateToEvents
     }
 
     var body: some View {
@@ -29,12 +24,7 @@ struct LeaguesView: View {
 
             case .success:
                 LeagueList(leagues: viewModel.filteredLeagues) { league in
-                    onNavigateToEvents(
-                        .init(
-                            sportType: league.sportType,
-                            leagueId: league.id
-                        )
-                    )
+                    viewModel.didSelectLeague(league)
                 }
                 .refreshable {
                     viewModel.getLeagues(withLoading: false)
@@ -86,4 +76,3 @@ struct LeaguesView: View {
         }
     }
 }
-

@@ -19,9 +19,11 @@ extension Container {
 
     private func registerHomeViewModel() {
         self.homeViewModel.register {
-            HomeViewModel(
-                getAllSportTypeUseCase: self.getAllSportTypeUseCase()
-            )
+            MainActor.assumeIsolated {
+                HomeViewModel(
+                    getAllSportTypeUseCase: self.getAllSportTypeUseCase()
+                )
+            }
         }
     }
 

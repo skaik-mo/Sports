@@ -175,4 +175,3 @@ private extension EventsView {
         )
     }
 }
-

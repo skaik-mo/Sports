@@ -10,14 +10,9 @@ import DesignSystem
 
 struct FavoriteView: View {
     @State private var viewModel: FavoriteViewModel
-    private let onNavigateToEvents: (EventsParameters) -> Void
 
-    init(
-        viewModel: FavoriteViewModel,
-        onNavigateToEvents: @escaping (EventsParameters) -> Void
-    ) {
+    init(viewModel: FavoriteViewModel) {
         self.viewModel = viewModel
-        self.onNavigateToEvents = onNavigateToEvents
     }
 
     var body: some View {
@@ -52,12 +47,7 @@ struct FavoriteView: View {
                 LeaguesSectionList(
                     sections: viewModel.filteredSections,
                     onTap: { league in
-                        onNavigateToEvents(
-                            .init(
-                                sportType: league.sportType,
-                                leagueId: league.id
-                            )
-                        )
+                        viewModel.didSelectLeague(league)
                     },
                     onRemove: { league in
                         viewModel.removeFavorite(league: league)

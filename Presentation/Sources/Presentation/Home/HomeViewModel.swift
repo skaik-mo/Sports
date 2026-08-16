@@ -8,9 +8,12 @@
 import SwiftUI
 import Domain
 
+@MainActor
 @Observable
 public final class HomeViewModel {
     private let getAllSportTypeUseCase: GetAllSportTypeUseCase
+    weak var navigationDelegate: HomeViewModelNavigationDelegate?
+
     private(set) var sportTypes: [SportType] = []
     private var splitSports: (left: [SportType], right: [SportType]) {
         sportTypes.split()
@@ -28,6 +31,10 @@ extension HomeViewModel {
 
     func getSportTypes() {
         self.sportTypes = getAllSportTypeUseCase.execute()
+    }
+
+    func didSelectSport(_ sportType: SportType) {
+        navigationDelegate?.navigateToLeagues(for: sportType)
     }
 
 }

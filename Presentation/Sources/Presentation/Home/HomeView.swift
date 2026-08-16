@@ -12,14 +12,9 @@ import Domain
 struct HomeView: View {
     @State private var viewModel: HomeViewModel
     @State private var currentLayout: HomeLayoutStyle = .waterfall
-    private let onNavigateToLeagues: (SportType) -> Void
 
-    init(
-        viewModel: HomeViewModel,
-        onNavigateToLeagues: @escaping (SportType) -> Void
-    ) {
+    init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        self.onNavigateToLeagues = onNavigateToLeagues
     }
 
     var body: some View {
@@ -29,14 +24,14 @@ struct HomeView: View {
                 height: currentLayout.heightImage,
                 font: currentLayout.font
             ) { sportType in
-                onNavigateToLeagues(sportType)
+                viewModel.didSelectSport(sportType)
             }
             SportShapeStack(
-                sportTypes:viewModel.rightSports,
+                sportTypes: viewModel.rightSports,
                 height: currentLayout.heightImage,
                 font: currentLayout.font
             ) { sportType in
-                onNavigateToLeagues(sportType)
+                viewModel.didSelectSport(sportType)
             }
         }
         .animation(.easeInOut(duration: 0.2), value: currentLayout)
