@@ -8,5 +8,5 @@
 
 import Alamofire
 
-public typealias HTTPMethod  = Alamofire.HTTPMethod
-public typealias Parameters  = Alamofire.Parameters
+public typealias HTTPMethod = Alamofire.HTTPMethod
+public typealias Parameters = Alamofire.Parameters

@@ -22,25 +22,6 @@ public enum NetworkError: LocalizedError {
     case unknown(Error)
 }
 
-// MARK: - Equatable
-extension NetworkError: Equatable {
-
-    public static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
-        switch (lhs, rhs) {
-        case (.unauthorized, .unauthorized): return true
-        case (.forbidden, .forbidden): return true
-        case (.notFound, .notFound): return true
-        case (.noInternetConnection, .noInternetConnection): return true
-        case (.timeout, .timeout): return true
-        case (.serverError(let l), .serverError(let r)): return l == r
-        case (.decodingFailed, .decodingFailed): return true
-        case (.apiError(let lm, let lc), .apiError(let rm, let rc)): return lm == rm && lc == rc
-        case (.unknown, .unknown): return true
-        default: return false
-        }
-    }
-}
-
 // MARK: - Mapping
 extension NetworkError {
 

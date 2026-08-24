@@ -98,7 +98,7 @@ private extension NetworkManager {
 
     private func buildHeaders(from request: BaseRequest) -> HTTPHeaders {
         var headers = HTTPHeaders()
-        headers.add(name: "Accept",       value: "application/json")
+        headers.add(name: "Accept", value: "application/json")
         headers.add(name: "Content-Type", value: "application/json")
 
         if let token = tokenInterceptor?.accessToken() {
