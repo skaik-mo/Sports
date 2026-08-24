@@ -8,19 +8,14 @@
 import Networking
 import Domain
 
-class PlayerBaseAppRequest: BaseAppRequest {
-    private var params: Parameters = [:]
-
-    override var method: HTTPMethod { .get }
-
-    override var parameters: Parameters {
+struct PlayerBaseAppRequest: BaseAppRequest {
+    let sportType: SportType
+    let leagueId: Int
+    var method: HTTPMethod { .get }
+    var parameters: Parameters {
+        var params = baseParameters
         params["met"] = "Players"
-        return params
-    }
-
-    init(sportType: SportType, leagueId: Int) {
-        super.init(sportType: sportType)
-        self.params = super.parameters
         params["leagueId"] = leagueId
+        return params
     }
 }

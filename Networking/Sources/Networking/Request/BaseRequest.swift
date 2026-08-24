@@ -7,13 +7,20 @@
 
 import Foundation
 
-open class BaseRequest {
-    public init() {}
+public protocol BaseRequest {
+    var baseUrl: String { get }
+    var path: String { get }
+    var method: HTTPMethod { get }
+    var parameters: Parameters { get }
+    var headers: [String: String] { get }
+    var files: [BaseFile] { get }
+}
 
-    open var baseUrl: String { "" }
-    open var endpoint: String { "" }
-    open var method: HTTPMethod { .get }
-    open var parameters: Parameters { [:] }
-    open var headers: [String: String] { [:] }
-    open var files: [BaseFile] { [] }
+public extension BaseRequest {
+    var baseUrl: String { "" }
+    var path: String { "" }
+    var method: HTTPMethod { .get }
+    var parameters: Parameters { [:] }
+    var headers: [String: String] { [:] }
+    var files: [BaseFile] { [] }
 }

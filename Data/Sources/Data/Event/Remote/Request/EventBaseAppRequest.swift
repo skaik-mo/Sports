@@ -9,22 +9,15 @@ import Networking
 import Foundation
 import Domain
 
-class EventBaseAppRequest: BaseAppRequest {
-    private var extraParams: Parameters
-
-    override var method: HTTPMethod { .get }
-
-    override var parameters: Parameters {
-        var params = super.parameters
+struct EventBaseAppRequest: BaseAppRequest {
+    let sportType: SportType
+    let extraParams: Parameters
+    var method: HTTPMethod { .get }
+    var parameters: Parameters {
+        var params = baseParameters
         params["met"] = "Fixtures"
         params["timezone"] = TimeZone.current.identifier
         params.merge(extraParams) { _, newValue in newValue }
         return params
     }
-
-    init(sportType: SportType, extraParams: Parameters) {
-        self.extraParams = extraParams
-        super.init(sportType: sportType)
-    }
-
 }

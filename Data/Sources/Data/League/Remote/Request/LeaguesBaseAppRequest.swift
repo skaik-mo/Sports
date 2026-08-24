@@ -7,11 +7,13 @@
 
 
 import Networking
+import Domain
 
-final class LeaguesBaseAppRequest: BaseAppRequest {
-    override var method: HTTPMethod { .get }
-    override var parameters: Parameters {
-        var params = super.parameters
+struct LeaguesBaseAppRequest: BaseAppRequest {
+    let sportType: SportType
+    var method: HTTPMethod { .get }
+    var parameters: Parameters {
+        var params = baseParameters
         params["met"] = "Leagues"
         return params
     }
