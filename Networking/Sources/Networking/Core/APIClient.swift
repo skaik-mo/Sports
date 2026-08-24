@@ -26,10 +26,9 @@ public final class APIClient: Sendable {
     }
 }
 
-// MARK: - With Response Body
 extension APIClient {
 
-    public func perform<T: Decodable>(_ request: BaseRequest) async throws -> T {
+    private func performRaw(_ request: BaseRequest) async throws -> Data {
         do {
             let data = try await network.request(request)
 
@@ -37,33 +36,28 @@ extension APIClient {
                 throw apiError
             }
 
-            return try decoder.decode(T.self, from: data)
+            return data
         } catch let error as NetworkError {
             throw error
+        } catch {
+            throw NetworkError.unknown(error)
+        }
+    }
+
+    // MARK: - With Response Body
+    public func perform<T: Decodable>(_ request: BaseRequest) async throws -> T {
+        let data = try await performRaw(request)
+        do {
+            return try decoder.decode(T.self, from: data)
         } catch let error as DecodingError {
             throw NetworkError.decodingFailed(error)
         } catch {
             throw NetworkError.unknown(error)
         }
     }
-}
 
-// MARK: - No Response Body
-extension APIClient {
-
+    // MARK: - No Response Body
     public func perform(_ request: BaseRequest) async throws {
-        do {
-            let data = try await network.request(request)
-
-            if let apiError = errorParser?.parse(data) {
-                throw apiError
-            }
-        } catch let error as NetworkError {
-            throw error
-        } catch let error as DecodingError {
-            throw NetworkError.decodingFailed(error)
-        } catch {
-            throw NetworkError.unknown(error)
-        }
+        _ = try await performRaw(request)
     }
 }

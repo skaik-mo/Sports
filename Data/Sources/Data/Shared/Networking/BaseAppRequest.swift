@@ -9,26 +9,16 @@
 import Networking
 import Domain
 
-open class BaseAppRequest: BaseRequest {
-    private let sportType: SportType
+protocol BaseAppRequest: BaseRequest {
+    var sportType: SportType { get }
+}
 
-    init(sportType: SportType) {
-        self.sportType = sportType
-    }
+extension BaseAppRequest {
+    var baseUrl: String { APIConstants.baseUrl }
+    var path: String { sportType.path }
+    var headers: [String: String] { ["Content-Type": "application/json"] }
 
-    override open var baseUrl: String {
-        APIConstants.baseUrl
-    }
-
-    open override var endpoint: String {
-        self.sportType.path
-    }
-
-    open override var parameters: Parameters {
+    var baseParameters: Parameters {
         ["APIkey": APIConstants.apiKey]
-    }
-
-    open override var headers: [String : String] {
-        ["Content-Type": "application/json"]
     }
 }

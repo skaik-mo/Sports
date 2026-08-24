@@ -25,7 +25,7 @@ public final class NetworkManager: NetworkManagerProtocol {
 extension NetworkManager {
 
     public func request(_ request: BaseRequest) async throws -> Data {
-        guard let url = URL(string: request.baseUrl + request.endpoint) else {
+        guard let url = URL(string: request.baseUrl + request.path) else {
             throw NetworkError.unknown(URLError(.badURL))
         }
 
@@ -98,7 +98,7 @@ private extension NetworkManager {
 
     private func buildHeaders(from request: BaseRequest) -> HTTPHeaders {
         var headers = HTTPHeaders()
-        headers.add(name: "Accept",       value: "application/json")
+        headers.add(name: "Accept", value: "application/json")
         headers.add(name: "Content-Type", value: "application/json")
 
         if let token = tokenInterceptor?.accessToken() {
