@@ -1,11 +1,12 @@
 //
-//  AppRoute.swift
+//  AppRootDestination.swift
 //  Presentation
 //
 //  Created by Mohammed Skaik on 21/07/2026.
 //
 
-enum AppRoute {
+enum AppRootDestination {
     case launch
     case main
 }
+

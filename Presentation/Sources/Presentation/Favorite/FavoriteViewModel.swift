@@ -10,6 +10,8 @@ import Domain
 public final class FavoriteViewModel: BaseViewModel<FavoriteState> {
     private let getFavoritesUseCase: GetFavoritesUseCase
     private let removeFavoriteUseCase: RemoveFavoriteUseCase
+    weak var navigationDelegate: FavoriteViewModelNavigationDelegate?
+
     var filteredSections: [LeagueSection] {
         guard case .success(let sections) = state.favoriteState else {
             return []
@@ -34,9 +36,7 @@ public final class FavoriteViewModel: BaseViewModel<FavoriteState> {
         self.removeFavoriteUseCase = removeFavoriteUseCase
         super.init(initialState: FavoriteState())
     }
-
 }
-
 
 extension FavoriteViewModel {
     func getFavorites() {
@@ -120,5 +120,12 @@ extension FavoriteViewModel {
             key: \.favoriteState,
             to: updatedSections.isEmpty ? .empty : .success(updatedSections)
         )
+    }
+}
+
+extension FavoriteViewModel {
+    func didSelectLeague(_ league: LeagueUIModel) {
+        let parameters = EventsParameters(sportType: league.sportType, leagueId: league.id)
+        navigationDelegate?.navigateToEvents(with: parameters)
     }
 }

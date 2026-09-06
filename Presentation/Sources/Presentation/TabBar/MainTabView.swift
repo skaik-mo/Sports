@@ -12,8 +12,8 @@ struct MainTabView: View {
     @State private var coordinator: MainTabCoordinator
     private var shouldShowTabBar: Bool {
         switch coordinator.selectedTab {
-        case .home: return coordinator.homeCoordinator.path.isEmpty
-        case .favorite: return coordinator.favoriteCoordinator.path.isEmpty
+        case .home: return coordinator.homeCoordinator.router.path.isEmpty
+        case .favorite: return coordinator.favoriteCoordinator.router.path.isEmpty
         }
     }
 

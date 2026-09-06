@@ -1,5 +1,5 @@
 //
-//  AppCoordinator.swift
+//  AppRootCoordinator.swift
 //  Presentation
 //
 //  Created by Mohammed Skaik on 21/07/2026.
@@ -11,13 +11,14 @@ import Observation
 @Observable
 final class AppRootCoordinator {
 
-    var route: AppRoute = .launch
+    var destination: AppRootDestination = .launch
 
     func start() {
-        route = .launch
+        destination = .launch
     }
 
     func launchDidFinish() {
-        route = .main
+        destination = .main
     }
 }
+

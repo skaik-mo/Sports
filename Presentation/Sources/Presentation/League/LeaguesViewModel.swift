@@ -11,6 +11,8 @@ import Domain
 public final class LeaguesViewModel: BaseViewModel<LeagueState> {
     private var getAllLeaguesUseCase: GetAllLeaguesUseCase
     private(set) var sportType: SportType
+    weak var navigationDelegate: LeaguesViewModelNavigationDelegate?
+
     var filteredLeagues: [LeagueUIModel] {
         guard case .success(let leagues) = state.leaguesState else { return [] }
         let query = state.searchText.trimmingCharacters(
@@ -74,5 +76,15 @@ extension LeaguesViewModel {
                 to: .failure(error.localizedDescription)
             )
         }
+    }
+}
+
+extension LeaguesViewModel {
+    func didSelectLeague(_ league: LeagueUIModel) {
+        let parameters = EventsParameters(
+            sportType: league.sportType,
+            leagueId: league.id
+        )
+        navigationDelegate?.navigateToEvents(with: parameters)
     }
 }
