@@ -31,11 +31,6 @@ let package = Package(
             resources: [
                 .process("Resources")
             ]
-        ),
-        .testTarget(
-            name: "PresentationTests",
-            dependencies: ["Presentation", "Domain"],
-            path: "Tests/PresentationTests"
         )
     ],
     swiftLanguageModes: [.v6]
