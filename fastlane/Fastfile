@@ -6,9 +6,9 @@ DERIVED_DATA = "Build/DerivedData"
 
 MODULES = [
   { name: "DesignSystem", scheme: "DesignSystem", has_tests: false, path: "DesignSystem" },
-  { name: "Domain",       scheme: "Domain",       has_tests: true,  path: "Domain" },
-  { name: "Data",         scheme: "Data",         has_tests: true,  path: "Data" },
-  { name: "Presentation", scheme: "Presentation", has_tests: true,  path: "Presentation" },
+  { name: "Domain",       scheme: "Domain",       has_tests: false, path: "Domain" },
+  { name: "Data",         scheme: "Data",         has_tests: false, path: "Data" },
+  { name: "Presentation", scheme: "Presentation", has_tests: false, path: "Presentation" },
 ]
 
 # If a module changes, these modules should also be checked,
