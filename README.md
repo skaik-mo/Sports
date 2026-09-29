@@ -312,4 +312,5 @@ The project includes an intelligent GitHub Actions workflow (`.github/workflows/
 
 **Mohammed Skaik**  
 - Email: [mohamedsaeb.skaik@gmail.com](mailto:mohamedsaeb.skaik@gmail.com)  
-- GitHub: [@skaik-mo](https://github.com/skaik-mo)
+- GitHub: [@skaik-mo](https://github.com/skaik-mo)  
+- LinkedIn: [skaik-mo](https://www.linkedin.com/in/skaik-mo/)
